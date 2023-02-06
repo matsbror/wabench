@@ -1,12 +1,12 @@
 Wasm=$Native.wasm
 WasmAOT=$Native.cwasm
 
-Wasmtime="$HOME/runtimes/wasmtime/target/release/wasmtime"
-WAVM="$HOME/runtimes/WAVM/build/bin/wavm"
+Wasmtime="wasmtime"
+#WAVM="$HOME/runtimes/WAVM/build/bin/wavm"
 #Wasmer="$HOME/runtimes/wasmer/target/release/wasmer"
-Wasmer="$HOME/.wasmer/bin/wasmer run"
-Wasm3="$HOME/runtimes/wasm3/build/wasm3"
-WAMR="$HOME/runtimes/wasm-micro-runtime/product-mini/platforms/linux/build/iwasm"
+#Wasmer="$HOME/.wasmer/bin/wasmer run"
+#Wasm3="$HOME/runtimes/wasm3/build/wasm3"
+#WAMR="$HOME/runtimes/wasm-micro-runtime/product-mini/platforms/linux/build/iwasm"
 
 runaot() {
     cmd="$1"
@@ -38,7 +38,7 @@ runtest() {
         echo -e "$3:   \t$mem kbytes"
     elif [ "$MeasurePerf" = true ]
     then
-: '
+
         sh -c "perf stat $cmd"
         cycles=$( cat "$2" | grep "cycles" | sed 's/      cycles.*//' | sed 's/        //' )
         insns=$( cat "$2" | grep "instructions" | sed 's/      instructions.*//' | sed 's/        //')
@@ -48,7 +48,7 @@ runtest() {
         echo -e "$3:   \t$insns instructions"
         echo -e "$3:   \t$branches branches"
         echo -e "$3:   \t$brmisses branch-misses"
-'
+
         sh -c "perf stat -e cache-misses,cache-references $cmd"
         cachemisses=$( cat "$2" | grep "cache-misses" | sed 's/      cache-misses.*//' | sed 's/        //' )
         cacherefs=$( cat "$2" | grep "cache-references" | sed 's/      cache-references.*//' | sed 's/        //')
@@ -109,6 +109,8 @@ else
 runtest "$Wasmtime run $WasmtimeDir $Wasm $WasmtimeNativeArg" "output_wasmtime" "wasmtime" $1
 fi
 
+: '
+
 if [ "$RunAOT" = true ]
 then
 runaot "$WAVM compile $Wasm $WasmAOT" $1
@@ -125,9 +127,7 @@ else
 runtest "$Wasmer run $WasmerDir $Wasm $WasmerNativeArg" "output_wasmer" "wasmer" $1
 fi
 
-#'
 
-: '
 #echo ""
 runtest "$Wasmer --singlepass $WasmerDir $Wasm $WasmerNativeArg" "output_wasmer" "wasmer (singlepass)" $1
 
@@ -136,9 +136,9 @@ runtest "$Wasmer --cranelift $WasmerDir $Wasm $WasmerNativeArg" "output_wasmer" 
 
 #echo ""
 runtest "$Wasmer --llvm $WasmerDir $Wasm $WasmerNativeArg" "output_wasmer" "wasmer (llvm)" $1
-'
 
-#: '
+
+
 if [ "$RunAOT" = false ]
 then
 #echo ""
@@ -154,6 +154,8 @@ runtest "$WAMR --stack-size=32768 $WAMRDir $Wasm $WAMRNativeArg" "output_wamr" "
 fi
 
 #'
+
+
 
 #echo ""
 

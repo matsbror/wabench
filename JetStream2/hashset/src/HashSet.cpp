@@ -21,6 +21,7 @@
 #define NDEBUG 1
 
 #include <algorithm>
+#include <limits>
 #include <memory>
 #include <stdio.h>
 #include <stdlib.h>
