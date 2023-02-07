@@ -3,7 +3,7 @@ Benchmark = mnist
 SRCDIR = ./src
 SRCSUFFIX = c
 
-CFLAGS =
+CFLAGS = -I.
 CINCLUDE =
 OPT = -O2
 LDFLAGS = -lm

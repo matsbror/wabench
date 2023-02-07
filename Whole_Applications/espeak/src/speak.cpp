@@ -25,7 +25,7 @@
 #include <unistd.h>
 #include <getopt.h>
 #include <time.h>
-#include <signal.h>
+// #include <signal.h>
 #include <locale.h>
 #include "sys/stat.h"
 

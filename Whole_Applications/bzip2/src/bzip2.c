@@ -50,7 +50,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <signal.h>
+// #include <signal.h>
 #include <math.h>
 #include <errno.h>
 #include <ctype.h>
@@ -72,7 +72,7 @@
 #   include <utime.h>
 #   include <unistd.h>
 #   include <sys/stat.h>
-#   include <sys/times.h>
+// #   include <sys/times.h>
 
 #   define PATH_SEP    '/'
 #   define MY_LSTAT    lstat
