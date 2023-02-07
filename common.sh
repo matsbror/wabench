@@ -2,11 +2,12 @@ Wasm=$Native.wasm
 WasmAOT=$Native.cwasm
 
 Wasmtime="wasmtime"
-#WAVM="$HOME/runtimes/WAVM/build/bin/wavm"
+WAVM="wavm"
 #Wasmer="$HOME/runtimes/wasmer/target/release/wasmer"
-#Wasmer="$HOME/.wasmer/bin/wasmer run"
-#Wasm3="$HOME/runtimes/wasm3/build/wasm3"
-#WAMR="$HOME/runtimes/wasm-micro-runtime/product-mini/platforms/linux/build/iwasm"
+Wasmer="$HOME/.wasmer/bin/wasmer"
+Wasm3="wasm3"
+WAMR="/home/mats/wasm/wasm-micro-runtime/product-mini/platforms/linux/build/iwasm"
+
 
 runaot() {
     cmd="$1"
@@ -56,6 +57,7 @@ runtest() {
         echo -e "$3:   \t$cacherefs cache-references"
     else
         start=`date +%s.%N`
+        echo "$cmd"
         for (( i=1; i<=$Iter; i++ ))
         do
             sh -c "$cmd"
@@ -109,16 +111,6 @@ else
 runtest "$Wasmtime run $WasmtimeDir $Wasm $WasmtimeNativeArg" "output_wasmtime" "wasmtime" $1
 fi
 
-: '
-
-if [ "$RunAOT" = true ]
-then
-runaot "$WAVM compile $Wasm $WasmAOT" $1
-runtest "$WAVM run --precompiled $WAVMDir $WasmAOT $WAVMNativeArg" "output_wavm" "wavm" $1
-else
-runtest "$WAVM run $WAVMDir $Wasm $WAVMNativeArg" "output_wavm" "wavm" $1
-fi
-
 if [ "$RunAOT" = true ]
 then
 runaot "$Wasmer compile $Wasm -o $WasmAOT" $1
@@ -126,7 +118,6 @@ runtest "$Wasmer run $WasmerDir $WasmAOT $WasmerNativeArg" "output_wasmer" "wasm
 else
 runtest "$Wasmer run $WasmerDir $Wasm $WasmerNativeArg" "output_wasmer" "wasmer" $1
 fi
-
 
 #echo ""
 runtest "$Wasmer --singlepass $WasmerDir $Wasm $WasmerNativeArg" "output_wasmer" "wasmer (singlepass)" $1
@@ -137,7 +128,13 @@ runtest "$Wasmer --cranelift $WasmerDir $Wasm $WasmerNativeArg" "output_wasmer" 
 #echo ""
 runtest "$Wasmer --llvm $WasmerDir $Wasm $WasmerNativeArg" "output_wasmer" "wasmer (llvm)" $1
 
-
+if [ "$RunAOT" = true ]
+then
+runaot "$WAVM compile $Wasm $WasmAOT" $1
+runtest "$WAVM run --precompiled $WAVMDir $WasmAOT $WAVMNativeArg" "output_wavm" "wavm" $1
+else
+runtest "$WAVM run $WAVMDir $Wasm $WAVMNativeArg" "output_wavm" "wavm" $1
+fi
 
 if [ "$RunAOT" = false ]
 then
@@ -152,6 +149,17 @@ then
 # 32KB stack size for WAMR
 runtest "$WAMR --stack-size=32768 $WAMRDir $Wasm $WAMRNativeArg" "output_wamr" "wamr" $1
 fi
+
+
+: '
+
+# It seems as if wasmer does not work
+
+
+
+
+
+
 
 #'
 
