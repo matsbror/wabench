@@ -4,17 +4,17 @@ WASM = ${Benchmark}.wasm
 SRC = $(wildcard ${SRCDIR}/*.${SRCSUFFIX})
 OBJ = $(SRC:.${SRCSUFFIX}=.o)
 
-CLANG = clang
+CLANG=clang-15
 
 ifeq (${SRCSUFFIX}, $(filter ${SRCSUFFIX}, cc cpp))
-    CLANG = clang++
+    CLANG=clang++-15
 endif
 
-CC = ${CLANG}
+CC=${CLANG}
 
 OPT=-O2
 
-WASMCC = emcc
+WASMCC=${CLANG} --target=wasm32-unknown-wasi --sysroot=${WASI_SDK_PATH}/share/wasi-sysroot
 
 all: ${Native} ${WASM}
 

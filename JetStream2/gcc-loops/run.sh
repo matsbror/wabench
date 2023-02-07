@@ -4,7 +4,7 @@ Native=./gcc-loops
 
 Iter=1
 
-RunAOT=true
+RunAOT=false
 
 MeasureMem=false
 

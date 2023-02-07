@@ -68,7 +68,7 @@ runtest() {
             itertime="0${itertime}"
         fi
         echo -e "$3:   \t$itertime seconds"
-        #echo "Total run time: $runtime seconds"
+        echo "Total run time: $runtime seconds"
         #echo "Each iter time: $itertime seconds"
         #cat "$2"
     fi

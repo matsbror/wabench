@@ -14,13 +14,20 @@
 #include <float.h>
 #include "bitops.h"
 
+double seconds_now() 
+{
+    struct timespec now;
+    timespec_get(&now, TIME_UTC);
+    return (now.tv_sec * 1000000000 +  now.tv_nsec) / 1000000000.0;
+}
+
 #define FUNCS  7
 
 static int CDECL bit_shifter(long int x);
 
 int main(int argc, char *argv[])
 {
-  clock_t start, stop;
+  double start, stop;
   double ct, cmin = DBL_MAX, cmax = 0;
   int i, cminix, cmaxix;
   long j, n, seed;
@@ -54,22 +61,22 @@ int main(int argc, char *argv[])
   puts("Bit counter algorithm benchmark\n");
   
   for (i = 0; i < FUNCS; i++) {
-    start = clock();
+    start = seconds_now();
     
     for (j = n = 0, seed = rand(); j < iterations; j++, seed += 13)
-	 n += pBitCntFunc[i](seed);
+	    n += pBitCntFunc[i](seed);
     
-    stop = clock();
-    ct = (stop - start) / (double)CLOCKS_PER_SEC;
+    stop = seconds_now();
+    ct = (stop - start);
     if (ct < cmin) {
-	 cmin = ct;
-	 cminix = i;
+	    cmin = ct;
+	    cminix = i;
     }
     if (ct > cmax) {
-	 cmax = ct;
-	 cmaxix = i;
+	    cmax = ct;
+	    cmaxix = i;
     }
-    
+    printf("start: %f, stop: %f\n", start, stop);
     printf("%-38s> Time: %7.3f sec.; Bits: %ld\n", text[i], ct, n);
   }
   printf("\nBest  > %s\n", text[cminix]);
