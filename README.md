@@ -19,3 +19,4 @@ Some pre-requisites
 
 You can compile each benchmark by running `make` in each benchmarks directory and run it natively and with the Webassembly runtimes defined in `common.sh` found in the top level directory.
 
+You can clean the entire directory with the script `clean.sh` which will recursively go through all directories with a Makefile and clean it.
