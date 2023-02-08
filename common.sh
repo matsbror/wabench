@@ -2,7 +2,7 @@ Wasm=$Native.wasm
 WasmAOT=$Native.cwasm
 
 Wasmtime="wasmtime"
-WAVM="wavm"
+#WAVM="wavm"
 #Wasmer="$HOME/runtimes/wasmer/target/release/wasmer"
 Wasmer="$HOME/.wasmer/bin/wasmer"
 Wasm3="wasm3"
@@ -83,7 +83,7 @@ runtest() {
 if [ ! -z "$WasmDir" ]
 then
     WasmtimeDir="--dir $WasmDir"
-    WAVMDir="--mount-root $WasmDir"
+//    WAVMDir="--mount-root $WasmDir"
     WasmerDir="--dir $WasmDir"
     WAMRDir="--dir=$WasmDir"
 fi
@@ -91,7 +91,7 @@ fi
 if [ ! -z "$NativeArg" ]
 then
     WasmtimeNativeArg="-- $NativeArg"
-    WAVMNativeArg="$NativeArg"
+//    WAVMNativeArg="$NativeArg"
     WasmerNativeArg="-- $NativeArg"
     Wasm3NativeArg="$NativeArg"
     WAMRNativeArg="$NativeArg"
@@ -128,13 +128,13 @@ runtest "$Wasmer --cranelift $WasmerDir $Wasm $WasmerNativeArg" "output_wasmer" 
 #echo ""
 runtest "$Wasmer --llvm $WasmerDir $Wasm $WasmerNativeArg" "output_wasmer" "wasmer (llvm)" $1
 
-if [ "$RunAOT" = true ]
-then
-runaot "$WAVM compile $Wasm $WasmAOT" $1
-runtest "$WAVM run --precompiled $WAVMDir $WasmAOT $WAVMNativeArg" "output_wavm" "wavm" $1
-else
-runtest "$WAVM run $WAVMDir $Wasm $WAVMNativeArg" "output_wavm" "wavm" $1
-fi
+#if [ "$RunAOT" = true ]
+#then
+#runaot "$WAVM compile $Wasm $WasmAOT" $1
+#runtest "$WAVM run --precompiled $WAVMDir $WasmAOT $WAVMNativeArg" "output_wavm" "wavm" $1
+#else
+#runtest "$WAVM run $WAVMDir $Wasm $WAVMNativeArg" "output_wavm" "wavm" $1
+#fi
 
 if [ "$RunAOT" = false ]
 then
@@ -176,7 +176,7 @@ if [ "$CheckResult" = true ]
 then
     echo "check results ..."
     diff output_native output_wasmtime
-    diff output_native output_wavm
+#    diff output_native output_wavm
     diff output_native output_wasmer
     diff output_native output_wasm3
     diff output_native output_wamr
