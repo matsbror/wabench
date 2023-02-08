@@ -57,7 +57,6 @@ runtest() {
         echo -e "$3:   \t$cacherefs cache-references"
     else
         start=`date +%s.%N`
-        echo "$cmd"
         for (( i=1; i<=$Iter; i++ ))
         do
             sh -c "$cmd"
