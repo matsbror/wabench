@@ -6,7 +6,7 @@ Wasmtime="wasmtime"
 #Wasmer="$HOME/runtimes/wasmer/target/release/wasmer"
 Wasmer="$HOME/.wasmer/bin/wasmer"
 Wasm3="wasm3"
-WAMR="/home/mats/wasm/wasm-micro-runtime/product-mini/platforms/linux/build/iwasm"
+WAMR="iwasm"
 
 
 runaot() {
@@ -82,7 +82,7 @@ runtest() {
 if [ ! -z "$WasmDir" ]
 then
     WasmtimeDir="--dir $WasmDir"
-//    WAVMDir="--mount-root $WasmDir"
+    # WAVMDir="--mount-root $WasmDir"
     WasmerDir="--dir $WasmDir"
     WAMRDir="--dir=$WasmDir"
 fi
