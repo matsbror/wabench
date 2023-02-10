@@ -2,7 +2,7 @@
 
 Native=./quicksort
 
-Iter=100
+Iter=1
 
 RunAOT=false
 

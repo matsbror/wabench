@@ -68,8 +68,8 @@ runtest() {
         then
             itertime="0${itertime}"
         fi
-        echo -e "$3:   \t$itertime seconds"
-        echo "Total run time: $runtime seconds"
+        echo -e "$3:   \t$itertime \t seconds"
+        #echo "Total run time: $runtime seconds"
         #echo "Each iter time: $itertime seconds"
         #cat "$2"
     fi
@@ -119,13 +119,13 @@ runtest "$Wasmer run $WasmerDir $Wasm $WasmerNativeArg" "output_wasmer" "wasmer"
 fi
 
 #echo ""
-runtest "$Wasmer --singlepass $WasmerDir $Wasm $WasmerNativeArg" "output_wasmer" "wasmer (singlepass)" $1
+runtest "$Wasmer --singlepass $WasmerDir $Wasm $WasmerNativeArg" "output_wasmer" "wasmer (sp)" $1
 
 #echo ""
-runtest "$Wasmer --cranelift $WasmerDir $Wasm $WasmerNativeArg" "output_wasmer" "wasmer (cranelift)" $1
+runtest "$Wasmer --cranelift $WasmerDir $Wasm $WasmerNativeArg" "output_wasmer" "wasmer (cl)" $1
 
 #echo ""
-runtest "$Wasmer --llvm $WasmerDir $Wasm $WasmerNativeArg" "output_wasmer" "wasmer (llvm)" $1
+runtest "$Wasmer --llvm $WasmerDir $Wasm $WasmerNativeArg" "output_wasmer" "wasmer (ll)" $1
 
 #if [ "$RunAOT" = true ]
 #then

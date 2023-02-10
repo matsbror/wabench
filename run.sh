@@ -13,6 +13,7 @@ CommonScript="$BenchRoot/common.sh"
 BenchSize=5
 BenchSuite=()
 # Structure:  Benchmark directory                             Native           NativeArg         Iter  WasmDir
+BenchSuite+=("calibrate"                                    "./calibrate"      ""                "100"    "")
 BenchSuite+=("JetStream2/gcc-loops"                         "./gcc-loops"      ""                "1"    "")
 BenchSuite+=("JetStream2/hashset"                           "./hashset"        ""                "1"    "")
 BenchSuite+=("JetStream2/quicksort"                         "./quicksort"      ""                "10"    "")
