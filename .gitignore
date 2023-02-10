@@ -1,6 +1,5 @@
 *.cwasm
 *.wasm
 *.o
-*.c
 output*
 .vscode
