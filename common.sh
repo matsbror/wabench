@@ -6,6 +6,7 @@ Wasmer="$HOME/.wasmer/bin/wasmer"
 Wasm3="wasm3"
 WAMR="iwasm"
 
+echoerr() { echo -e "$@" 1>&2; }
 
 runaot() {
     cmd="$1"
@@ -16,10 +17,10 @@ runaot() {
         return 0
     fi
     start=`date +%s.%N`
-    sh -c "$cmd"
+    sh -c "$cmd" 1>&2
     end=`date +%s.%N`
     aottime=$( echo "$end - $start" | bc -l )
-    echo "AOT compilation time: $aottime seconds"
+    echoerr "AOT compilation time: \t$aottime seconds"
 }
 
 runtest() {
@@ -112,26 +113,30 @@ else
 runtest "$Wasmer run $WasmerDir $Wasm $WasmerNativeArg" "output_wasmer" "wasmer" $1
 fi
 
-#echo ""
-runtest "$Wasmer --singlepass $WasmerDir $Wasm $WasmerNativeArg" "output_wasmer" "wasmer (sp)" $1
+# runtest "$Wasmer --singlepass $WasmerDir $Wasm $WasmerNativeArg" "output_wasmer" "wasmer (sp)" $1
 
-#echo ""
-runtest "$Wasmer --cranelift $WasmerDir $Wasm $WasmerNativeArg" "output_wasmer" "wasmer (cl)" $1
+# runtest "$Wasmer --cranelift $WasmerDir $Wasm $WasmerNativeArg" "output_wasmer" "wasmer (cl)" $1
 
-#echo ""
-runtest "$Wasmer --llvm $WasmerDir $Wasm $WasmerNativeArg" "output_wasmer" "wasmer (ll)" $1
+# runtest "$Wasmer --llvm $WasmerDir $Wasm $WasmerNativeArg" "output_wasmer" "wasmer (ll)" $1
 
 
-if [ "$RunAOT" = false ]
+if [ "$RunAOT" = true ]
 then
-# enlarge stack size for wasm3
-runtest "$Wasm3 --stack-size 1000000 $Wasm $Wasm3NativeArg" "output_wasm3" "wasm3" $1
-fi
-
-if [ "$RunAOT" = false ]
-then
+runaot "wamrc -o $WasmAOT $Wasm"  $1
+runtest "$WAMR --stack-size=32768 $WAMRDir $WasmAOT $WAMRNativeArg" "output_wasmer" "wamr" $1
+else
 # 32KB stack size for WAMR
 runtest "$WAMR --stack-size=32768 $WAMRDir $Wasm $WAMRNativeArg" "output_wamr" "wamr" $1
+fi
+
+if [ "$RunAOT" = true ]
+then
+#runaot "wamrc -o $WasmAOT $Wasm"  $1
+#runtest "$WAMR --stack-size=32768 $WAMRDir $WasmAOT $WAMRNativeArg" "output_wasmer" "wamr" $1
+echo "wasm3:"
+else
+# enlarge stack size for wasm3
+runtest "$Wasm3 --stack-size 1000000 $Wasm $Wasm3NativeArg" "output_wasm3" "wasm3" $1
 fi
 
 
