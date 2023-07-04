@@ -1,10 +1,14 @@
 #include "snipmath.h"
 #include <math.h>
+#include <time.h>
 
 /* The printf's may be removed to isolate just the math calculations */
 
 int main(void)
 {
+  clock_t start, end;
+  double cpu_time_used;
+
   double  a1 = 1.0, b1 = -10.5, c1 = 32.0, d1 = -30.0;
   double  x[3];
   double X;
@@ -14,11 +18,17 @@ int main(void)
   struct int_sqrt q;
   long n = 0;
 
-  /* solve soem cubic functions */
+  /* solve some cubic functions */
   printf("********* CUBIC FUNCTIONS ***********\n");
-  /* should get 3 solutions: 2, 6 & 2.5   */
+  
+  start = clock();
   SolveCubic(a1, b1, c1, d1, &solutions, x);  
-  printf("Solutions:");
+  end = clock();
+  
+  cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
+  
+
+printf("Solutions:");
   for(i=0;i<solutions;i++)
     printf(" %f",x[i]);
   printf("\n");
@@ -89,17 +99,22 @@ int main(void)
   }
 
 
+
   printf("********* INTEGER SQR ROOTS ***********\n");
-  /* perform some integer square roots */
-  for (i = 0; i < 100000; i+=2)
-    {
-      usqrt(i, &q);
-			// remainder differs on some machines
-     // printf("sqrt(%3d) = %2d, remainder = %2d\n",
-     printf("sqrt(%3d) = %2d\n",
-	     i, q.sqrt);
-    }
-  printf("\n");
+  
+  start = clock();
+  for (i = 0; i < 100000; i += 2)
+  {
+    usqrt(i, &q);
+    // remainder differs on some machines
+    printf("sqrt(%3d) = %2d\n", i, q.sqrt);
+  }
+  
+  end = clock();
+  cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
+ 
+
+ printf("\n");
   for (l = 0x3fed0169L; l < 0x3fed4169L; l++)
     {
 	 usqrt(l, &q);
@@ -107,17 +122,19 @@ int main(void)
 	 printf("sqrt(%lX) = %X\n", l, q.sqrt);
     }
 
-
   printf("********* ANGLE CONVERSION ***********\n");
-  /* convert some rads to degrees */
-/*   for (X = 0.0; X <= 360.0; X += 1.0) */
+  
+  start = clock();
   for (X = 0.0; X <= 360.0; X += .001)
     printf("%3.0f degrees = %.12f radians\n", X, deg2rad(X));
   puts("");
-/*   for (X = 0.0; X <= (2 * PI + 1e-6); X += (PI / 180)) */
+
   for (X = 0.0; X <= (2 * PI + 1e-6); X += (PI / 5760))
     printf("%.12f radians = %3.0f degrees\n", X, rad2deg(X));
   
-  
+  end = clock();
+  cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
+  printf("Time taken: %.2f seconds\n", cpu_time_used);
+
   return 0;
 }
