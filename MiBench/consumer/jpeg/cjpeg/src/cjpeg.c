@@ -22,7 +22,7 @@
  *	cjpeg [options]  -outfile outputfile  inputfile
  * works regardless of which command line style is used.
  */
-
+#include <time.h>
 #include "cdjpeg.h"		/* Common decls for cjpeg/djpeg applications */
 #include "jversion.h"		/* for version message */
 
@@ -457,9 +457,7 @@ parse_switches (j_compress_ptr cinfo, int argc, char **argv,
  * The main program.
  */
 
-int
-main (int argc, char **argv)
-{
+int main(int argc, char **argv) {
   struct jpeg_compress_struct cinfo;
   struct jpeg_error_mgr jerr;
 #ifdef PROGRESS_REPORT
@@ -470,6 +468,10 @@ main (int argc, char **argv)
   FILE * input_file;
   FILE * output_file;
   JDIMENSION num_scanlines;
+
+  clock_t start, end;  // Added timestamp variables
+
+  start = clock();  // Start timestamp
 
   /* On Mac, fetch a command line. */
 #ifdef USE_CCOMMAND
@@ -599,6 +601,11 @@ main (int argc, char **argv)
 #ifdef PROGRESS_REPORT
   end_progress_monitor((j_common_ptr) &cinfo);
 #endif
+
+  end = clock();  // End timestamp
+
+  double cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
+  printf("Time taken: %.2f seconds\n", cpu_time_used);
 
   /* All done. */
   exit(jerr.num_warnings ? EXIT_WARNING : EXIT_SUCCESS);
