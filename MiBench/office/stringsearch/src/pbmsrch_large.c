@@ -68,9 +68,12 @@ char *strsearch(const char *string)
 }
 
 #include <stdio.h>
+#include<time.h>
 
 main()
 {
+      clock_t start, end;
+      double cpu_time_used;
       char *here;
       char *find_strings[] = { "Kur",
 "gent",
@@ -2743,7 +2746,12 @@ NULL};
       for (i = 0; find_strings[i]; i++)
       {
             init_search(find_strings[i]);
+            start=clock();
             here = strsearch(search_strings[i]);
+            end=clock();
+            cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
+            printf("Time taken: %.2f seconds\n", cpu_time_used);
+
             printf("\"%s\" is%s in \"%s\"", find_strings[i],
                   here ? "" : " not", search_strings[i]);
             if (here)
