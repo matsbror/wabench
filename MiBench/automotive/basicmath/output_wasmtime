@@ -1,0 +1,6 @@
+Error: failed to run main module `./basicmath.wasm`
+
+Caused by:
+    0: if you're trying to run a precompiled module, pass --allow-precompiled
+    1: failed to read input file
+    2: No such file or directory (os error 2)
