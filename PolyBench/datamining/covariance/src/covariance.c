@@ -13,6 +13,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <math.h>
+#include <time.h>
 
 /* Include polybench common header. */
 #include <polybench.h>
@@ -24,8 +25,8 @@
 /* Array initialization. */
 static
 void init_array (int m, int n,
-		 DATA_TYPE *float_n,
-		 DATA_TYPE POLYBENCH_2D(data,N,M,n,m))
+                 DATA_TYPE *float_n,
+                 DATA_TYPE POLYBENCH_2D(data,N,M,n,m))
 {
   int i, j;
 
@@ -41,7 +42,7 @@ void init_array (int m, int n,
    Can be used also to check the correctness of the output. */
 static
 void print_array(int m,
-		 DATA_TYPE POLYBENCH_2D(cov,M,M,m,m))
+                 DATA_TYPE POLYBENCH_2D(cov,M,M,m,m))
 
 {
   int i, j;
@@ -62,10 +63,10 @@ void print_array(int m,
    including the call and return. */
 static
 void kernel_covariance(int m, int n,
-		       DATA_TYPE float_n,
-		       DATA_TYPE POLYBENCH_2D(data,N,M,n,m),
-		       DATA_TYPE POLYBENCH_2D(cov,M,M,m,m),
-		       DATA_TYPE POLYBENCH_1D(mean,M,m))
+                       DATA_TYPE float_n,
+                       DATA_TYPE POLYBENCH_2D(data,N,M,n,m),
+                       DATA_TYPE POLYBENCH_2D(cov,M,M,m,m),
+                       DATA_TYPE POLYBENCH_1D(mean,M,m))
 {
   int i, j, k;
 
@@ -87,7 +88,7 @@ void kernel_covariance(int m, int n,
       {
         cov[i][j] = SCALAR_VAL(0.0);
         for (k = 0; k < _PB_N; k++)
-	  cov[i][j] += data[k][i] * data[k][j];
+      cov[i][j] += data[k][i] * data[k][j];
         cov[i][j] /= (float_n - SCALAR_VAL(1.0));
         cov[j][i] = cov[i][j];
       }
@@ -108,26 +109,31 @@ int main(int argc, char** argv)
   POLYBENCH_2D_ARRAY_DECL(cov,DATA_TYPE,M,M,m,m);
   POLYBENCH_1D_ARRAY_DECL(mean,DATA_TYPE,M,m);
 
-
   /* Initialize array(s). */
   init_array (m, n, &float_n, POLYBENCH_ARRAY(data));
 
   /* Start timer. */
-  polybench_start_instruments;
+  clock_t start, end;
+  double cpu_time_used;
+
+  start = clock();
 
   /* Run kernel. */
   kernel_covariance (m, n, float_n,
-		     POLYBENCH_ARRAY(data),
-		     POLYBENCH_ARRAY(cov),
-		     POLYBENCH_ARRAY(mean));
+             POLYBENCH_ARRAY(data),
+             POLYBENCH_ARRAY(cov),
+             POLYBENCH_ARRAY(mean));
 
-  /* Stop and print timer. */
-  polybench_stop_instruments;
-  polybench_print_instruments;
+  /* Stop timer. */
+  end = clock();
+  cpu_time_used = ((double)(end - start)) / CLOCKS_PER_SEC;
+
+  /* Print timing information. */
+  printf("Time taken: %.2f seconds\n", cpu_time_used);
 
   /* Prevent dead-code elimination. All live-out data must be printed
      by the function call in argument. */
-  polybench_prevent_dce(print_array(m, POLYBENCH_ARRAY(cov)));
+  print_array(m, POLYBENCH_ARRAY(cov));
 
   /* Be clean. */
   POLYBENCH_FREE_ARRAY(data);

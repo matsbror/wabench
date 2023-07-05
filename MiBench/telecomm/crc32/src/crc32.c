@@ -4,6 +4,7 @@
 
 #include <stdio.h>
 #include "crc.h"
+#include<time.h>
 
 #ifdef __TURBOC__
  #pragma warn -cln
@@ -127,6 +128,9 @@ Boolean_T crc32file(char *name, DWORD *crc, long *charcnt)
       register FILE *fin;
       register DWORD oldcrc32;
       register int c;
+      clock_t start, end;
+
+      start = clock();   //before performing the file reading and CRC calculation 
 
       oldcrc32 = 0xFFFFFFFF; *charcnt = 0;
 #ifdef MSDOS
@@ -150,9 +154,11 @@ Boolean_T crc32file(char *name, DWORD *crc, long *charcnt)
             *charcnt = -1;
       }
       fclose(fin);
+      end=clock();  //end of the crc32file function
 
       *crc = oldcrc32 = ~oldcrc32;
-
+      double cpu_time_used = ((double)(end - start)) / CLOCKS_PER_SEC;
+      printf("Time taken for file '%s': %.2f seconds\n", name, cpu_time_used);
       return Success_;
 }
 
@@ -177,11 +183,18 @@ main(int argc, char *argv[])
       DWORD crc;
       long charcnt;
       register errors = 0;
+      clock_t start, end;
+
+      start = clock();
 
       while(--argc > 0)
       {
             errors |= crc32file(*++argv, &crc, &charcnt);
             printf("%08lX %7ld %s\n", crc, charcnt, *argv);
       }
+      end = clock();
+
+      double cpu_time_used = ((double)(end - start)) / CLOCKS_PER_SEC;
+      printf("Time taken: %.2f seconds\n", cpu_time_used);
       return(errors != 0);
 }

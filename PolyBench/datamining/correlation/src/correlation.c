@@ -13,6 +13,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <math.h>
+#include <time.h>
 
 /* Include polybench common header. */
 #include <polybench.h>
@@ -20,13 +21,12 @@
 /* Include benchmark-specific header. */
 #include "correlation.h"
 
-
 /* Array initialization. */
 static
 void init_array (int m,
-		 int n,
-		 DATA_TYPE *float_n,
-		 DATA_TYPE POLYBENCH_2D(data,N,M,n,m))
+                 int n,
+                 DATA_TYPE *float_n,
+                 DATA_TYPE POLYBENCH_2D(data,N,M,n,m))
 {
   int i, j;
 
@@ -38,13 +38,11 @@ void init_array (int m,
 
 }
 
-
 /* DCE code. Must scan the entire live-out data.
    Can be used also to check the correctness of the output. */
 static
 void print_array(int m,
-		 DATA_TYPE POLYBENCH_2D(corr,M,M,m,m))
-
+                 DATA_TYPE POLYBENCH_2D(corr,M,M,m,m))
 {
   int i, j;
 
@@ -59,28 +57,29 @@ void print_array(int m,
   POLYBENCH_DUMP_FINISH;
 }
 
-
 /* Main computational kernel. The whole function will be timed,
    including the call and return. */
 static
 void kernel_correlation(int m, int n,
-			DATA_TYPE float_n,
-			DATA_TYPE POLYBENCH_2D(data,N,M,n,m),
-			DATA_TYPE POLYBENCH_2D(corr,M,M,m,m),
-			DATA_TYPE POLYBENCH_1D(mean,M,m),
-			DATA_TYPE POLYBENCH_1D(stddev,M,m))
+                        DATA_TYPE float_n,
+                        DATA_TYPE POLYBENCH_2D(data,N,M,n,m),
+                        DATA_TYPE POLYBENCH_2D(corr,M,M,m,m),
+                        DATA_TYPE POLYBENCH_1D(mean,M,m),
+                        DATA_TYPE POLYBENCH_1D(stddev,M,m))
 {
   int i, j, k;
 
   DATA_TYPE eps = SCALAR_VAL(0.1);
 
+  clock_t start, end;
+  start = clock();
 
 #pragma scop
   for (j = 0; j < _PB_M; j++)
     {
       mean[j] = SCALAR_VAL(0.0);
       for (i = 0; i < _PB_N; i++)
-	mean[j] += data[i][j];
+        mean[j] += data[i][j];
       mean[j] /= float_n;
     }
 
@@ -121,8 +120,10 @@ void kernel_correlation(int m, int n,
   corr[_PB_M-1][_PB_M-1] = SCALAR_VAL(1.0);
 #pragma endscop
 
+  end = clock();
+  double cpu_time_used = ((double)(end - start)) / CLOCKS_PER_SEC;
+  printf("Time taken: %.2f seconds\n", cpu_time_used);
 }
-
 
 int main(int argc, char** argv)
 {
@@ -145,10 +146,10 @@ int main(int argc, char** argv)
 
   /* Run kernel. */
   kernel_correlation (m, n, float_n,
-		      POLYBENCH_ARRAY(data),
-		      POLYBENCH_ARRAY(corr),
-		      POLYBENCH_ARRAY(mean),
-		      POLYBENCH_ARRAY(stddev));
+                      POLYBENCH_ARRAY(data),
+                      POLYBENCH_ARRAY(corr),
+                      POLYBENCH_ARRAY(mean),
+                      POLYBENCH_ARRAY(stddev));
 
   /* Stop and print timer. */
   polybench_stop_instruments;
