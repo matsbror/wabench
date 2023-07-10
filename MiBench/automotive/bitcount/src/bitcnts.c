@@ -87,6 +87,7 @@ printf("Time taken: %.2f seconds\n", cpu_time_used);
 printf("Time taken for startup: %2f seconds\n", cpu_time_used_main);
 return 0;
 }
+
 static int CDECL bit_shifter(long int x)
 {
   int i, n;
