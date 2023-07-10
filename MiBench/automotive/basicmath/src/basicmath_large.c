@@ -108,7 +108,7 @@ int main(void)
       // printf("sqrt(%3d) = %2d, remainder = %2d\n",
     printf("sqrt(%3d) = %2d\n", i, q.sqrt);
   }
- printf("\n");
+  printf("\n");
   for (l = 0x3fed0169L; l < 0x3fed4169L; l++)
     {
 	 usqrt(l, &q);
@@ -131,7 +131,7 @@ int main(void)
   end = clock();
   end_main=clock(); //timestamp to end main
   cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
-  total_cpu_time += cpu_time_used;
+  total_cpu_time += cpu_time_used; 
   printf("Time taken for startup: %2f seconds\n", cpu_time_used_main);
   printf("Total Time taken: %.2f seconds\n", total_cpu_time);
   return 0;
