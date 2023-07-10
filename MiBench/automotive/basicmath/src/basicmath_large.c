@@ -5,6 +5,8 @@
 /* The printf's may be removed to isolate just the math calculations */
 int main(void)
 {
+  clock_t start_main, end_main;
+  double cpu_time_used_main;
   clock_t start, end;
   double cpu_time_used;
   double  a1 = 1.0, b1 = -10.5, c1 = 32.0, d1 = -30.0;
@@ -16,11 +18,11 @@ int main(void)
   struct int_sqrt q;
   long n = 0;
   double total_cpu_time = 0.0;
-
+  start_main=clock(); // Timestamp start for main
   /* solve some cubic functions */
   printf("********* CUBIC FUNCTIONS ***********\n");
     /* should get 3 solutions: 2, 6 & 2.5   */
-  start = clock();
+  start = clock();  //Timestamp to measure actual code
   SolveCubic(a1, b1, c1, d1, &solutions, x);  
   end = clock();
   cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
@@ -127,8 +129,10 @@ int main(void)
   for (X = 0.0; X <= (2 * PI + 1e-6); X += (PI / 5760))
     printf("%.12f radians = %3.0f degrees\n", X, rad2deg(X));
   end = clock();
+  end_main=clock(); //timestamp to end main
   cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
   total_cpu_time += cpu_time_used;
-  printf("Time taken: %.2f seconds\n", total_cpu_time);
+  printf("Time taken for startup: %2f seconds\n", cpu_time_used_main);
+  printf("Total Time taken: %.2f seconds\n", total_cpu_time);
   return 0;
 }
