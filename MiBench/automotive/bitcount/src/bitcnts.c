@@ -21,6 +21,8 @@ static int CDECL bit_shifter(long int x);
 int main(int argc, char *argv[])
 {
   clock_t start, stop;
+  clock_t start_main, end_main;
+  double cpu_time_used_main;
   double cpu_time_used;
   double start1, end;
   double ct, cmin = DBL_MAX, cmax = 0;
@@ -52,7 +54,7 @@ int main(int argc, char *argv[])
     exit(-1);
   }
   iterations = atoi(argv[1]);
-
+  start_main=clock();
   puts("Bit counter algorithm benchmark\n");
 start1 = clock();
   for (i = 0; i < FUNCS; i++) {
@@ -76,12 +78,15 @@ start1 = clock();
   }
   printf("\nBest  > %s\n", text[cminix]);
   printf("Worst > %s\n", text[cmaxix]);
-  return 0;
   
-}
 end= clock();
+end_main = clock();
+cpu_time_used_main = ((double)(end_main - start_main)) / CLOCKS_PER_SEC;
 cpu_time_used = ((double) (end - start1)) / CLOCKS_PER_SEC;
 printf("Time taken: %.2f seconds\n", cpu_time_used);
+printf("Time taken for startup: %2f seconds\n", cpu_time_used_main);
+return 0;
+}
 static int CDECL bit_shifter(long int x)
 {
   int i, n;
