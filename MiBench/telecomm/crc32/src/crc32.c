@@ -4,6 +4,7 @@
 
 #include <stdio.h>
 #include "crc.h"
+#include<time.h>
 
 #ifdef __TURBOC__
  #pragma warn -cln
@@ -24,6 +25,7 @@
 /* Need an unsigned type capable of holding 32 bits; */
 
 typedef DWORD UNS_32_BITS;
+
 
 /* Copyright (C) 1986 Gary S. Brown.  You may use this program, or
    code or tables extracted from it, as desired without restriction.*/
@@ -127,6 +129,9 @@ Boolean_T crc32file(char *name, DWORD *crc, long *charcnt)
       register FILE *fin;
       register DWORD oldcrc32;
       register int c;
+      clock_t start, end;
+
+      start = clock();   //before performing the file reading and CRC calculation 
 
       oldcrc32 = 0xFFFFFFFF; *charcnt = 0;
 #ifdef MSDOS
@@ -150,9 +155,11 @@ Boolean_T crc32file(char *name, DWORD *crc, long *charcnt)
             *charcnt = -1;
       }
       fclose(fin);
+      end=clock();  //end of the crc32file function
 
       *crc = oldcrc32 = ~oldcrc32;
-
+      double cpu_time_used = ((double)(end - start)) / CLOCKS_PER_SEC;
+      printf("Time taken for file '%s': %.2f seconds\n", name, cpu_time_used);
       return Success_;
 }
 
@@ -177,11 +184,23 @@ main(int argc, char *argv[])
       DWORD crc;
       long charcnt;
       register errors = 0;
+      clock_t start, end;
+      clock_t start_main, end_main;
+      double cpu_time_used_main;
+      start_main = clock();  // Start timestamp for the main
+      start = clock();
 
       while(--argc > 0)
       {
             errors |= crc32file(*++argv, &crc, &charcnt);
             printf("%08lX %7ld %s\n", crc, charcnt, *argv);
       }
+      end = clock();
+
+      double cpu_time_used = ((double)(end - start)) / CLOCKS_PER_SEC;
+      printf("Time taken: %.2f seconds\n", cpu_time_used);
+      end_main=clock();
+      cpu_time_used_main= ((double)(end_main - start_main)) / CLOCKS_PER_SEC;
+      printf("Total time taken for startup: %.2f seconds\n", cpu_time_used_main);
       return(errors != 0);
 }
