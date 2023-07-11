@@ -74,6 +74,8 @@ main()
 {
       clock_t start, end;
       double cpu_time_used;
+      clock_t start_main, end_main;
+      double cpu_time_used_main;
       char *here;
       char *find_strings[] = { "Kur",
 "gent",
@@ -2743,7 +2745,7 @@ NULL};
 };
       int i;
       double total_cpu_time = 0.0;
-
+      start_main = clock();  // Start timestamp for the main
       for (i = 0; find_strings[i]; i++)
       {
             init_search(find_strings[i]);
@@ -2761,7 +2763,9 @@ NULL};
             putchar('\n');
       }
      printf("Total time taken: %.2f seconds\n", total_cpu_time); 
-
+      end_main = clock();  // End timestamp for the main function
+      cpu_time_used_main = ((double)(end_main - start_main)) / CLOCKS_PER_SEC;
+      printf("Total time taken for startup: %.2f seconds\n", cpu_time_used_main);
       return 0;
 }
 
