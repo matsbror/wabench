@@ -428,7 +428,10 @@ int main(int argc, char **argv) {
   FILE *output_file;
   JDIMENSION num_scanlines;
 
+  clock_t start_main, end_main;
+  double cpu_time_used_main;
 
+  start_main = clock();  // Start timestamp for the main
  /* On Mac, fetch a command line. */
 #ifdef USE_CCOMMAND
   argc = ccommand(&argv);
@@ -603,5 +606,9 @@ end = clock();
   printf("Time taken: %.2f seconds\n", cpu_time_used);
 
   exit(jerr.num_warnings ? EXIT_WARNING : EXIT_SUCCESS);
+  end_main = clock();  // End timestamp for the main function
+
+  cpu_time_used_main = ((double)(end_main - start_main)) / CLOCKS_PER_SEC;
+  printf("Total time taken for startup: %.2f seconds\n", cpu_time_used_main);
   return 0; /* suppress no-return-value warnings */
 }
