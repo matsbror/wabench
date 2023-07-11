@@ -14,7 +14,10 @@ short   sbuf[NSAMPLES];
 int main() {
     int n;
     clock_t start, end;
+    clock_t start_main, end_main;
+    double cpu_time_used_main;
 
+    start_main = clock();  // Start timestamp for the main
     start = clock();
 
     while(1) {
@@ -34,5 +37,8 @@ int main() {
             state.valprev, state.index);
     double cpu_time_used = ((double)(end - start)) / CLOCKS_PER_SEC;
     printf("Time taken: %.2f seconds\n", cpu_time_used);
+    end_main=clock();
+    cpu_time_used_main = ((double)(end_main - start_main)) / CLOCKS_PER_SEC;
+    printf("Total time taken for startup: %.2f seconds\n", cpu_time_used_main);
     exit(0);
 }
