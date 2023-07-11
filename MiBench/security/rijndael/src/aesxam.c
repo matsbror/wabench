@@ -238,6 +238,9 @@ int main(int argc, char *argv[])
     int i = 0, by = 0, key_len = 0, err = 0;
     aes ctx[1];
     clock_t start, end;
+    clock_t start_main, end_main;
+    double cpu_time_used_main;
+    start_main = clock();  // Start timestamp for the main
 
     if (argc != 5 || (toupper(*argv[3]) != 'D' && toupper(*argv[3]) != 'E'))
     {
@@ -321,7 +324,9 @@ exit:
         fclose(fout);
     if (fin)
         fclose(fin);
-
+    end_main = clock();  // End timestamp for the main
+    cpu_time_used_main = ((double)(end_main - start_main)) / CLOCKS_PER_SEC;
+    printf("Total time taken for startup: %.2f seconds\n", cpu_time_used_main);
 
     return err;
 }

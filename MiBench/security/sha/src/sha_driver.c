@@ -12,6 +12,9 @@ int main(int argc, char **argv)
     SHA_INFO sha_info;
     clock_t start, end;
     double cpu_time_used = 0.0;
+    clock_t start_main, end_main;
+    double cpu_time_used_main;
+    start_main = clock();  // Start timestamp for the main
 
     if (argc < 2)
     {
@@ -44,6 +47,8 @@ int main(int argc, char **argv)
 
     cpu_time_used += ((double)(end - start)) / CLOCKS_PER_SEC;
     printf("Time taken: %.2f seconds\n", cpu_time_used);
-
+    end_main = clock();  // End timestamp for the main function
+    cpu_time_used_main = ((double)(end_main - start_main)) / CLOCKS_PER_SEC;
+    printf("Total time taken for startup: %.2f seconds\n", cpu_time_used_main);
     return 0;
 }

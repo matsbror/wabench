@@ -7,6 +7,8 @@
 int main(int argc, char *argv[]) {
     clock_t start, end;
     double cpu_time_used;
+    clock_t start_main, end_main;
+    double cpu_time_used_main;
     BF_KEY key;
     unsigned char ukey[8];
     unsigned char indata[40], outdata[40], ivec[8];
@@ -15,7 +17,7 @@ int main(int argc, char *argv[]) {
     int encordec = -1;
     char *cp, ch;
     FILE *fp, *fp2;
-
+    start_main = clock();  // Start timestamp for the main
     if (argc < 3) {
         printf("Usage: blowfish {e|d} <intput> <output> key\n");
         exit(-1);
@@ -92,5 +94,8 @@ int main(int argc, char *argv[]) {
     
     fclose(fp);
     fclose(fp2);
+    end_main=clock();
+    cpu_time_used_main = ((double)(end_main - start_main)) / CLOCKS_PER_SEC;
+    printf("Total time taken for startup: %.2f seconds\n", cpu_time_used_main);
     exit(1);
 }
