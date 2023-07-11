@@ -14,20 +14,17 @@
 #include <float.h>
 #include "bitops.h"
 
-double seconds_now() 
-{
-    struct timespec now;
-    timespec_get(&now, TIME_UTC);
-    return (now.tv_sec * 1000000000 +  now.tv_nsec) / 1000000000.0;
-}
-
 #define FUNCS  7
 
 static int CDECL bit_shifter(long int x);
 
 int main(int argc, char *argv[])
 {
-  double start, stop;
+  clock_t start, stop;
+  clock_t start_main, end_main;
+  double cpu_time_used_main;
+  double cpu_time_used;
+  double start1, end;
   double ct, cmin = DBL_MAX, cmax = 0;
   int i, cminix, cmaxix;
   long j, n, seed;
@@ -52,42 +49,49 @@ int main(int argc, char *argv[])
     "Non-recursive bit count by bytes (AR)",
     "Shift and count bits"
   };
-  if (argc<2) {
-    fprintf(stderr,"Usage: bitcnts <iterations>\n");
+  if (argc < 2) {
+    fprintf(stderr, "Usage: bitcnts <iterations>\n");
     exit(-1);
-	}
-  iterations=atoi(argv[1]);
-  
+  }
+  iterations = atoi(argv[1]);
+  start_main=clock();
   puts("Bit counter algorithm benchmark\n");
-  
+start1 = clock();
   for (i = 0; i < FUNCS; i++) {
-    start = seconds_now();
-    
+    start = clock();
+
     for (j = n = 0, seed = rand(); j < iterations; j++, seed += 13)
-	    n += pBitCntFunc[i](seed);
-    
-    stop = seconds_now();
+      n += pBitCntFunc[i](seed);
+
+    stop = clock();
     ct = (stop - start);
     if (ct < cmin) {
-	    cmin = ct;
-	    cminix = i;
+      cmin = ct;
+      cminix = i;
     }
     if (ct > cmax) {
-	    cmax = ct;
-	    cmaxix = i;
+      cmax = ct;
+      cmaxix = i;
     }
-    printf("start: %f, stop: %f\n", start, stop);
+    printf("Section: %d, Start: %f, Stop: %f\n", i + 1, start, stop);
     printf("%-38s> Time: %7.3f sec.; Bits: %ld\n", text[i], ct, n);
   }
   printf("\nBest  > %s\n", text[cminix]);
   printf("Worst > %s\n", text[cmaxix]);
-  return 0;
+  
+end= clock();
+end_main = clock();
+cpu_time_used_main = ((double)(end_main - start_main)) / CLOCKS_PER_SEC;
+cpu_time_used = ((double) (end - start1)) / CLOCKS_PER_SEC;
+printf("Time taken: %.2f seconds\n", cpu_time_used);
+printf("Time taken for startup: %2f seconds\n", cpu_time_used_main);
+return 0;
 }
 
 static int CDECL bit_shifter(long int x)
 {
   int i, n;
-  
+
   for (i = n = 0; x && (i < (sizeof(long) * CHAR_BIT)); ++i, x >>= 1)
     n += (int)(x & 1L);
   return n;
