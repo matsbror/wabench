@@ -27,7 +27,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/time.h>
-
+#include<timestamps.h>
 // Compile with: xcrun clang++ -o HashSet HashSet.cpp -O2 -W -framework Foundation -licucore -std=c++11 -fvisibility=hidden -DNDEBUG=1
 // Or for wasm: em++ -o HashSet.js -o HashSet.html HashSet.cpp -O2 -W -std=c++11 -DNDEBUG=1 -g1 -s WASM=1 -s TOTAL_MEMORY=52428800
 
@@ -13476,10 +13476,16 @@ void benchmark()
 
 int main(int, char**)
 {
-    double before = currentTime();    
+        unsigned long start_timestamp = timestamp();
+        print_timestamp(stdout, "HashSet\0", start_timestamp);
+    double before = currentTime();  
+    unsigned long start_time = timestamp();
     for (unsigned i = 0; i < 1000; ++i)
         benchmark();
     double after = currentTime();
+    unsigned long elapsed = time_since(start_time);
+
+  print_elapsed_time(stdout, "HashSet\0", elapsed);
     printf("That took %lf seconds.\n", after - before);
     return 0;
 }
