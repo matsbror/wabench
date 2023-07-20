@@ -4,6 +4,7 @@ WASM = ${Benchmark}.wasm
 SRC = $(wildcard ${SRCDIR}/*.${SRCSUFFIX})
 OBJ = $(SRC:.${SRCSUFFIX}=.o)
 
+
 CLANG=clang-15
 
 ifeq (${SRCSUFFIX}, $(filter ${SRCSUFFIX}, cc cpp))

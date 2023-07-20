@@ -4,7 +4,7 @@ SRCDIR = ./src
 SRCSUFFIX = cpp
 
 CFLAGS = -fno-exceptions
-CINCLUDE =
+CINCLUDE = -I../../include
 OPT = -O2
 LDFLAGS =
 

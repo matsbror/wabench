@@ -20,28 +20,19 @@
 
 #define NDEBUG 1
 
-#include <sys/time.h>
-#include <time.h>
 #include <stdio.h>
+#include <timestamps.h>
 
 int main(int argc, char** argv)
 {
     char buffer[26];
-    int millisec;
-    struct tm* tm_info;
-    struct timeval tv;
-    gettimeofday(&tv, NULL);
+    unsigned long millisec = timestamp();
 
-    millisec = tv.tv_usec/1000.0; // Round to nearest millisec
-    if (millisec>=1000) { // Allow for rounding up to nearest second
-        millisec -=1000;
-        tv.tv_sec++;
-    }
+    print_timestamp(stdout, "calibrate\0", millisec);
 
-    tm_info = localtime(&tv.tv_sec);
+    unsigned long elapsed = time_since(millisec);
 
-    strftime(buffer, 26, "%Y:%m:%d %H:%M:%S", tm_info);
-    //printf("%s.%03d\n", buffer, millisec);
+    print_elapsed_time(stdout, "calibrate\0", elapsed);
 
     return 0;
 }
