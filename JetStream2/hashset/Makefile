@@ -4,7 +4,7 @@ SRCDIR = ./src
 SRCSUFFIX = cpp
 
 CFLAGS = -W -std=c++11 -fvisibility=hidden -DNDEBUG=1
-CINCLUDE =
+CINCLUDE = -I../../include
 OPT = -O2
 LDFLAGS =
 
