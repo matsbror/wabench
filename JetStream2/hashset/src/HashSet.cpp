@@ -13478,7 +13478,8 @@ int main(int, char**)
 {
         unsigned long start_timestamp = timestamp();
         print_timestamp(stdout, "HashSet\0", start_timestamp);
-    double before = currentTime();  
+        bool print_times = argc > 1;
+        double before = currentTime();  
     unsigned long start_time = timestamp();
     for (unsigned i = 0; i < 1000; ++i)
         benchmark();
