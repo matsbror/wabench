@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <timestamps.h>
 #define  nil		0
 #define	 false		0
 #define  true		1
@@ -167,8 +167,14 @@ void Quick (int run) {
 
 int main()
 {
+	unsigned long start_timestamp = timestamp();
+  	print_timestamp(stdout, "Quicksort\0", start_timestamp);
+ 	bool print_times = argc > 1;
 	int i;
+	unsigned long start_time = timestamp();
 	for (i = 0; i < 100; i++) Quick(i);
+	unsigned long elapsed = time_since(start_time);
+	print_elapsed_time(stdout, "Quicksort\0", elapsed);
 	return 0;
 }
 
