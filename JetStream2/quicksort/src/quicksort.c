@@ -30,8 +30,8 @@
 #define d 		     8
 
     /* Bubble, Quick */
-#define sortelements 5000
-#define srtelements  500
+#define sortelements 50000
+#define srtelements  5000
 
     /* fft */
 #define fftsize 	 256 
@@ -158,20 +158,24 @@ void Quicksort( int a[], int l, int r) {
 }
 
 
-void Quick (int run) {
+timeduration_t Quick (int run) {
     Initarr();
-    Quicksort(sortlist,1,sortelements);
+	timestamp_t ts1 = timestamp();
+    Quicksort(sortlist,1, sortelements);
+	timeduration_t one_sort = time_since(ts1);
     if ( (sortlist[1] != littlest) || (sortlist[sortelements] != biggest) )	printf ( " Error in Quick.\n");
-	  printf("%d\n", sortlist[run + 1]);
+	//   printf("%d\n", sortlist[run + 1]);
+	return one_sort;
 }
 
 int main()
 {
 	timestamp_t start_timestamp = timestamp();
   	print_timestamp(stdout, "Quicksort", start_timestamp);
-	for (int i = 0; i < 100; i++) Quick(i);
-	unsigned long elapsed = time_since(start_timestamp);
-	print_elapsed_time(stdout, "Quicksort", elapsed);
+	timeduration_t accumulated_time = 0;
+	for (int i = 0; i < 100; i++) 
+		accumulated_time += Quick(i);
+	print_elapsed_time(stdout, "Quicksort", accumulated_time);
 	return 0;
 }
 
