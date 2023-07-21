@@ -13476,17 +13476,13 @@ void benchmark()
 
 int main(int, char**)
 {
-        unsigned long start_timestamp = timestamp();
-        print_timestamp(stdout, "HashSet\0", start_timestamp);
-        bool print_times = argc > 1;
-        double before = currentTime();  
-    unsigned long start_time = timestamp();
+    timestamp_t start_timestamp = timestamp();
+    print_timestamp(stdout, "HashSet start", start_timestamp);
     for (unsigned i = 0; i < 1000; ++i)
         benchmark();
-    double after = currentTime();
-    unsigned long elapsed = time_since(start_time);
+    unsigned long elapsed = time_since(start_timestamp);
 
-  print_elapsed_time(stdout, "HashSet\0", elapsed);
-    printf("That took %lf seconds.\n", after - before);
+    print_elapsed_time(stdout, "HashSet elapsed", elapsed);
+    printf("That took %lf seconds.\n", elapsed/1000.0);
     return 0;
 }

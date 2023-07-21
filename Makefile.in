@@ -5,10 +5,10 @@ SRC = $(wildcard ${SRCDIR}/*.${SRCSUFFIX})
 OBJ = $(SRC:.${SRCSUFFIX}=.o)
 
 
-CLANG=clang-15
+CLANG=clang
 
 ifeq (${SRCSUFFIX}, $(filter ${SRCSUFFIX}, cc cpp))
-    CLANG=clang++-15
+    CLANG=clang++
 endif
 
 CC=${CLANG}

@@ -5,7 +5,7 @@ SRCSUFFIX = c
 
 CFLAGS = 
 CINCLUDE = -I../include
-OPT = -O2
+OPT = -O0
 LDFLAGS =
 
 include ../Makefile.in

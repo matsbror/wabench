@@ -339,8 +339,8 @@ private:
 
 int main(int argc,char* argv[]){
 
-  unsigned long start_timestamp = timestamp();
-  print_timestamp(stdout, "gcc-loops\0", start_timestamp);
+  timestamp_t start_timestamp = timestamp();
+  print_timestamp(stdout, "gcc-loops", start_timestamp);
 
   bool print_times = argc > 1;
 
@@ -371,7 +371,7 @@ int main(int argc,char* argv[]){
   init_memory_float(&dc[0], &dc[N]);
   init_memory_float(&dd[0], &dd[N]);
 
-  unsigned long start_time = timestamp();
+  timestamp_t start_time = timestamp();
 
   BENCH("Example1",   example1(), Mi*10, digest_memory(&a[0], &a[256]));
   BENCH("Example2a",  example2a(N, 2), Mi*4, digest_memory(&b[0], &b[N]));
@@ -392,7 +392,7 @@ int main(int argc,char* argv[]){
   BENCH("Example24",  example24(2,4), Mi*2, 0);
   BENCH("Example25",  example25(), Mi*2, digest_memory(&dj[0], &dj[N]));
 
-  unsigned long elapsed = time_since(start_time);
+  timeduration_t elapsed = time_since(start_time);
 
   print_elapsed_time(stdout, "gcc-loops\0", elapsed);
 

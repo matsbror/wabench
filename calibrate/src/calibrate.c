@@ -26,11 +26,11 @@
 int main(int argc, char** argv)
 {
     char buffer[26];
-    unsigned long millisec = timestamp();
+    timestamp_t millisec = timestamp();
 
     print_timestamp(stdout, "calibrate\0", millisec);
 
-    unsigned long elapsed = time_since(millisec);
+    timeduration_t elapsed = time_since(millisec);
 
     print_elapsed_time(stdout, "calibrate\0", elapsed);
 

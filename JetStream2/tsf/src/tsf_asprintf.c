@@ -25,6 +25,7 @@
 #include "tsf_internal.h"
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 char *tsf_vasprintf(const char *format,va_list lst1) {
