@@ -22,7 +22,8 @@
  *	cjpeg [options]  -outfile outputfile  inputfile
  * works regardless of which command line style is used.
  */
-
+#include<sys/time.h>
+#include<timestamps.h>
 #include "cdjpeg.h"		/* Common decls for cjpeg/djpeg applications */
 #include "jversion.h"		/* for version message */
 
@@ -470,7 +471,8 @@ main (int argc, char **argv)
   FILE * input_file;
   FILE * output_file;
   JDIMENSION num_scanlines;
-
+  timestamp_t start_timestamp =timestamp();
+  print_timestamp(stdout, "cjpeg_start", start_timestamp);
   /* On Mac, fetch a command line. */
 #ifdef USE_CCOMMAND
   argc = ccommand(&argv);
@@ -575,6 +577,7 @@ main (int argc, char **argv)
 
   /* Specify data destination for compression */
   jpeg_stdio_dest(&cinfo, output_file);
+  timestamp_t start_time = timestamp();
 
   /* Start compressor */
   jpeg_start_compress(&cinfo, TRUE);
@@ -584,7 +587,9 @@ main (int argc, char **argv)
     num_scanlines = (*src_mgr->get_pixel_rows) (&cinfo, src_mgr);
     (void) jpeg_write_scanlines(&cinfo, src_mgr->buffer, num_scanlines);
   }
-
+  timeduration_t elapsed = time_since(start_time);
+  
+  print_elapsed_time(stdout, "cjpeg\0", (double)elapsed);
   /* Finish compression and release memory */
   (*src_mgr->finish_input) (&cinfo, src_mgr);
   jpeg_finish_compress(&cinfo);

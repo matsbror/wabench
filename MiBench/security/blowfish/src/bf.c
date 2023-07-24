@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "blowfish.h"
-
+#include<sys/time.h>
+#include<timestamps.h>
 int
 main(int argc, char *argv[])
 {
@@ -12,7 +13,8 @@ main(int argc, char *argv[])
 	int encordec=-1;
 	char *cp,ch;
 	FILE *fp,*fp2;
-
+	timestamp_t start_timestamp =timestamp();
+  	print_timestamp(stdout, "bf_start", start_timestamp);
 if (argc<3)
 {
 	printf("Usage: blowfish {e|d} <intput> <output> key\n");
@@ -71,6 +73,7 @@ if ((fp2 = fopen(argv[3],"w"))==0)
 };
 
 i=0;
+timestamp_t start_time = timestamp();
 while(!feof(fp))
 {
 	int j;
@@ -86,7 +89,9 @@ while(!feof(fp))
 	}
 	i=0;
 }
-
+timeduration_t elapsed = time_since(start_time);
+  
+print_elapsed_time(stdout, "bf\0", (double)elapsed);
 close(fp);
 close(fp2);
 

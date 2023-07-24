@@ -25,7 +25,8 @@
 
 #include "cdjpeg.h"		/* Common decls for cjpeg/djpeg applications */
 #include "jversion.h"		/* for version message */
-
+#include <timestamps.h>
+#include <sys/time.h>
 #include <ctype.h>		/* to declare isprint() */
 
 #ifdef USE_CCOMMAND		/* command-line reader for Macintosh */
@@ -428,7 +429,8 @@ main (int argc, char **argv)
   FILE * input_file;
   FILE * output_file;
   JDIMENSION num_scanlines;
-
+  timestamp_t start_timestamp= timestamp();
+  print_timestamp(stdout, "djpeg_start", start_timestamp);
   /* On Mac, fetch a command line. */
 #ifdef USE_CCOMMAND
   argc = ccommand(&argv);
@@ -559,7 +561,7 @@ main (int argc, char **argv)
     break;
   }
   dest_mgr->output_file = output_file;
-
+  timestamp_t start_time = timestamp();
   /* Start decompressor */
   (void) jpeg_start_decompress(&cinfo);
 
@@ -572,7 +574,9 @@ main (int argc, char **argv)
 					dest_mgr->buffer_height);
     (*dest_mgr->put_pixel_rows) (&cinfo, dest_mgr, num_scanlines);
   }
-
+  timeduration_t elapsed = time_since(start_time);
+  
+  print_elapsed_time(stdout, "djpeg\0", (double)elapsed);
 #ifdef PROGRESS_REPORT
   /* Hack: count final pass as done in case finish_output does an extra pass.
    * The library won't have updated completed_passes.

@@ -3,8 +3,8 @@ Benchmark = basicmath
 SRCDIR = ./src
 SRCSUFFIX = c
 
-CFLAGS =
-CINCLUDE = -I.
+CFLAGS=
+CINCLUDE = -I../../../include
 OPT = -O2
 LDFLAGS = -lm
 

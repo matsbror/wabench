@@ -40,7 +40,8 @@
 #include <stdlib.h>
 #include <memory.h>
 #include <ctype.h>
-
+#include <sys/time.h>
+#include <timestamps.h>
 #include "aes.h"
 
 /* A Pseudo Random Number Generator (PRNG) used for the     */
@@ -236,7 +237,8 @@ int main(int argc, char *argv[])
     char    *cp, ch, key[32];
     int     i=0, by=0, key_len=0, err = 0;
     aes     ctx[1];
-
+    timestamp_t start_timestamp= timestamp();
+    print_timestamp(stdout, "aesxam_start", start_timestamp);
     if(argc != 5 || (toupper(*argv[3]) != 'D' && toupper(*argv[3]) != 'E'))
     {
         printf("usage: rijndael in_filename out_filename [d/e] key_in_hex\n"); 
@@ -288,7 +290,7 @@ int main(int argc, char *argv[])
         printf("The output file: %s could not be opened\n", argv[1]); 
         err = -6; goto exit;
     }
-
+    timestamp_t start_time = timestamp();
     if(toupper(*argv[3]) == 'E')
     {                           /* encryption in Cipher Block Chaining mode */
         set_key(key, key_len, enc, ctx);
@@ -301,6 +303,8 @@ int main(int argc, char *argv[])
     
         err = decfile(fin, fout, ctx, argv[1], argv[2]);
     }
+    timeduration_t elapsed = time_since(start_time);
+    print_elapsed_time(stdout, "aesxam\0", (double)elapsed);
 exit:   
     if(fout) 
         fclose(fout);

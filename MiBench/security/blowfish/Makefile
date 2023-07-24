@@ -4,7 +4,7 @@ SRCDIR = ./src
 SRCSUFFIX = c
 
 CFLAGS = -fomit-frame-pointer
-CINCLUDE =
+CINCLUDE = -I../../../include
 OPT = -O2
 LDFLAGS =
 

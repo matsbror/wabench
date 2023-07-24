@@ -4,7 +4,8 @@
 
 #include <stdio.h>
 #include "crc.h"
-
+#include <sys/time.h>
+#include <timestamps.h>
 #ifdef __TURBOC__
  #pragma warn -cln
 #endif
@@ -174,14 +175,18 @@ DWORD crc32buf(char *buf, size_t len)
 int
 main(int argc, char *argv[])
 {
+      timestamp_t start_timestamp= timestamp();
+      print_timestamp(stdout, "crc32_start", start_timestamp);
       DWORD crc;
       long charcnt;
-      register errors = 0;
-
+      register int errors = 0;
+      timestamp_t start_time = timestamp();
       while(--argc > 0)
       {
             errors |= crc32file(*++argv, &crc, &charcnt);
             printf("%08lX %7ld %s\n", crc, charcnt, *argv);
       }
+      timeduration_t elapsed = time_since(start_time);
+      print_elapsed_time(stdout, "crc32\0", (double)elapsed);
       return(errors != 0);
 }

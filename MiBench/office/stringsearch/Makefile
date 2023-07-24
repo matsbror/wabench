@@ -4,7 +4,7 @@ SRCDIR = ./src
 SRCSUFFIX = c
 
 CFLAGS = -std=c89
-CINCLUDE =
+CINCLUDE = -I../../../include
 OPT = -O2
 LDFLAGS =
 
