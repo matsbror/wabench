@@ -69,21 +69,25 @@ int main(int argc, char *argv[])
     // Calculate how many batches (so we know when to wrap around)
     batches = train_dataset->size / BATCH_SIZE;
 
+    timeduration_t accumulated_time = 0;
+    timestamp_t start_time = timestamp();
     for (i = 0; i < STEPS; i++) {
         // Initialise a new batch
-        timestamp_t start_time = timestamp();
         mnist_batch(train_dataset, &batch, 100, i % batches);
 
         // Run one step of gradient descent and calculate the loss
         loss = neural_network_training_step(&batch, &network, 0.5);
-        timeduration_t elapsed = time_since(start_time);
-        print_elapsed_time(stdout, "mnist", elapsed);
 
         // Calculate the accuracy using the whole test dataset
         accuracy = calculate_accuracy(test_dataset, &network);
 
-        printf("Step %04d\tAverage Loss: %.2f\tAccuracy: %.3f\n", i, loss / batch.size, accuracy);
+        if (i % 16 == 0) {
+            printf("Step %04d\tAverage Loss: %.2f\tAccuracy: %.3f\n", i, loss / batch.size, accuracy);
+        }
     }
+
+    accumulated_time += time_since(start_time);
+    print_elapsed_time(stdout, "mnist", accumulated_time);
 
     // Cleanup
     mnist_free_dataset(train_dataset);
