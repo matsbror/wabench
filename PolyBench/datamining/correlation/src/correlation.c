@@ -13,7 +13,8 @@
 #include <unistd.h>
 #include <string.h>
 #include <math.h>
-
+#include <sys/time.h>
+#include <timestamps.h>
 /* Include polybench common header. */
 #include <polybench.h>
 
@@ -129,7 +130,8 @@ int main(int argc, char** argv)
   /* Retrieve problem size. */
   int n = N;
   int m = M;
-
+  timestamp_t start_timestamp = timestamp();
+  print_timestamp(stdout, "corelation_start", start_timestamp);
   /* Variable declaration/allocation. */
   DATA_TYPE float_n;
   POLYBENCH_2D_ARRAY_DECL(data,DATA_TYPE,N,M,n,m);
@@ -139,7 +141,7 @@ int main(int argc, char** argv)
 
   /* Initialize array(s). */
   init_array (m, n, &float_n, POLYBENCH_ARRAY(data));
-
+  timestamp_t start_time = timestamp();
   /* Start timer. */
   polybench_start_instruments;
 
@@ -149,11 +151,12 @@ int main(int argc, char** argv)
 		      POLYBENCH_ARRAY(corr),
 		      POLYBENCH_ARRAY(mean),
 		      POLYBENCH_ARRAY(stddev));
-
+  
   /* Stop and print timer. */
   polybench_stop_instruments;
   polybench_print_instruments;
-
+  timeduration_t elapsed = time_since(start_time);
+  print_elapsed_time(stdout, "correlation", elapsed);
   /* Prevent dead-code elimination. All live-out data must be printed
      by the function call in argument. */
   polybench_prevent_dce(print_array(m, POLYBENCH_ARRAY(corr)));

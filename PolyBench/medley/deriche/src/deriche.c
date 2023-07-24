@@ -13,7 +13,8 @@
 #include <unistd.h>
 #include <string.h>
 #include <math.h>
-
+#include <sys/time.h>
+#include <timestamps.h>
 /* Include polybench common header. */
 #include <polybench.h>
 
@@ -163,6 +164,8 @@ int main(int argc, char** argv)
 
   /* Variable declaration/allocation. */
   DATA_TYPE alpha;
+  timestamp_t start_timestamp = timestamp();
+  print_timestamp(stdout, "deriche_start", start_timestamp);
   POLYBENCH_2D_ARRAY_DECL(imgIn, DATA_TYPE, W, H, w, h);
   POLYBENCH_2D_ARRAY_DECL(imgOut, DATA_TYPE, W, H, w, h);
   POLYBENCH_2D_ARRAY_DECL(y1, DATA_TYPE, W, H, w, h);
@@ -171,7 +174,7 @@ int main(int argc, char** argv)
 
   /* Initialize array(s). */
   init_array (w, h, &alpha, POLYBENCH_ARRAY(imgIn), POLYBENCH_ARRAY(imgOut));
-
+  timestamp_t start_time = timestamp();
   /* Start timer. */
   polybench_start_instruments;
 
@@ -181,7 +184,8 @@ int main(int argc, char** argv)
   /* Stop and print timer. */
   polybench_stop_instruments;
   polybench_print_instruments;
-
+  timeduration_t elapsed = time_since(start_time);
+  print_elapsed_time(stdout, "deriche", elapsed);
   /* Prevent dead-code elimination. All live-out data must be printed
      by the function call in argument. */
   polybench_prevent_dce(print_array(w, h, POLYBENCH_ARRAY(imgOut)));
