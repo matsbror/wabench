@@ -329,6 +329,8 @@ int main (int argc, char *argv[])
   bookmode = BOOKPREFER;
   bookfirstlast = 3;
 
+  timeduration_t accumulated_time = 0;
+
    while (!(flags & QUIT))
    {
       InputCmd (); 
@@ -338,9 +340,10 @@ int main (int argc, char *argv[])
       if (!(flags & XBOARD)) printf("Thinking...\n");
       Iterate ();
       }
-      timeduration_t elapsed = time_since(start_time);
-      print_elapsed_time(stdout, "gnuchess", elapsed);
+      accumulated_time += time_since(start_time);
    }
+
+   print_elapsed_time(stdout, "gnuchess", accumulated_time);
 
    /*  Some cleaning up  */
    free (HashTab[0]);
