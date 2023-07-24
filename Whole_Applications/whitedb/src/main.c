@@ -3,7 +3,8 @@
 
 #include "dbapi.h"
 #include "indexapi.h"
-
+#include <sys/time.h>
+#include <timestamps.h>
 int speed2() {
   void *db, *rec;
   char *name="2";
@@ -423,7 +424,10 @@ int speed21() {
 }
 
 int main(int argc, char *argv[]) {
+  timestamp_t start_timestamp = timestamp();
+  print_timestamp(stdout, "whitedb_start", start_timestamp);
 
+  timestamp_t start_time = timestamp();
   // run tests
   speed2();
 
@@ -454,6 +458,7 @@ int main(int argc, char *argv[]) {
   //speed20();
 
   //speed21();
-
+  timeduration_t elapsed = time_since(start_time);
+  print_elapsed_time(stdout, "whitedb", elapsed);
   return 0;
 }

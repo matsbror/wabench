@@ -2,7 +2,8 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <math.h>
-
+#include <sys/time.h>
+#include <timestamps.h>
 #include "include/mnist_file.h"
 #include "include/neural_network.h"
 
@@ -55,6 +56,8 @@ int main(int argc, char *argv[])
     neural_network_t network;
     float loss, accuracy;
     int i, batches;
+    timestamp_t start_timestamp = timestamp();
+    print_timestamp(stdout, "mnist_start", start_timestamp);
 
     // Read the datasets from the files
     train_dataset = mnist_get_dataset(train_images_file, train_labels_file);
@@ -68,10 +71,13 @@ int main(int argc, char *argv[])
 
     for (i = 0; i < STEPS; i++) {
         // Initialise a new batch
+        timestamp_t start_time = timestamp();
         mnist_batch(train_dataset, &batch, 100, i % batches);
 
         // Run one step of gradient descent and calculate the loss
         loss = neural_network_training_step(&batch, &network, 0.5);
+        timeduration_t elapsed = time_since(start_time);
+        print_elapsed_time(stdout, "mnist", elapsed);
 
         // Calculate the accuracy using the whole test dataset
         accuracy = calculate_accuracy(test_dataset, &network);

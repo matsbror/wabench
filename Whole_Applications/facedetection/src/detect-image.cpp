@@ -40,7 +40,8 @@ the use of this software, even if advised of the possibility of such damage.
 #include <stdlib.h>
 //#include <opencv2/opencv.hpp>
 #include "facedetectcnn.h"
-
+#include <sys/time.h>
+#include <timestamps.h>
 extern "C" {
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
@@ -69,7 +70,9 @@ int main(int argc, char* argv[])
 	}*/
   int x, y, n;
   unsigned char *image = stbi_load(argv[1], &x, &y, &n, 0);
-
+  
+  timestamp_t start_timestamp = timestamp();
+  print_timestamp(stdout, "detect-image_start", start_timestamp);
   //convert rgb to bgr
   unsigned char *p = image;
   for (int i; i < x*y; i++) {
@@ -97,10 +100,11 @@ int main(int argc, char* argv[])
 	//!!! DO NOT RELEASE pResults !!!
   //TickMeter cvtm;
   //cvtm.start();
-
+  timestamp_t start_time = timestamp();
 	pResults = facedetect_cnn(pBuffer, image, y, x, y*3);
   // (unsigned char*)(image.ptr(0)), image.cols, image.rows, (int)image.step);
-    
+  timeduration_t elapsed = time_since(start_time);
+  print_elapsed_time(stdout, "detect-image", elapsed);
   //cvtm.stop();    
   //printf("time = %gms\n", cvtm.getTimeMilli());
     
@@ -141,6 +145,5 @@ int main(int argc, char* argv[])
 
   //release the buffer
   free(pBuffer);
-
 	return 0;
 }

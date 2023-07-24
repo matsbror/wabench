@@ -31,7 +31,8 @@
 #include <stdlib.h>
 #include "common.h"
 #include <time.h>
-
+#include <sys/time.h>
+#include <timestamps.h>
 int distance[64][64];
 int taxicab[64][64];
 int lzArray[65536];
@@ -285,6 +286,9 @@ int main (int argc, char *argv[])
   int compilebook = 0;
   time_t now; 
   int i;
+  
+  timestamp_t start_timestamp = timestamp();
+  print_timestamp(stdout, "gnuchess_start", start_timestamp);
 
   /* Initialize random number generator */
   time(&now);
@@ -328,11 +332,14 @@ int main (int argc, char *argv[])
    while (!(flags & QUIT))
    {
       InputCmd (); 
+      timestamp_t start_time = timestamp();
       if ((flags & THINK) && !(flags & MANUAL) && !(flags & ENDED)) {
         
       if (!(flags & XBOARD)) printf("Thinking...\n");
       Iterate ();
       }
+      timeduration_t elapsed = time_since(start_time);
+      print_elapsed_time(stdout, "gnuchess", elapsed);
    }
 
    /*  Some cleaning up  */

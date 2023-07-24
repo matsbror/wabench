@@ -4,7 +4,7 @@ SRCDIR = ./src
 SRCSUFFIX = c
 
 CFLAGS =  -D_WASI_EMULATED_SIGNAL
-CINCLUDE = -I./src
+CINCLUDE = -I./src -I../../include
 OPT = -O2
 LDFLAGS = -lm
 WASM_LDFLAGS =  -lwasi-emulated-signal

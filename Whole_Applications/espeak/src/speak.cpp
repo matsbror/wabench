@@ -35,7 +35,8 @@
 #include "synthesize.h"
 #include "translate.h"
 #include "speak_lib.h"
-
+#include<sys/time.h>
+#include<timestamps.h>
 
 
 char path_home[120];
@@ -244,7 +245,10 @@ int main (int argc, char **argv)
 	char filename[120];
 	char voicename[40];
 	char dictname[40];
+	timestamp_t start_timestamp = timestamp();
+  	print_timestamp(stdout, "espeak_start", start_timestamp);
 
+  	bool print_times = argc > 1;
 	voicename[0] = 0;
 	dictname[0] = 0;
 	wavefile[0] = 0;
@@ -448,8 +452,9 @@ exit(0);
 				exit(3);
 			}
 		}
-
+		timestamp_t start_time = timestamp();
 		InitText();
+		
 		SpeakNextClause(f_text,p_text,0);
 
 		for(;;)
@@ -460,8 +465,9 @@ exit(0);
 			if(Generate(phoneme_list,n_phoneme_list,1)==0)
 				SpeakNextClause(NULL,NULL,1);
 		}
-
+		timeduration_t elapsed = time_since(start_time);
 		CloseWaveFile(samplerate);
+		print_elapsed_time(stdout, "speak", elapsed);
 	}
 	else
 	{

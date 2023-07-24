@@ -4,7 +4,7 @@ SRCDIR = ./src
 SRCSUFFIX = c
 
 CFLAGS = -D_FILE_OFFSET_BITS=64
-CINCLUDE =
+CINCLUDE = -I../../include
 OPT = -O2
 LDFLAGS =
 

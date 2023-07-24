@@ -4,7 +4,7 @@ SRCDIR = ./src
 SRCSUFFIX = cc
 
 CFLAGS = -D_FILE_OFFSET_BITS=64 -fno-exceptions
-CINCLUDE =
+CINCLUDE = -I../../include
 OPT = -O2
 LDFLAGS =
 
