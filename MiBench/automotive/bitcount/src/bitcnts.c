@@ -63,12 +63,13 @@ int main(int argc, char *argv[])
   iterations=atoi(argv[1]);
   
   puts("Bit counter algorithm benchmark\n");
+  timeduration_t accumulated_time = 0;
+  timestamp_t start_time = timestamp();
   for (i = 0; i < FUNCS; i++) {
     start = seconds_now();
-    timestamp_t start_time = timestamp();
     for (j = n = 0, seed = rand(); j < iterations; j++, seed += 13)
 	    n += pBitCntFunc[i](seed);
-    timeduration_t elapsed = time_since(start_time);
+    accumulated_time += time_since(start_time);
     stop = seconds_now();
     ct = (stop - start);
     if (ct < cmin) {
@@ -79,10 +80,10 @@ int main(int argc, char *argv[])
 	    cmax = ct;
 	    cmaxix = i;
     }
-    print_elapsed_time(stdout, "bitcnts\0", (double)elapsed);
     printf("start: %f, stop: %f\n", start, stop);
     printf("%-38s> Time: %7.3f sec.; Bits: %ld\n", text[i], ct, n);
   }
+  print_elapsed_time(stdout, "bitcnts", accumulated_time);
   printf("\nBest  > %s\n", text[cminix]);
   printf("Worst > %s\n", text[cmaxix]);
   return 0;
