@@ -15,28 +15,26 @@ int main(int argc, char **argv)
 	timestamp_t start_timestamp= timestamp();
   	print_timestamp(stdout, "sha_driver start", start_timestamp);
     if (argc < 2) {
-	fin = stdin;
-	timestamp_t start_time = timestamp();
-	sha_stream(&sha_info, fin);
-	sha_print(&sha_info);
-	timestamp_t end_time = timestamp();
-    timeduration_t elapsed = time_since(start_time);
-    accumulated_time += elapsed_time;
-    } else {
-	while (--argc) {
-	    fin = fopen(*(++argv), "rb");
-	    if (fin == NULL) {
-		printf("error opening %s for reading\n", *argv);
-	    } else {
+		fin = stdin;
 		timestamp_t start_time = timestamp();
 		sha_stream(&sha_info, fin);
 		sha_print(&sha_info);
-		fclose(fin);
 		timestamp_t end_time = timestamp();
-        timeduration_t elapsed = time_since(start_time);
-		accumulated_time += elapsed_time;
-        
-        
+    	timeduration_t elapsed = time_since(start_time);
+    	accumulated_time += elapsed;
+    } else {
+	while (--argc) {
+		    fin = fopen(*(++argv), "rb");
+		    if (fin == NULL) {
+			printf("error opening %s for reading\n", *argv);
+	    } else {
+			timestamp_t start_time = timestamp();
+			sha_stream(&sha_info, fin);
+			sha_print(&sha_info);
+			fclose(fin);
+			timestamp_t end_time = timestamp();
+        	timeduration_t elapsed = time_since(start_time);
+			accumulated_time += elapsed;
 	    }
 	}
     }
