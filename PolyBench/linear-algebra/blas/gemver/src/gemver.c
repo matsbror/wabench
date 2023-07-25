@@ -13,7 +13,8 @@
 #include <unistd.h>
 #include <string.h>
 #include <math.h>
-
+#include <sys/time.h>
+#include <timestamps.h>
 /* Include polybench common header. */
 #include <polybench.h>
 
@@ -121,7 +122,8 @@ int main(int argc, char** argv)
 {
   /* Retrieve problem size. */
   int n = N;
-
+  timestamp_t start_timestamp = timestamp();
+  print_timestamp(stdout, "gemver_start", start_timestamp);
   /* Variable declaration/allocation. */
   DATA_TYPE alpha;
   DATA_TYPE beta;
@@ -150,7 +152,7 @@ int main(int argc, char** argv)
 
   /* Start timer. */
   polybench_start_instruments;
-
+  timestamp_t start_time = timestamp();
   /* Run kernel. */
   kernel_gemver (n, alpha, beta,
 		 POLYBENCH_ARRAY(A),
@@ -162,7 +164,8 @@ int main(int argc, char** argv)
 		 POLYBENCH_ARRAY(x),
 		 POLYBENCH_ARRAY(y),
 		 POLYBENCH_ARRAY(z));
-
+  timeduration_t elapsed = time_since(start_time);
+  print_elapsed_time(stdout, "gemver", elapsed);
   /* Stop and print timer. */
   polybench_stop_instruments;
   polybench_print_instruments;

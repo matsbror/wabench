@@ -13,7 +13,8 @@
 #include <unistd.h>
 #include <string.h>
 #include <math.h>
-
+#include<timestamps.h>
+#include<sys/time.h>
 /* Include polybench common header. */
 #include <polybench.h>
 
@@ -87,7 +88,8 @@ int main(int argc, char** argv)
 {
   /* Retrieve problem size. */
   int n = N;
-
+  timestamp_t start_timestamp = timestamp();
+  print_timestamp(stdout, "trisolv_start", start_timestamp);
   /* Variable declaration/allocation. */
   POLYBENCH_2D_ARRAY_DECL(L, DATA_TYPE, N, N, n, n);
   POLYBENCH_1D_ARRAY_DECL(x, DATA_TYPE, N, n);
@@ -99,10 +101,11 @@ int main(int argc, char** argv)
 
   /* Start timer. */
   polybench_start_instruments;
-
+  timestamp_t start_time = timestamp();
   /* Run kernel. */
   kernel_trisolv (n, POLYBENCH_ARRAY(L), POLYBENCH_ARRAY(x), POLYBENCH_ARRAY(b));
-
+  timeduration_t elapsed = time_since(start_time);
+  print_elapsed_time(stdout, "trisolv", elapsed);
   /* Stop and print timer. */
   polybench_stop_instruments;
   polybench_print_instruments;

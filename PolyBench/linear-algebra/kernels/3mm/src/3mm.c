@@ -13,7 +13,8 @@
 #include <unistd.h>
 #include <string.h>
 #include <math.h>
-
+#include <sys/time.h>
+#include <timestamps.h>
 /* Include polybench common header. */
 #include <polybench.h>
 
@@ -118,7 +119,8 @@ int main(int argc, char** argv)
   int nk = NK;
   int nl = NL;
   int nm = NM;
-
+  timestamp_t start_timestamp = timestamp();
+  print_timestamp(stdout, "3mm_start", start_timestamp);
   /* Variable declaration/allocation. */
   POLYBENCH_2D_ARRAY_DECL(E, DATA_TYPE, NI, NJ, ni, nj);
   POLYBENCH_2D_ARRAY_DECL(A, DATA_TYPE, NI, NK, ni, nk);
@@ -137,7 +139,7 @@ int main(int argc, char** argv)
 
   /* Start timer. */
   polybench_start_instruments;
-
+  timestamp_t start_time = timestamp();
   /* Run kernel. */
   kernel_3mm (ni, nj, nk, nl, nm,
 	      POLYBENCH_ARRAY(E),
@@ -147,7 +149,8 @@ int main(int argc, char** argv)
 	      POLYBENCH_ARRAY(C),
 	      POLYBENCH_ARRAY(D),
 	      POLYBENCH_ARRAY(G));
-
+  timeduration_t elapsed = time_since(start_time);
+  print_elapsed_time(stdout, "3mm", elapsed);
   /* Stop and print timer. */
   polybench_stop_instruments;
   polybench_print_instruments;

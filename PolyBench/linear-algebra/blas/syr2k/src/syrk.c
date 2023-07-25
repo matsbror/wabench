@@ -13,7 +13,8 @@
 #include <unistd.h>
 #include <string.h>
 #include <math.h>
-
+#include <sys/time.h>
+#include <timestamps.h>
 /* Include polybench common header. */
 #include <polybench.h>
 
@@ -98,7 +99,8 @@ int main(int argc, char** argv)
   /* Retrieve problem size. */
   int n = N;
   int m = M;
-
+  timestamp_t start_timestamp = timestamp();
+  print_timestamp(stdout, "syr2k_start", start_timestamp);
   /* Variable declaration/allocation. */
   DATA_TYPE alpha;
   DATA_TYPE beta;
@@ -110,10 +112,11 @@ int main(int argc, char** argv)
 
   /* Start timer. */
   polybench_start_instruments;
-
+  timestamp_t start_time = timestamp();
   /* Run kernel. */
   kernel_syrk (n, m, alpha, beta, POLYBENCH_ARRAY(C), POLYBENCH_ARRAY(A));
-
+  timeduration_t elapsed = time_since(start_time);
+  print_elapsed_time(stdout, "syrk", elapsed);
   /* Stop and print timer. */
   polybench_stop_instruments;
   polybench_print_instruments;
