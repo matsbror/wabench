@@ -13,7 +13,8 @@
 #include <unistd.h>
 #include <string.h>
 #include <math.h>
-
+#include <sys/time.h>
+#include <timestamps.h>
 /* Include polybench common header. */
 #include <polybench.h>
 
@@ -90,11 +91,13 @@ int main(int argc, char** argv)
   /* Variable declaration/allocation. */
   POLYBENCH_1D_ARRAY_DECL(A, DATA_TYPE, N, n);
   POLYBENCH_1D_ARRAY_DECL(B, DATA_TYPE, N, n);
-
+  
+  timestamp_t start_timestamp = timestamp();
+  print_timestamp(stdout, "jacobi-1d_start", start_timestamp);
 
   /* Initialize array(s). */
   init_array (n, POLYBENCH_ARRAY(A), POLYBENCH_ARRAY(B));
-
+  timestamp_t start_time =timestamp();
   /* Start timer. */
   polybench_start_instruments;
 
@@ -104,7 +107,8 @@ int main(int argc, char** argv)
   /* Stop and print timer. */
   polybench_stop_instruments;
   polybench_print_instruments;
-
+  timestamp_t elapsed = time_since(start_time);
+  print_elapsed_time(stdout, "jacobi-1d", elapsed);
   /* Prevent dead-code elimination. All live-out data must be printed
      by the function call in argument. */
   polybench_prevent_dce(print_array(n, POLYBENCH_ARRAY(A)));
