@@ -103,7 +103,7 @@ int main(int argc, char** argv)
   int n = N;
   
   timestamp_t start_timestamp = timestamp();
-  print_timestamp(stdout, "gesummv_start", start_timestamp);
+  print_timestamp("gesummv start", start_timestamp);
 
   /* Variable declaration/allocation. */
   DATA_TYPE alpha;
@@ -132,7 +132,7 @@ int main(int argc, char** argv)
 		  POLYBENCH_ARRAY(x),
 		  POLYBENCH_ARRAY(y));
   timeduration_t elapsed = time_since(start_time);
-  print_elapsed_time(stdout, "gesummv", elapsed);
+  print_elapsed_time("gesummv", elapsed);
   /* Stop and print timer. */
   polybench_stop_instruments;
   polybench_print_instruments;

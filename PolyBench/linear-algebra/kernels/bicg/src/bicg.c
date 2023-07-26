@@ -103,7 +103,7 @@ int main(int argc, char** argv)
   int n = N;
   int m = M;
   timestamp_t start_timestamp = timestamp();
-  print_timestamp(stdout, "bicg_start", start_timestamp);
+  print_timestamp("bicg start", start_timestamp);
   /* Variable declaration/allocation. */
   POLYBENCH_2D_ARRAY_DECL(A, DATA_TYPE, N, M, n, m);
   POLYBENCH_1D_ARRAY_DECL(s, DATA_TYPE, M, m);
@@ -128,7 +128,7 @@ int main(int argc, char** argv)
 	       POLYBENCH_ARRAY(p),
 	       POLYBENCH_ARRAY(r));
   timeduration_t elapsed = time_since(start_time);
-  print_elapsed_time(stdout, "bicg", elapsed);
+  print_elapsed_time("bicg", elapsed);
   /* Stop and print timer. */
   polybench_stop_instruments;
   polybench_print_instruments;

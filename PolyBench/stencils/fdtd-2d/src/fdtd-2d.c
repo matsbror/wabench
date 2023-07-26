@@ -127,7 +127,7 @@ int main(int argc, char** argv)
   int nx = NX;
   int ny = NY;
   timestamp_t start_timestamp = timestamp();
-  print_timestamp(stdout, "fdtd-2d_start", start_timestamp);
+  print_timestamp("fdtd-2d start", start_timestamp);
   /* Variable declaration/allocation. */
   POLYBENCH_2D_ARRAY_DECL(ex,DATA_TYPE,NX,NY,nx,ny);
   POLYBENCH_2D_ARRAY_DECL(ey,DATA_TYPE,NX,NY,nx,ny);
@@ -156,7 +156,7 @@ int main(int argc, char** argv)
   polybench_stop_instruments;
   polybench_print_instruments;
   timestamp_t elapsed = time_since(start_time);
-  print_elapsed_time(stdout, "fdtd-2d", elapsed);
+  print_elapsed_time("fdtd-2d", elapsed);
   /* Prevent dead-code elimination. All live-out data must be printed
      by the function call in argument. */
   polybench_prevent_dce(print_array(nx, ny, POLYBENCH_ARRAY(ex),

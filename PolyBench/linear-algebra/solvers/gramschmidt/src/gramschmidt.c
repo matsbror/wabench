@@ -116,7 +116,7 @@ int main(int argc, char** argv)
   int m = M;
   int n = N;
   timestamp_t start_timestamp = timestamp();
-  print_timestamp(stdout, "gramschmidt_start", start_timestamp);
+  print_timestamp("gramschmidt_start", start_timestamp);
 
   /* Variable declaration/allocation. */
   POLYBENCH_2D_ARRAY_DECL(A,DATA_TYPE,M,N,m,n);
@@ -139,7 +139,7 @@ int main(int argc, char** argv)
 		      POLYBENCH_ARRAY(Q));
   
   timeduration_t elapsed = time_since(start_time);
-  print_elapsed_time(stdout, "gramschmidt", elapsed);
+  print_elapsed_time("gramschmidt", elapsed);
   /* Stop and print timer. */
   polybench_stop_instruments;
   polybench_print_instruments;

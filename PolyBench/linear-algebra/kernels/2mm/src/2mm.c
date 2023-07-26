@@ -114,7 +114,7 @@ int main(int argc, char** argv)
   int nk = NK;
   int nl = NL;
   timestamp_t start_timestamp = timestamp();
-  print_timestamp(stdout, "2mm_start", start_timestamp);
+  print_timestamp("2mm start", start_timestamp);
   /* Variable declaration/allocation. */
   DATA_TYPE alpha;
   DATA_TYPE beta;
@@ -143,7 +143,7 @@ int main(int argc, char** argv)
 	      POLYBENCH_ARRAY(C),
 	      POLYBENCH_ARRAY(D));
 timeduration_t elapsed = time_since(start_time);
-print_elapsed_time(stdout, "2mm", elapsed);
+print_elapsed_time("2mm", elapsed);
 
   /* Stop and print timer. */
   polybench_stop_instruments;

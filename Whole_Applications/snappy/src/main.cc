@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
     size_t decompsize;
     snappy_status ret;
     timestamp_t start_timestamp = timestamp();
-    print_timestamp(stdout, "snappy_start", start_timestamp);
+    print_timestamp("snappy start", start_timestamp);
     inbuf = (char *)malloc(MAXBUFSIZE);
     outbuf = (char *)malloc(MAXBUFSIZE);
 
@@ -48,7 +48,7 @@ int main(int argc, char *argv[])
     else
         printf("Uncompression passed\n");
     timeduration_t elapsed = time_since(start_time);
-    print_elapsed_time(stdout, "snappy", elapsed);
+    print_elapsed_time("snappy", elapsed);
     printf("Input data size: %d\n", MAXBUFSIZE);
     printf("Compressed data size: %zu\n", compsize);
     printf("Uncompressed data size: %zu\n", decompsize);

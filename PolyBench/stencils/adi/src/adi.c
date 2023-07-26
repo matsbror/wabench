@@ -135,7 +135,7 @@ int main(int argc, char** argv)
   int n = N;
   int tsteps = TSTEPS;
   timestamp_t start_timestamp = timestamp();
-  print_timestamp(stdout, "adi_start", start_timestamp);
+  print_timestamp("adi start", start_timestamp);
   /* Variable declaration/allocation. */
   POLYBENCH_2D_ARRAY_DECL(u, DATA_TYPE, N, N, n, n);
   POLYBENCH_2D_ARRAY_DECL(v, DATA_TYPE, N, N, n, n);
@@ -156,7 +156,7 @@ int main(int argc, char** argv)
   polybench_stop_instruments;
   polybench_print_instruments;
   timeduration_t elapsed = time_since(start_time);
-  print_elapsed_time(stdout, "adi", elapsed);
+  print_elapsed_time("adi", elapsed);
   /* Prevent dead-code elimination. All live-out data must be printed
      by the function call in argument. */
   polybench_prevent_dce(print_array(n, POLYBENCH_ARRAY(u)));

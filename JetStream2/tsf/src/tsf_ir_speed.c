@@ -324,7 +324,7 @@ static void readConvertTest(const char *filename, unsigned numPrograms) {
 
 int main(int c, char **v) {
     timestamp_t start_timestamp= timestamp();
-    print_timestamp(stdout, "tsf start", start_timestamp);
+    print_timestamp("tsf start", start_timestamp);
     
     static const char *filename = "tsf_ir_speed_test_file.tsf";
     static const char *zipFilename = "tsf_ir_speed_test_zip_file.tsf";
@@ -368,7 +368,7 @@ int main(int c, char **v) {
     }
   timeduration_t elapsed = time_since(start_time);
 
-  print_elapsed_time(stdout, "tsf\0", elapsed);
+  print_elapsed_time("tsf", elapsed);
 
     /* We don't benchmark bzip2 because it's just too slow to be interesting. */
     

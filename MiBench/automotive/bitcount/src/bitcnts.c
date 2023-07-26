@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
   long j, n, seed;
   int iterations;
   timestamp_t start_timestamp= timestamp();
-  print_timestamp(stdout, "bitcnts_start", start_timestamp);
+  print_timestamp("bitcnts start", start_timestamp);
   static int (* CDECL pBitCntFunc[FUNCS])(long) = {
     bit_count,
     bitcount,
@@ -83,7 +83,7 @@ int main(int argc, char *argv[])
     printf("start: %f, stop: %f\n", start, stop);
     printf("%-38s> Time: %7.3f sec.; Bits: %ld\n", text[i], ct, n);
   }
-  print_elapsed_time(stdout, "bitcnts", accumulated_time);
+  print_elapsed_time("bitcnts", accumulated_time);
   printf("\nBest  > %s\n", text[cminix]);
   printf("Worst > %s\n", text[cmaxix]);
   return 0;

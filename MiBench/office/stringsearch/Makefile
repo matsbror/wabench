@@ -3,7 +3,7 @@ Benchmark = stringsearch
 SRCDIR = ./src
 SRCSUFFIX = c
 
-CFLAGS = -std=c89
+CFLAGS = 
 CINCLUDE = -I../../../include
 OPT = -O2
 LDFLAGS =

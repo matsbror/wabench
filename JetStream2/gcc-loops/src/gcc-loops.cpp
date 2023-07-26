@@ -340,7 +340,7 @@ private:
 int main(int argc,char* argv[]){
 
   timestamp_t start_timestamp = timestamp();
-  print_timestamp(stdout, "gcc-loops", start_timestamp);
+  print_timestamp("gcc-loops", start_timestamp);
 
   bool print_times = argc > 1;
 
@@ -393,8 +393,7 @@ int main(int argc,char* argv[]){
   BENCH("Example25",  example25(), Mi*2, digest_memory(&dj[0], &dj[N]));
 
   timeduration_t elapsed = time_since(start_time);
-
-  print_elapsed_time(stdout, "gcc-loops\0", elapsed);
+  print_elapsed_time("gcc-loops\0", elapsed);
 
   std::cout<<std::hex;
   std::cout<<"Results: ("<<std::accumulate(results.begin(), results.end(), 0)<<"):";

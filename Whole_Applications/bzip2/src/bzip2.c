@@ -1785,7 +1785,7 @@ IntNative main ( IntNative argc, Char *argv[] )
    Cell   *aa;
    Bool   decode;
    timestamp_t start_timestamp= timestamp();
-   print_timestamp(stdout, "bzip2_start", start_timestamp);
+   print_timestamp("bzip2 start", start_timestamp);
    /*-- Be really really really paranoid :-) --*/
    if (sizeof(Int32) != 4 || sizeof(UInt32) != 4  ||
        sizeof(Int16) != 2 || sizeof(UInt16) != 2  ||
@@ -2033,7 +2033,7 @@ IntNative main ( IntNative argc, Char *argv[] )
       free(aa);
       aa = aa2;
    }
-   print_elapsed_time(stdout, "bzip2", (double)elapsed);
+   print_elapsed_time("bzip2", elapsed);
    return exitValue;
 }
 

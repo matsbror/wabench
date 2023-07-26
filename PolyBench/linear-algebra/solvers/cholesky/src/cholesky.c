@@ -112,7 +112,7 @@ int main(int argc, char** argv)
   /* Retrieve problem size. */
   int n = N;
   timestamp_t start_timestamp= timestamp();
-  print_timestamp(stdout, "cholesky_start", start_timestamp);
+  print_timestamp("cholesky start", start_timestamp);
   /* Variable declaration/allocation. */
   POLYBENCH_2D_ARRAY_DECL(A, DATA_TYPE, N, N, n, n);
 
@@ -125,7 +125,7 @@ int main(int argc, char** argv)
   /* Run kernel. */
   kernel_cholesky (n, POLYBENCH_ARRAY(A));
   timeduration_t elapsed =time_since(start_time);
-  print_elapsed_time(stdout, "cholesky", elapsed);
+  print_elapsed_time("cholesky", elapsed);
   /* Stop and print timer. */
   polybench_stop_instruments;
   polybench_print_instruments;

@@ -143,7 +143,7 @@ int main(int argc, char** argv)
   /* Retrieve problem size. */
   int n = N;
   timestamp_t start_timestamp = timestamp();
-  print_timestamp(stdout, "ludcmp_start", start_timestamp);
+  print_timestamp("ludcmp start", start_timestamp);
   /* Variable declaration/allocation. */
   POLYBENCH_2D_ARRAY_DECL(A, DATA_TYPE, N, N, n, n);
   POLYBENCH_1D_ARRAY_DECL(b, DATA_TYPE, N, n);
@@ -168,7 +168,7 @@ int main(int argc, char** argv)
 		 POLYBENCH_ARRAY(x),
 		 POLYBENCH_ARRAY(y));
   timeduration_t elapsed = time_since(start_time);
-  print_elapsed_time(stdout, "ludcmp", elapsed);
+  print_elapsed_time("ludcmp", elapsed);
   /* Stop and print timer. */
   polybench_stop_instruments;
   polybench_print_instruments;

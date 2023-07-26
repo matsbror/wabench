@@ -107,7 +107,7 @@ int main(int argc, char** argv)
   int nj = NJ;
   int nk = NK;
   timestamp_t start_timestamp = timestamp();
-  print_timestamp(stdout, "gemm_start", start_timestamp);
+  print_timestamp("gemm start", start_timestamp);
   /* Variable declaration/allocation. */
   DATA_TYPE alpha;
   DATA_TYPE beta;
@@ -131,7 +131,7 @@ int main(int argc, char** argv)
 	       POLYBENCH_ARRAY(A),
 	       POLYBENCH_ARRAY(B));
   timeduration_t elapsed = time_since(start_time);
-  print_elapsed_time(stdout, "gemm", elapsed);
+  print_elapsed_time("gemm", elapsed);
   /* Stop and print timer. */
   polybench_stop_instruments;
   polybench_print_instruments;

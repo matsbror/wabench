@@ -14,7 +14,7 @@ main(int argc, char *argv[])
 	char *cp,ch;
 	FILE *fp,*fp2;
 	timestamp_t start_timestamp =timestamp();
-  	print_timestamp(stdout, "bf_start", start_timestamp);
+  	print_timestamp("bf start", start_timestamp);
 if (argc<3)
 {
 	printf("Usage: blowfish {e|d} <intput> <output> key\n");
@@ -91,7 +91,7 @@ while(!feof(fp))
 }
 timeduration_t elapsed = time_since(start_time);
   
-print_elapsed_time(stdout, "bf\0", (double)elapsed);
+print_elapsed_time("bf", (double)elapsed);
 close(fp);
 close(fp2);
 

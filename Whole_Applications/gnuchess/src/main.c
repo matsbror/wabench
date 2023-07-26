@@ -288,7 +288,7 @@ int main (int argc, char *argv[])
   int i;
   
   timestamp_t start_timestamp = timestamp();
-  print_timestamp(stdout, "gnuchess_start", start_timestamp);
+  print_timestamp("gnuchess start", start_timestamp);
 
   /* Initialize random number generator */
   time(&now);
@@ -343,7 +343,7 @@ int main (int argc, char *argv[])
       accumulated_time += time_since(start_time);
    }
 
-   print_elapsed_time(stdout, "gnuchess", accumulated_time);
+   print_elapsed_time("gnuchess", accumulated_time);
 
    /*  Some cleaning up  */
    free (HashTab[0]);

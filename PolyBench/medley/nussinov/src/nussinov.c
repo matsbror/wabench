@@ -115,7 +115,7 @@ int main(int argc, char** argv)
   /* Retrieve problem size. */
   int n = N;
   timestamp_t start_timestamp = timestamp();
-  print_timestamp(stdout, "nussinov_start", start_timestamp);
+  print_timestamp("nussinov start", start_timestamp);
   /* Variable declaration/allocation. */
   POLYBENCH_1D_ARRAY_DECL(seq, base, N, n);
   POLYBENCH_2D_ARRAY_DECL(table, DATA_TYPE, N, N, n, n);
@@ -133,7 +133,7 @@ int main(int argc, char** argv)
   polybench_stop_instruments;
   polybench_print_instruments;
   timeduration_t elapsed = time_since(start_time);
-  print_elapsed_time(stdout, "nussinov", elapsed);
+  print_elapsed_time("nussinov", elapsed);
 
   /* Prevent dead-code elimination. All live-out data must be printed
      by the function call in argument. */

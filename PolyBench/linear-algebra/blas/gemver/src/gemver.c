@@ -123,7 +123,7 @@ int main(int argc, char** argv)
   /* Retrieve problem size. */
   int n = N;
   timestamp_t start_timestamp = timestamp();
-  print_timestamp(stdout, "gemver_start", start_timestamp);
+  print_timestamp("gemver start", start_timestamp);
   /* Variable declaration/allocation. */
   DATA_TYPE alpha;
   DATA_TYPE beta;
@@ -165,7 +165,7 @@ int main(int argc, char** argv)
 		 POLYBENCH_ARRAY(y),
 		 POLYBENCH_ARRAY(z));
   timeduration_t elapsed = time_since(start_time);
-  print_elapsed_time(stdout, "gemver", elapsed);
+  print_elapsed_time("gemver", elapsed);
   /* Stop and print timer. */
   polybench_stop_instruments;
   polybench_print_instruments;

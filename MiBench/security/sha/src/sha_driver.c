@@ -13,7 +13,7 @@ int main(int argc, char **argv)
     SHA_INFO sha_info;
 	timeduration_t accumulated_time = 0;
 	timestamp_t start_timestamp= timestamp();
-  	print_timestamp(stdout, "sha_driver start", start_timestamp);
+  	print_timestamp("sha start", start_timestamp);
     if (argc < 2) {
 		fin = stdin;
 		timestamp_t start_time = timestamp();
@@ -38,6 +38,6 @@ int main(int argc, char **argv)
 	    }
 	}
     }
-	print_elapsed_time(stdout, "shadriver\0", accumulated_time);
+	print_elapsed_time("shadriver", accumulated_time);
     return(0);
 }

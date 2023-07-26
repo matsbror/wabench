@@ -93,7 +93,7 @@ int main(int argc, char** argv)
   int m = M;
   int n = N;
   timestamp_t start_timestamp = timestamp();
-  print_timestamp(stdout, "atax_start", start_timestamp);
+  print_timestamp("atax start", start_timestamp);
   /* Variable declaration/allocation. */
   POLYBENCH_2D_ARRAY_DECL(A, DATA_TYPE, M, N, m, n);
   POLYBENCH_1D_ARRAY_DECL(x, DATA_TYPE, N, n);
@@ -114,7 +114,7 @@ int main(int argc, char** argv)
 	       POLYBENCH_ARRAY(y),
 	       POLYBENCH_ARRAY(tmp));
   timeduration_t elapsed = time_since(start_time);
-  print_elapsed_time(stdout, "atax", elapsed);
+  print_elapsed_time("atax", elapsed);
   /* Stop and print timer. */
   polybench_stop_instruments;
   polybench_print_instruments;

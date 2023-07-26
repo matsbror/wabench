@@ -112,7 +112,7 @@ int main(int argc, char** argv)
   int m = M;
   int n = N;
   timestamp_t start_timestamp = timestamp();
-  print_timestamp(stdout, "symm_start", start_timestamp);
+  print_timestamp("symm start", start_timestamp);
   /* Variable declaration/allocation. */
   DATA_TYPE alpha;
   DATA_TYPE beta;
@@ -136,7 +136,7 @@ int main(int argc, char** argv)
 	       POLYBENCH_ARRAY(A),
 	       POLYBENCH_ARRAY(B));
   timeduration_t elapsed = time_since(start_time);
-  print_elapsed_time(stdout, "symm", elapsed);
+  print_elapsed_time("symm", elapsed);
 
   /* Stop and print timer. */
   polybench_stop_instruments;

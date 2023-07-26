@@ -246,7 +246,7 @@ int main (int argc, char **argv)
 	char voicename[40];
 	char dictname[40];
 	timestamp_t start_timestamp = timestamp();
-  	print_timestamp(stdout, "espeak_start", start_timestamp);
+  	print_timestamp("espeak start", start_timestamp);
 
   	bool print_times = argc > 1;
 	voicename[0] = 0;
@@ -467,7 +467,7 @@ exit(0);
 		}
 		timeduration_t elapsed = time_since(start_time);
 		CloseWaveFile(samplerate);
-		print_elapsed_time(stdout, "speak", elapsed);
+		print_elapsed_time("speak", elapsed);
 	}
 	else
 	{

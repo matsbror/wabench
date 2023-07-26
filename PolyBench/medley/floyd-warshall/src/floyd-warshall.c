@@ -85,7 +85,7 @@ int main(int argc, char** argv)
   /* Retrieve problem size. */
   int n = N;
   timestamp_t start_timestamp = timestamp();
-  print_timestamp(stdout, "floyd-warshall_start", start_timestamp);
+  print_timestamp("floyd-warshall start", start_timestamp);
   /* Variable declaration/allocation. */
   POLYBENCH_2D_ARRAY_DECL(path, DATA_TYPE, N, N, n, n);
 
@@ -103,7 +103,7 @@ int main(int argc, char** argv)
   polybench_stop_instruments;
   polybench_print_instruments;
   timeduration_t elapsed = time_since(start_time);
-  print_elapsed_time(stdout, "floyd-warshall", elapsed);
+  print_elapsed_time("floyd-warshall", elapsed);
   /* Prevent dead-code elimination. All live-out data must be printed
      by the function call in argument. */
   polybench_prevent_dce(print_array(n, POLYBENCH_ARRAY(path)));

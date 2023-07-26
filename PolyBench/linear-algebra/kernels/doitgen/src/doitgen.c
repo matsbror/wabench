@@ -93,7 +93,7 @@ int main(int argc, char** argv)
   int nq = NQ;
   int np = NP;
   timestamp_t start_timestamp = timestamp();
-  print_timestamp(stdout, "doitgen_start", start_timestamp);
+  print_timestamp("doitgen_start", start_timestamp);
   /* Variable declaration/allocation. */
   POLYBENCH_3D_ARRAY_DECL(A,DATA_TYPE,NR,NQ,NP,nr,nq,np);
   POLYBENCH_1D_ARRAY_DECL(sum,DATA_TYPE,NP,np);
@@ -114,7 +114,7 @@ int main(int argc, char** argv)
 		  POLYBENCH_ARRAY(sum));
   
   timeduration_t elapsed = time_since(start_time);
-  print_elapsed_time(stdout, "doitgen", elapsed);
+  print_elapsed_time("doitgen", elapsed);
   /* Stop and print timer. */
   polybench_stop_instruments;
   polybench_print_instruments;

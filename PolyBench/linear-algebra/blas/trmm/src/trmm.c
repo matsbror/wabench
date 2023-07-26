@@ -101,7 +101,7 @@ int main(int argc, char** argv)
   int m = M;
   int n = N;
   timestamp_t start_timestamp = timestamp();
-  print_timestamp(stdout, "trmm_start", start_timestamp);
+  print_timestamp("trmm start", start_timestamp);
   /* Variable declaration/allocation. */
   DATA_TYPE alpha;
   POLYBENCH_2D_ARRAY_DECL(A,DATA_TYPE,M,M,m,m);
@@ -116,7 +116,7 @@ int main(int argc, char** argv)
   /* Run kernel. */
   kernel_trmm (m, n, alpha, POLYBENCH_ARRAY(A), POLYBENCH_ARRAY(B));
   timeduration_t elapsed = time_since(start_time);
-  print_elapsed_time(stdout, "trmm", elapsed);
+  print_elapsed_time("trmm", elapsed);
   /* Stop and print timer. */
   polybench_stop_instruments;
   polybench_print_instruments;

@@ -171,11 +171,11 @@ timeduration_t Quick (int run) {
 int main()
 {
 	timestamp_t start_timestamp = timestamp();
-  	print_timestamp(stdout, "Quicksort", start_timestamp);
+  	print_timestamp("Quicksort", start_timestamp);
 	timeduration_t accumulated_time = 0;
 	for (int i = 0; i < 100; i++) 
 		accumulated_time += Quick(i);
-	print_elapsed_time(stdout, "Quicksort", accumulated_time);
+	print_elapsed_time("Quicksort", accumulated_time);
 	return 0;
 }
 

@@ -12,6 +12,7 @@
 **  10/21/93 rdg  Fixed bug found by Jeff Dunlop
 */
 
+#include "timestamps.h"
 #include <stddef.h>
 #include <string.h>
 #include <limits.h>
@@ -69,8 +70,11 @@ char *strsearch(const char *string)
 
 #include <stdio.h>
 
-main()
+int main()
 {
+        timestamp_t start_timestamp= timestamp();
+        print_timestamp("stringsearch start", start_timestamp);
+
       char *here;
       char *find_strings[] = { "Kur",
 "gent",
@@ -2740,6 +2744,9 @@ NULL};
 };
       int i;
 
+      timeduration_t accumulated = 0;
+
+      timestamp_t start = timestamp();
       for (i = 0; find_strings[i]; i++)
       {
             init_search(find_strings[i]);
@@ -2750,6 +2757,8 @@ NULL};
                   printf(" [\"%s\"]", here);
             putchar('\n');
       }
+      accumulated += time_since(start);
+      print_elapsed_time("stringsearch", accumulated);
 
       return 0;
 }

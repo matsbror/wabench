@@ -176,7 +176,7 @@ int
 main(int argc, char *argv[])
 {
       timestamp_t start_timestamp= timestamp();
-      print_timestamp(stdout, "crc32_start", start_timestamp);
+      print_timestamp("crc32 start", start_timestamp);
       DWORD crc;
       long charcnt;
       register int errors = 0;
@@ -187,6 +187,6 @@ main(int argc, char *argv[])
             printf("%08lX %7ld %s\n", crc, charcnt, *argv);
       }
       timeduration_t elapsed = time_since(start_time);
-      print_elapsed_time(stdout, "crc32\0", (double)elapsed);
+      print_elapsed_time("crc32", elapsed);
       return(errors != 0);
 }

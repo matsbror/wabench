@@ -1,3 +1,6 @@
+#ifndef _TIMESTAMPS_H_
+#define _TIMESTAMPS_H_
+
 #include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -5,12 +8,25 @@
 #define CYCLES 0
 #define MILLIS 1
 static int mode = MILLIS;
+static int initialised = 0;
+static FILE *fd = NULL; 
 
 typedef unsigned long long timestamp_t;
 typedef long timeduration_t; 
 
-void init_timestamps(int new_mode) {
-    mode = new_mode;
+void init_timestamps() {
+    if (!initialised) {
+        const char *filename = getenv("WABENCH_FILE");
+        if (filename == NULL) {
+            filename = "stdout";
+            fd = stdout;
+        } else {
+            fd = fopen(filename, "a"); // open file for append  
+        }
+
+        mode = MILLIS;
+        initialised = 1;
+    }
 }
 
 // returns a timestamp in ms since epoch or clock cycles
@@ -33,10 +49,18 @@ timeduration_t time_since(timestamp_t ts1){
     return ts2-ts1;
 }
 
-void print_timestamp(FILE *f, const char * tag, timestamp_t ts){
-    fprintf(f, "%s, timestamp: %llu\n", tag, ts);
+void print_timestamp(const char * tag, timestamp_t ts){
+    if (!initialised) {
+        init_timestamps();
+    }
+    fprintf(fd, "WABENCH, %s, timestamp:, %llu\n", tag, ts);
 }
 
-void print_elapsed_time(FILE *f, const char * tag, timeduration_t time){
-    fprintf(f, "%s, elapsed time: %ld\n", tag, time);
+void print_elapsed_time(const char * tag, timeduration_t time){
+    if (!initialised) {
+        init_timestamps();
+    }
+    fprintf(fd, "WABENCH, %s, elapsed time:, %ld\n", tag, time);
 }
+
+#endif

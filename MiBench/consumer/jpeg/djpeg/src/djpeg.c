@@ -430,7 +430,7 @@ main (int argc, char **argv)
   FILE * output_file;
   JDIMENSION num_scanlines;
   timestamp_t start_timestamp= timestamp();
-  print_timestamp(stdout, "djpeg_start", start_timestamp);
+  print_timestamp("djpeg start", start_timestamp);
   /* On Mac, fetch a command line. */
 #ifdef USE_CCOMMAND
   argc = ccommand(&argv);
@@ -576,7 +576,7 @@ main (int argc, char **argv)
   }
   timeduration_t elapsed = time_since(start_time);
   
-  print_elapsed_time(stdout, "djpeg\0", (double)elapsed);
+  print_elapsed_time("djpeg", (double)elapsed);
 #ifdef PROGRESS_REPORT
   /* Hack: count final pass as done in case finish_output does an extra pass.
    * The library won't have updated completed_passes.

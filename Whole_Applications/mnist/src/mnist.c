@@ -57,7 +57,7 @@ int main(int argc, char *argv[])
     float loss, accuracy;
     int i, batches;
     timestamp_t start_timestamp = timestamp();
-    print_timestamp(stdout, "mnist_start", start_timestamp);
+    print_timestamp("mnist start", start_timestamp);
 
     // Read the datasets from the files
     train_dataset = mnist_get_dataset(train_images_file, train_labels_file);
@@ -87,7 +87,7 @@ int main(int argc, char *argv[])
     }
 
     accumulated_time += time_since(start_time);
-    print_elapsed_time(stdout, "mnist", accumulated_time);
+    print_elapsed_time("mnist", accumulated_time);
 
     // Cleanup
     mnist_free_dataset(train_dataset);

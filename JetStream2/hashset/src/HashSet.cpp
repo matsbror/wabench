@@ -13477,12 +13477,12 @@ void benchmark()
 int main(int, char**)
 {
     timestamp_t start_timestamp = timestamp();
-    print_timestamp(stdout, "HashSet start", start_timestamp);
+    print_timestamp("HashSet start", start_timestamp);
     for (unsigned i = 0; i < 1000; ++i)
         benchmark();
     unsigned long elapsed = time_since(start_timestamp);
 
-    print_elapsed_time(stdout, "HashSet elapsed", elapsed);
+    print_elapsed_time("HashSet elapsed", elapsed);
     printf("That took %lf seconds.\n", elapsed/1000.0);
     return 0;
 }

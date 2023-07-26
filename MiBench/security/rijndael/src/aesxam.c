@@ -238,7 +238,7 @@ int main(int argc, char *argv[])
     int     i=0, by=0, key_len=0, err = 0;
     aes     ctx[1];
     timestamp_t start_timestamp= timestamp();
-    print_timestamp(stdout, "aesxam_start", start_timestamp);
+    print_timestamp("aesxam start", start_timestamp);
     if(argc != 5 || (toupper(*argv[3]) != 'D' && toupper(*argv[3]) != 'E'))
     {
         printf("usage: rijndael in_filename out_filename [d/e] key_in_hex\n"); 
@@ -304,7 +304,7 @@ int main(int argc, char *argv[])
         err = decfile(fin, fout, ctx, argv[1], argv[2]);
     }
     timeduration_t elapsed = time_since(start_time);
-    print_elapsed_time(stdout, "aesxam\0", (double)elapsed);
+    print_elapsed_time("aesxam", elapsed);
 exit:   
     if(fout) 
         fclose(fout);

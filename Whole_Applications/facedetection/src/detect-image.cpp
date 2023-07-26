@@ -72,7 +72,7 @@ int main(int argc, char* argv[])
   unsigned char *image = stbi_load(argv[1], &x, &y, &n, 0);
   
   timestamp_t start_timestamp = timestamp();
-  print_timestamp(stdout, "detect-image_start", start_timestamp);
+  print_timestamp("facedetection start", start_timestamp);
   //convert rgb to bgr
   unsigned char *p = image;
   for (int i; i < x*y; i++) {
@@ -104,7 +104,7 @@ int main(int argc, char* argv[])
 	pResults = facedetect_cnn(pBuffer, image, y, x, y*3);
   // (unsigned char*)(image.ptr(0)), image.cols, image.rows, (int)image.step);
   timeduration_t elapsed = time_since(start_time);
-  print_elapsed_time(stdout, "detect-image", elapsed);
+  print_elapsed_time("facedetection", elapsed);
   //cvtm.stop();    
   //printf("time = %gms\n", cvtm.getTimeMilli());
     

@@ -100,7 +100,7 @@ int main(int argc, char** argv)
   int n = N;
   int m = M;
   timestamp_t start_timestamp = timestamp();
-  print_timestamp(stdout, "syr2k_start", start_timestamp);
+  print_timestamp("syr2k start", start_timestamp);
   /* Variable declaration/allocation. */
   DATA_TYPE alpha;
   DATA_TYPE beta;
@@ -116,7 +116,7 @@ int main(int argc, char** argv)
   /* Run kernel. */
   kernel_syrk (n, m, alpha, beta, POLYBENCH_ARRAY(C), POLYBENCH_ARRAY(A));
   timeduration_t elapsed = time_since(start_time);
-  print_elapsed_time(stdout, "syrk", elapsed);
+  print_elapsed_time("syrk", elapsed);
   /* Stop and print timer. */
   polybench_stop_instruments;
   polybench_print_instruments;
