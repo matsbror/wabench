@@ -2,8 +2,8 @@ Wasm=$Native.wasm
 WasmAOT=$Native.cwasm
 
 Wasmtime="wasmtime"
-Wasmer="$HOME/.wasmer/bin/wasmer"
-Wasm3="wasm3"
+Wasmer="wasmer"
+WasmEdge="wasmedge"
 WAMR="iwasm"
 
 echoerr() { echo -e "$@" 1>&2; }
@@ -78,39 +78,27 @@ runtest() {
     fi
 }
 
-if [ ! -z "$WasmDir" ]
-then
-    WasmtimeDir="--dir $WasmDir"
-    WasmerDir="--dir $WasmDir"
-    WAMRDir="--dir=$WasmDir"
-fi
-
-if [ ! -z "$NativeArg" ]
-then
-    WasmtimeNativeArg="-- $NativeArg"
-    WasmerNativeArg="-- $NativeArg"
-    Wasm3NativeArg="$NativeArg"
-    WAMRNativeArg="$NativeArg"
-fi
 
 #echo "Iteration(s): $Iter"
 
 runtest "$Native $NativeArg" "output_native" "native" $1
 
+#wasmtime
 if [ "$RunAOT" = true ]
 then
 runaot "$Wasmtime compile $Wasm -o $WasmAOT" $1
 runtest "$Wasmtime run --allow-precompiled $WasmtimeDir $WasmAOT $WasmtimeNativeArg" "output_wasmtime" "wasmtime" $1
 else
-runtest "$Wasmtime run $WasmtimeDir $Wasm $WasmtimeNativeArg" "output_wasmtime" "wasmtime" $1
+runtest "$Wasmtime run --dir=. $Wasm $NativeArg" "output_wasmtime" "wasmtime" $1
 fi
 
+#wasmer
 if [ "$RunAOT" = true ]
 then
 runaot "$Wasmer compile $Wasm -o $WasmAOT" $1
 runtest "$Wasmer run $WasmerDir $WasmAOT $WasmerNativeArg" "output_wasmer" "wasmer" $1
 else
-runtest "$Wasmer run $WasmerDir $Wasm $WasmerNativeArg" "output_wasmer" "wasmer" $1
+runtest "$Wasmer run --dir=. $Wasm $NativeArg" "output_wasmer" "wasmer" $1
 fi
 
 # runtest "$Wasmer --singlepass $WasmerDir $Wasm $WasmerNativeArg" "output_wasmer" "wasmer (sp)" $1
@@ -119,24 +107,24 @@ fi
 
 # runtest "$Wasmer --llvm $WasmerDir $Wasm $WasmerNativeArg" "output_wasmer" "wasmer (ll)" $1
 
-
+#iwasm / wamr
 if [ "$RunAOT" = true ]
 then
 runaot "wamrc -o $WasmAOT $Wasm"  $1
 runtest "$WAMR --stack-size=32768 $WAMRDir $WasmAOT $WAMRNativeArg" "output_wasmer" "wamr" $1
 else
 # 32KB stack size for WAMR
-runtest "$WAMR --stack-size=32768 $WAMRDir $Wasm $WAMRNativeArg" "output_wamr" "wamr" $1
+runtest "$WAMR --stack-size=32768 --dir=. $Wasm $NativeArg" "output_wamr" "wamr" $1
 fi
 
+#wasmedge
 if [ "$RunAOT" = true ]
 then
 #runaot "wamrc -o $WasmAOT $Wasm"  $1
 #runtest "$WAMR --stack-size=32768 $WAMRDir $WasmAOT $WAMRNativeArg" "output_wasmer" "wamr" $1
-echo "wasm3:"
+echo "wasmedge:"
 else
-# enlarge stack size for wasm3
-runtest "$Wasm3 --stack-size 1000000 $Wasm $Wasm3NativeArg" "output_wasm3" "wasm3" $1
+runtest "$WasmEdge --dir=. $Wasm $NativeArg" "output_wasm3" "wasm3" $1
 fi
 
 

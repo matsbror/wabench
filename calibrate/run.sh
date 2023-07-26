@@ -2,7 +2,7 @@
 
 Native=./calibrate
 
-Iter=100
+Iter=10
 
 RunAOT=false
 
