@@ -33,6 +33,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <unistd.h>
 #include <string.h>
 #include <limits.h>
 #ifdef _WIN32
@@ -630,7 +631,8 @@ int wg_memowner(void *db) {
 #ifdef _WIN32
   int uid = 0;
 #else
-  int uid = getuid(); /* default for local memory */
+  int uid = 0;
+  //int uid = getuid(); /* default for local memory */
 #if 0
   struct shmid_ds buf;
   int err = memory_stats(db, &buf);
@@ -651,7 +653,8 @@ int wg_memgroup(void *db) {
 #ifdef _WIN32
   int gid = 0;
 #else
-  int gid = getgid(); /* default for local memory */
+  //  int gid = getgid(); /* default for local memory */
+  int gid = 0;
 #if 0
   struct shmid_ds buf;
   int err = memory_stats(db, &buf);

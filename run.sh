@@ -1,6 +1,6 @@
 #!/bin/bash
 
-RunAOT=true
+RunAOT=false
 
 MeasureMem=false
 

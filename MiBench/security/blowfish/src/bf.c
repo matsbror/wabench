@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <ctype.h>
 #include "blowfish.h"
 #include<sys/time.h>
 #include<timestamps.h>
@@ -92,8 +93,8 @@ while(!feof(fp))
 timeduration_t elapsed = time_since(start_time);
   
 print_elapsed_time("bf", (double)elapsed);
-close(fp);
-close(fp2);
+fclose(fp);
+fclose(fp2);
 
 exit(1);
 }

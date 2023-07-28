@@ -19,6 +19,7 @@
 #include <string.h>
 #include <stdarg.h>
 #include <stdio.h>
+#include <unistd.h>
 #include <math.h>
 #include <limits.h>
 #include <errno.h>

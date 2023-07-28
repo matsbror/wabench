@@ -2,6 +2,7 @@
 
 #include "adpcm.h"
 #include <stdio.h>
+#include <unistd.h>
 #include <sys/time.h>
 #include <timestamps.h>
 struct adpcm_state state;

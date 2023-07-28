@@ -22,6 +22,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
 
+#define __STDC_WANT_LIB_EXT2__ 1
 #include "tsf_internal.h"
 
 #include <stdio.h>

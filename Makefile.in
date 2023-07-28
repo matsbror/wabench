@@ -15,7 +15,7 @@ CC=${CLANG}
 
 OPT=-O2
 
-WASMCC=${CLANG} --target=wasm32-unknown-wasi --sysroot=${WASI_SYSROOT}
+WASMCC=${CLANG} --target=wasm32-wasi --sysroot=${WASI_SYSROOT}
 
 all: ${Native} ${WASM}
 
