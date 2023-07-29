@@ -1,3 +1,4 @@
+
 # Check whether this run will be using an output file
 Fileoutput=false
 
@@ -5,7 +6,7 @@ if [ "$1" != "-n" ]
 then
    Fileoutput=true
    OutFile="$2"
-   echo "Output results for each benchmark to file $Outfile in each benchmark directory"
+   echo "Output results for each benchmark to file $OutFile in each benchmark directory"
 fi
 
 Wasm=$Native.wasm
@@ -70,8 +71,10 @@ runtest() {
         echo -e "$3:   \t$cacherefs cache-references"
     else
         start=`date +%s.%N`
+
         for (( i=1; i<=$Iter; i++ ))
         do
+            # echo "do $cmd"
             sh -c "$cmd"
         done
         end=`date +%s.%N`
@@ -97,7 +100,7 @@ runtest() {
 
 if [ "$Fileoutput" = true ]
 then
-    WABENCH_FILE="$OutFile" runtest "$Native $NativeArg" "output_native" "native" $1
+    runtest "WABENCH_FILE=$OutFile $Native $NativeArg" "output_native" "native" $1
 else
     runtest "$Native $NativeArg" "output_native" "native" $1
 fi
@@ -111,7 +114,7 @@ runtest "$Wasmtime run --allow-precompiled $WasmtimeDir $WasmAOT $WasmtimeNative
 else
 if [ "$Fileoutput" = true ]
 then
-    WABENCH_FILE="$OutFile" runtest "$Wasmtime run --env WABENCH_FILE=$OutFile --dir=. $Wasm $NativeArg" "output_wasmtime" "wasmtime" $1
+    runtest "WABENCH_FILE=$OutFile $Wasmtime run --env WABENCH_FILE=$OutFile --dir=. $Wasm $NativeArg" "output_wasmtime" "wasmtime" $1
 else
     runtest "$Wasmtime run --dir=. $Wasm $NativeArg" "output_wasmtime" "wasmtime" $1
 fi
@@ -125,7 +128,7 @@ runtest "$Wasmer run $WasmerDir $WasmAOT $WasmerNativeArg" "output_wasmer" "wasm
 else
 if [ "$Fileoutput" = true ]
 then
-    WABENCH_FILE="$OutFile" runtest "$Wasmer run  --env WABENCH_FILE=$OutFile --dir=. $Wasm -- $NativeArg" "output_wasmer" "wasmer" $1
+    runtest "WABENCH_FILE=$OutFile $Wasmer run  --env WABENCH_FILE=$OutFile --dir=. $Wasm -- $NativeArg" "output_wasmer" "wasmer" $1
 else
     runtest "$Wasmer run --dir=. $Wasm -- $NativeArg" "output_wasmer" "wasmer" $1
 fi
@@ -147,7 +150,7 @@ else
 # 32KB stack size for WAMR
 if [ "$Fileoutput" = true ]
 then
-    WABENCH_FILE="$OutFile" runtest "$WAMR --stack-size=32768 --env WABENCH_FILE=$OutFile --dir=. $Wasm $NativeArg" "output_wamr" "wamr" $1
+    runtest "WABENCH_FILE=$OutFile $WAMR --stack-size=32768 --env='WABENCH_FILE=$OutFile' --dir=. $Wasm $NativeArg" "output_wamr" "wamr" $1
 else
     runtest "$WAMR --stack-size=32768 --dir=. $Wasm $NativeArg" "output_wamr" "wamr" $1
 fi
@@ -162,7 +165,7 @@ echo "wasmedge:"
 else
 if [ "$Fileoutput" = true ]
 then
-    WABENCH_FILE="$OutFile" runtest "$WasmEdge --env WABENCH_FILE=$OutFile --dir=. $Wasm $NativeArg" "output_wasmedge" "wasmedge" $1
+    runtest "WABENCH_FILE=$OutFile $WasmEdge --env WABENCH_FILE=$OutFile --dir=. $Wasm $NativeArg" "output_wasmedge" "wasmedge" $1
 else
     runtest "$WasmEdge --dir=. $Wasm $NativeArg" "output_wasmedge" "wasmedge" $1
 fi
