@@ -1,3 +1,13 @@
+# Check whether this run will be using an output file
+Fileoutput=false
+
+if [ "$1" != "-n" ]
+then
+   Fileoutput=true
+   OutFile="$2"
+   echo "Output results for each benchmark to file $Outfile in each benchmark directory"
+fi
+
 Wasm=$Native.wasm
 WasmAOT=$Native.cwasm
 
@@ -5,6 +15,10 @@ Wasmtime="wasmtime"
 Wasmer="wasmer"
 WasmEdge="wasmedge"
 WAMR="iwasm"
+
+# Fileoutput true/false if output should go to file
+# OutFile is the file name if $Fileoutput is true
+
 
 echoerr() { echo -e "$@" 1>&2; }
 
@@ -81,7 +95,13 @@ runtest() {
 
 #echo "Iteration(s): $Iter"
 
-runtest "$Native $NativeArg" "output_native" "native" $1
+if [ "$Fileoutput" = true ]
+then
+    WABENCH_FILE="$OutFile" runtest "$Native $NativeArg" "output_native" "native" $1
+else
+    runtest "$Native $NativeArg" "output_native" "native" $1
+fi
+
 
 #wasmtime
 if [ "$RunAOT" = true ]
@@ -89,7 +109,12 @@ then
 runaot "$Wasmtime compile $Wasm -o $WasmAOT" $1
 runtest "$Wasmtime run --allow-precompiled $WasmtimeDir $WasmAOT $WasmtimeNativeArg" "output_wasmtime" "wasmtime" $1
 else
-runtest "$Wasmtime run --dir=. $Wasm $NativeArg" "output_wasmtime" "wasmtime" $1
+if [ "$Fileoutput" = true ]
+then
+    WABENCH_FILE="$OutFile" runtest "$Wasmtime run --env WABENCH_FILE=$OutFile --dir=. $Wasm $NativeArg" "output_wasmtime" "wasmtime" $1
+else
+    runtest "$Wasmtime run --dir=. $Wasm $NativeArg" "output_wasmtime" "wasmtime" $1
+fi
 fi
 
 #wasmer
@@ -98,7 +123,13 @@ then
 runaot "$Wasmer compile $Wasm -o $WasmAOT" $1
 runtest "$Wasmer run $WasmerDir $WasmAOT $WasmerNativeArg" "output_wasmer" "wasmer" $1
 else
-runtest "$Wasmer run --dir=. $Wasm $NativeArg" "output_wasmer" "wasmer" $1
+if [ "$Fileoutput" = true ]
+then
+    WABENCH_FILE="$OutFile" runtest "$Wasmer run  --env WABENCH_FILE=$OutFile --dir=. $Wasm -- $NativeArg" "output_wasmer" "wasmer" $1
+else
+    runtest "$Wasmer run --dir=. $Wasm -- $NativeArg" "output_wasmer" "wasmer" $1
+fi
+
 fi
 
 # runtest "$Wasmer --singlepass $WasmerDir $Wasm $WasmerNativeArg" "output_wasmer" "wasmer (sp)" $1
@@ -114,7 +145,12 @@ runaot "wamrc -o $WasmAOT $Wasm"  $1
 runtest "$WAMR --stack-size=32768 $WAMRDir $WasmAOT $WAMRNativeArg" "output_wasmer" "wamr" $1
 else
 # 32KB stack size for WAMR
-runtest "$WAMR --stack-size=32768 --dir=. $Wasm $NativeArg" "output_wamr" "wamr" $1
+if [ "$Fileoutput" = true ]
+then
+    WABENCH_FILE="$OutFile" runtest "$WAMR --stack-size=32768 --env WABENCH_FILE=$OutFile --dir=. $Wasm $NativeArg" "output_wamr" "wamr" $1
+else
+    runtest "$WAMR --stack-size=32768 --dir=. $Wasm $NativeArg" "output_wamr" "wamr" $1
+fi
 fi
 
 #wasmedge
@@ -124,7 +160,13 @@ then
 #runtest "$WAMR --stack-size=32768 $WAMRDir $WasmAOT $WAMRNativeArg" "output_wasmer" "wamr" $1
 echo "wasmedge:"
 else
-runtest "$WasmEdge --dir=. $Wasm $NativeArg" "output_wasm3" "wasm3" $1
+if [ "$Fileoutput" = true ]
+then
+    WABENCH_FILE="$OutFile" runtest "$WasmEdge --env WABENCH_FILE=$OutFile --dir=. $Wasm $NativeArg" "output_wasmedge" "wasmedge" $1
+else
+    runtest "$WasmEdge --dir=. $Wasm $NativeArg" "output_wasmedge" "wasmedge" $1
+fi
+
 fi
 
 
@@ -138,6 +180,6 @@ then
     echo "check results ..."
     diff output_native output_wasmtime
     diff output_native output_wasmer
-    diff output_native output_wasm3
+    diff output_native output_wasmedge
     diff output_native output_wamr
 fi
