@@ -1,8 +1,7 @@
 
 # Check whether this run will be using an output file
 Fileoutput=false
-
-if [ "$1" != "-n" ]
+if [ "$1" == "-f" ]
 then
    Fileoutput=true
    OutFile="$2"
@@ -74,7 +73,7 @@ runtest() {
 
         for (( i=1; i<=$Iter; i++ ))
         do
-            # echo "do $cmd"
+            echo "do $cmd"
             sh -c "$cmd"
         done
         end=`date +%s.%N`
