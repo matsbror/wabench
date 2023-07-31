@@ -15,9 +15,9 @@ int main(void)
   struct int_sqrt q;
   long n = 0;
   timestamp_t start_timestamp= timestamp();
-  print_timestamp("basicmath start", start_timestamp);
+  print_timestamp("main", start_timestamp);
   /* solve soem cubic functions */
-  timestamp_t start_time = timestamp();
+  print_timestamp("start", start_timestamp);
   printf("********* CUBIC FUNCTIONS ***********\n");
   /* should get 3 solutions: 2, 6 & 2.5   */
   SolveCubic(a1, b1, c1, d1, &solutions, x);  
@@ -120,8 +120,10 @@ int main(void)
 /*   for (X = 0.0; X <= (2 * PI + 1e-6); X += (PI / 180)) */
   for (X = 0.0; X <= (2 * PI + 1e-6); X += (PI / 5760))
     printf("%.12f radians = %3.0f degrees\n", X, rad2deg(X));
-  timeduration_t elapsed = time_since(start_time);
-  print_elapsed_time("basicmath", elapsed);
+
+  timestamp_t end_time = timestamp();
+  print_timestamp("end", end_time);
+  print_elapsed_time("accumulated", end_time - start_timestamp);
   
   return 0;
 }

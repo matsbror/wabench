@@ -430,7 +430,7 @@ main (int argc, char **argv)
   FILE * output_file;
   JDIMENSION num_scanlines;
   timestamp_t start_timestamp= timestamp();
-  print_timestamp("djpeg start", start_timestamp);
+  print_timestamp("main", start_timestamp);
   /* On Mac, fetch a command line. */
 #ifdef USE_CCOMMAND
   argc = ccommand(&argv);
@@ -561,7 +561,10 @@ main (int argc, char **argv)
     break;
   }
   dest_mgr->output_file = output_file;
+
   timestamp_t start_time = timestamp();
+  print_timestamp("start", start_time);
+
   /* Start decompressor */
   (void) jpeg_start_decompress(&cinfo);
 
@@ -574,9 +577,11 @@ main (int argc, char **argv)
 					dest_mgr->buffer_height);
     (*dest_mgr->put_pixel_rows) (&cinfo, dest_mgr, num_scanlines);
   }
-  timeduration_t elapsed = time_since(start_time);
+
+  timestamp_t end_time = timestamp();
+  print_timestamp("end", end_time);
+  print_elapsed_time("djpeg",  end_time - start_time);
   
-  print_elapsed_time("djpeg", (double)elapsed);
 #ifdef PROGRESS_REPORT
   /* Hack: count final pass as done in case finish_output does an extra pass.
    * The library won't have updated completed_passes.

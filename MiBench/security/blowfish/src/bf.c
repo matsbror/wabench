@@ -14,8 +14,10 @@ main(int argc, char *argv[])
 	int encordec=-1;
 	char *cp,ch;
 	FILE *fp,*fp2;
-	timestamp_t start_timestamp =timestamp();
-  	print_timestamp("bf start", start_timestamp);
+
+	timestamp_t main_timestamp =timestamp();
+  	print_timestamp("main", main_timestamp);
+
 if (argc<3)
 {
 	printf("Usage: blowfish {e|d} <intput> <output> key\n");
@@ -74,7 +76,10 @@ if ((fp2 = fopen(argv[3],"w"))==0)
 };
 
 i=0;
+
 timestamp_t start_time = timestamp();
+print_timestamp("start", start_time);
+
 while(!feof(fp))
 {
 	int j;
@@ -90,9 +95,11 @@ while(!feof(fp))
 	}
 	i=0;
 }
-timeduration_t elapsed = time_since(start_time);
-  
-print_elapsed_time("bf", (double)elapsed);
+
+timestamp_t end_time = timestamp();
+print_timestamp("end", end_time);  
+print_elapsed_time("bf",  end_time - start_time);
+
 fclose(fp);
 fclose(fp2);
 

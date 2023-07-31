@@ -10,6 +10,7 @@
 static int mode = MILLIS;
 static int initialised = 0;
 static FILE *fd = NULL; 
+static char *BENCHMARK = "";
 
 typedef unsigned long long timestamp_t;
 typedef long timeduration_t; 
@@ -23,6 +24,12 @@ void init_timestamps() {
         } else {
             fd = fopen(filename, "a"); // open file for append  
         }
+
+        BENCHMARK = getenv("WABENCHMARK");
+        if (BENCHMARK == NULL) {
+            BENCHMARK = "unknown";
+            
+        } 
 
         mode = MILLIS;
         initialised = 1;
@@ -53,14 +60,14 @@ void print_timestamp(const char * tag, timestamp_t ts){
     if (!initialised) {
         init_timestamps();
     }
-    fprintf(fd, "WABENCH, %s, timestamp:, %llu\n", tag, ts);
+    fprintf(fd, "WABENCH, %s, %s, timestamp, %llu\n", BENCHMARK, tag, ts);
 }
 
 void print_elapsed_time(const char * tag, timeduration_t time){
     if (!initialised) {
         init_timestamps();
     }
-    fprintf(fd, "WABENCH, %s, elapsed time:, %ld\n", tag, time);
+    fprintf(fd, "WABENCH, %s, %s, elapsed time, %ld\n", BENCHMARK, tag, time);
 }
 
 #endif

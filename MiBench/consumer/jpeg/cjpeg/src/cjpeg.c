@@ -472,7 +472,7 @@ main (int argc, char **argv)
   FILE * output_file;
   JDIMENSION num_scanlines;
   timestamp_t start_timestamp =timestamp();
-  print_timestamp("cjpeg start", start_timestamp);
+  print_timestamp("main", start_timestamp);
   /* On Mac, fetch a command line. */
 #ifdef USE_CCOMMAND
   argc = ccommand(&argv);
@@ -577,7 +577,9 @@ main (int argc, char **argv)
 
   /* Specify data destination for compression */
   jpeg_stdio_dest(&cinfo, output_file);
+  
   timestamp_t start_time = timestamp();
+  print_timestamp("start", start_time);
 
   /* Start compressor */
   jpeg_start_compress(&cinfo, TRUE);
@@ -587,9 +589,11 @@ main (int argc, char **argv)
     num_scanlines = (*src_mgr->get_pixel_rows) (&cinfo, src_mgr);
     (void) jpeg_write_scanlines(&cinfo, src_mgr->buffer, num_scanlines);
   }
-  timeduration_t elapsed = time_since(start_time);
-  
-  print_elapsed_time("cjpeg", (double)elapsed);
+
+  timestamp_t end_time = timestamp();
+  print_timestamp("end", end_time);
+  print_elapsed_time("accumulated", end_time - start_time);
+
   /* Finish compression and release memory */
   (*src_mgr->finish_input) (&cinfo, src_mgr);
   jpeg_finish_compress(&cinfo);

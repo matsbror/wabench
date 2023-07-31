@@ -237,8 +237,10 @@ int main(int argc, char *argv[])
     char    *cp, ch, key[32];
     int     i=0, by=0, key_len=0, err = 0;
     aes     ctx[1];
-    timestamp_t start_timestamp= timestamp();
-    print_timestamp("aesxam start", start_timestamp);
+
+    timestamp_t main_timestamp= timestamp();
+    print_timestamp("main", main_timestamp);
+
     if(argc != 5 || (toupper(*argv[3]) != 'D' && toupper(*argv[3]) != 'E'))
     {
         printf("usage: rijndael in_filename out_filename [d/e] key_in_hex\n"); 
@@ -290,7 +292,10 @@ int main(int argc, char *argv[])
         printf("The output file: %s could not be opened\n", argv[1]); 
         err = -6; goto exit;
     }
+
     timestamp_t start_time = timestamp();
+    print_timestamp("start", start_time);
+
     if(toupper(*argv[3]) == 'E')
     {                           /* encryption in Cipher Block Chaining mode */
         set_key(key, key_len, enc, ctx);
@@ -303,8 +308,11 @@ int main(int argc, char *argv[])
     
         err = decfile(fin, fout, ctx, argv[1], argv[2]);
     }
-    timeduration_t elapsed = time_since(start_time);
-    print_elapsed_time("aesxam", elapsed);
+
+    timestamp_t end_time = timestamp();
+    print_timestamp("end", end_time);
+    print_elapsed_time("accumulated", end_time - start_time);
+    
 exit:   
     if(fout) 
         fclose(fout);

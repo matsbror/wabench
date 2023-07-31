@@ -102,8 +102,10 @@ int main(int argc, char** argv)
   /* Retrieve problem size. */
   int n = N;
   int m = M;
+  
   timestamp_t start_timestamp = timestamp();
-  print_timestamp("covariance start", start_timestamp);
+  print_timestamp("main", start_timestamp);
+
   /* Variable declaration/allocation. */
   DATA_TYPE float_n;
   POLYBENCH_2D_ARRAY_DECL(data,DATA_TYPE,N,M,n,m);
@@ -113,7 +115,10 @@ int main(int argc, char** argv)
 
   /* Initialize array(s). */
   init_array (m, n, &float_n, POLYBENCH_ARRAY(data));
+
   timestamp_t start_time = timestamp();
+  print_timestamp("start", start_time);
+
   /* Start timer. */
   polybench_start_instruments;
 
@@ -126,8 +131,11 @@ int main(int argc, char** argv)
   /* Stop and print timer. */
   polybench_stop_instruments;
   polybench_print_instruments;
-  timeduration_t elapsed = time_since(start_time);
-  print_elapsed_time("covariance", elapsed);
+
+  timestamp_t end_time = timestamp();
+  print_timestamp("end", end_time);
+  print_elapsed_time("accumulated", end_time - start_time);
+  
   /* Prevent dead-code elimination. All live-out data must be printed
      by the function call in argument. */
   polybench_prevent_dce(print_array(m, POLYBENCH_ARRAY(cov)));

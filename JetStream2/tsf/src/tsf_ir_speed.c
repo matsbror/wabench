@@ -324,7 +324,7 @@ static void readConvertTest(const char *filename, unsigned numPrograms) {
 
 int main(int c, char **v) {
     timestamp_t start_timestamp= timestamp();
-    print_timestamp("tsf start", start_timestamp);
+    print_timestamp("main", start_timestamp);
     
     static const char *filename = "tsf_ir_speed_test_file.tsf";
     static const char *zipFilename = "tsf_ir_speed_test_zip_file.tsf";
@@ -354,6 +354,7 @@ int main(int c, char **v) {
         printf("WARNING: If you are benchmarking, please use count = 10000.\n");
 
     timestamp_t start_time = timestamp();
+    print_timestamp("start", start_time);
 
     TIMEIT(writeTest(filename, 100, count, TSF_ZIP_NONE));
     TIMEIT(readTest(filename, count));
@@ -366,9 +367,9 @@ int main(int c, char **v) {
         TIMEIT(readMallocTest(filename, count));
         TIMEIT(readConvertTest(zipFilename, count));
     }
-  timeduration_t elapsed = time_since(start_time);
-
-  print_elapsed_time("tsf", elapsed);
+    timestamp_t end_time = timestamp();
+    print_timestamp("end", end_time);
+    print_elapsed_time("accumulated", end_time-start_time);
 
     /* We don't benchmark bzip2 because it's just too slow to be interesting. */
     

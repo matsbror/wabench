@@ -175,18 +175,24 @@ DWORD crc32buf(char *buf, size_t len)
 int
 main(int argc, char *argv[])
 {
-      timestamp_t start_timestamp= timestamp();
-      print_timestamp("crc32 start", start_timestamp);
+      timestamp_t start_timestamp = timestamp();
+      print_timestamp("main", start_timestamp);
       DWORD crc;
       long charcnt;
       register int errors = 0;
+
       timestamp_t start_time = timestamp();
+      print_timestamp("start", start_time);
+
       while(--argc > 0)
       {
             errors |= crc32file(*++argv, &crc, &charcnt);
             printf("%08lX %7ld %s\n", crc, charcnt, *argv);
       }
-      timeduration_t elapsed = time_since(start_time);
-      print_elapsed_time("crc32", elapsed);
+
+      timestamp_t end_time = timestamp();
+      print_timestamp("end", end_time);
+      print_elapsed_time("accumulated", end_time - start_time);
+      
       return(errors != 0);
 }

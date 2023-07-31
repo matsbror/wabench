@@ -339,8 +339,7 @@ private:
 
 int main(int argc,char* argv[]){
 
-  timestamp_t start_timestamp = timestamp();
-  print_timestamp("gcc-loops", start_timestamp);
+  print_timestamp("main", timestamp());
 
   bool print_times = argc > 1;
 
@@ -372,6 +371,7 @@ int main(int argc,char* argv[]){
   init_memory_float(&dd[0], &dd[N]);
 
   timestamp_t start_time = timestamp();
+  print_timestamp("start", start_time);
 
   BENCH("Example1",   example1(), Mi*10, digest_memory(&a[0], &a[256]));
   BENCH("Example2a",  example2a(N, 2), Mi*4, digest_memory(&b[0], &b[N]));
@@ -392,8 +392,9 @@ int main(int argc,char* argv[]){
   BENCH("Example24",  example24(2,4), Mi*2, 0);
   BENCH("Example25",  example25(), Mi*2, digest_memory(&dj[0], &dj[N]));
 
-  timeduration_t elapsed = time_since(start_time);
-  print_elapsed_time("gcc-loops\0", elapsed);
+  timestamp_t end_time = timestamp();
+  print_timestamp("end", end_time);
+  print_elapsed_time("accumulated", end_time-start_time);
 
   std::cout<<std::hex;
   std::cout<<"Results: ("<<std::accumulate(results.begin(), results.end(), 0)<<"):";
@@ -404,6 +405,3 @@ int main(int argc,char* argv[]){
 
   return 0;
 }
-
-
-

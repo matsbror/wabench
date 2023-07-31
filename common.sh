@@ -73,7 +73,7 @@ runtest() {
 
         for (( i=1; i<=$Iter; i++ ))
         do
-            echo "do $cmd"
+            # echo "do $cmd"
             sh -c "$cmd"
         done
         end=`date +%s.%N`
