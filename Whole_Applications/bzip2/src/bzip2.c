@@ -1784,8 +1784,10 @@ IntNative main ( IntNative argc, Char *argv[] )
    Cell   *argList;
    Cell   *aa;
    Bool   decode;
+
    timestamp_t start_timestamp= timestamp();
-   print_timestamp("bzip2 start", start_timestamp);
+   print_timestamp("main", start_timestamp);
+
    /*-- Be really really really paranoid :-) --*/
    if (sizeof(Int32) != 4 || sizeof(UInt32) != 4  ||
        sizeof(Int16) != 2 || sizeof(UInt16) != 2  ||
@@ -1962,7 +1964,10 @@ IntNative main ( IntNative argc, Char *argv[] )
       //signal (SIGHUP,  mySignalCatcher);
 #     endif
    }
+
    timestamp_t start_time = timestamp();
+   print_timestamp("start", start_time);
+
    if (opMode == OM_Z) {
      if (srcMode == SM_I2O) {
         compress ( NULL );
@@ -2022,7 +2027,10 @@ IntNative main ( IntNative argc, Char *argv[] )
          exit(exitValue);
       }
    }
-   timeduration_t elapsed = time_since(start_time);
+
+   timestamp_t end_time = timestamp();
+   print_timestamp("end", end_time);
+   print_elapsed_time("accumulated", end_time-start_time);
    /* Free the argument list memory to mollify leak detectors 
       (eg) Purify, Checker.  Serves no other useful purpose.
    */
@@ -2033,7 +2041,6 @@ IntNative main ( IntNative argc, Char *argv[] )
       free(aa);
       aa = aa2;
    }
-   print_elapsed_time("bzip2", elapsed);
    return exitValue;
 }
 
