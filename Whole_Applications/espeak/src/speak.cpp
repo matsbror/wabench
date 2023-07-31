@@ -245,8 +245,9 @@ int main (int argc, char **argv)
 	char filename[120];
 	char voicename[40];
 	char dictname[40];
+
 	timestamp_t start_timestamp = timestamp();
-  	print_timestamp("espeak start", start_timestamp);
+  	print_timestamp("main", start_timestamp);
 
   	bool print_times = argc > 1;
 	voicename[0] = 0;
@@ -435,6 +436,9 @@ exit(0);
 		exit(1);
 	}
 
+	timestamp_t start_time = timestamp();
+	print_timestamp("start", start_time);
+
 	if(option_waveout || quiet)
 	{
 		if(quiet)
@@ -452,7 +456,7 @@ exit(0);
 				exit(3);
 			}
 		}
-		timestamp_t start_time = timestamp();
+		
 		InitText();
 		
 		SpeakNextClause(f_text,p_text,0);
@@ -467,7 +471,6 @@ exit(0);
 		}
 		timeduration_t elapsed = time_since(start_time);
 		CloseWaveFile(samplerate);
-		print_elapsed_time("speak", elapsed);
 	}
 	else
 	{
@@ -500,5 +503,11 @@ exit(0);
 		}
 #endif
 	}
+
+	timestamp_t end_time = timestamp();
+	print_timestamp("end", end_time);
+	print_elapsed_time("accumulated", end_time - start_time);
+
+
 	exit(0);
 }

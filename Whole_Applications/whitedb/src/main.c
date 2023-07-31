@@ -425,9 +425,11 @@ int speed21() {
 
 int main(int argc, char *argv[]) {
   timestamp_t start_timestamp = timestamp();
-  print_timestamp("whitedb start", start_timestamp);
+  print_timestamp("main", start_timestamp);
 
   timestamp_t start_time = timestamp();
+  print_timestamp("start", start_time);
+
   // run tests
   speed2();
 
@@ -458,7 +460,8 @@ int main(int argc, char *argv[]) {
   //speed20();
 
   //speed21();
-  timeduration_t elapsed = time_since(start_time);
-  print_elapsed_time("whitedb", elapsed);
+  timestamp_t end_time = timestamp();
+  print_timestamp("end", end_time);
+  print_elapsed_time("whitedb", end_time - start_time);
   return 0;
 }

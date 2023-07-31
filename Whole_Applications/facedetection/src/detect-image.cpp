@@ -72,7 +72,8 @@ int main(int argc, char* argv[])
   unsigned char *image = stbi_load(argv[1], &x, &y, &n, 0);
   
   timestamp_t start_timestamp = timestamp();
-  print_timestamp("facedetection start", start_timestamp);
+  print_timestamp("main", start_timestamp);
+
   //convert rgb to bgr
   unsigned char *p = image;
   for (int i; i < x*y; i++) {
@@ -100,11 +101,17 @@ int main(int argc, char* argv[])
 	//!!! DO NOT RELEASE pResults !!!
   //TickMeter cvtm;
   //cvtm.start();
+
   timestamp_t start_time = timestamp();
-	pResults = facedetect_cnn(pBuffer, image, y, x, y*3);
+	print_timestamp("start", start_time);
+
+  pResults = facedetect_cnn(pBuffer, image, y, x, y*3);
   // (unsigned char*)(image.ptr(0)), image.cols, image.rows, (int)image.step);
-  timeduration_t elapsed = time_since(start_time);
-  print_elapsed_time("facedetection", elapsed);
+
+  timestamp_t end_time = timestamp();
+  print_timestamp("end", end_time);
+  print_elapsed_time("accumulated", end_time - start_time);
+
   //cvtm.stop();    
   //printf("time = %gms\n", cvtm.getTimeMilli());
     

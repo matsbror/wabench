@@ -57,7 +57,7 @@ int main(int argc, char *argv[])
     float loss, accuracy;
     int i, batches;
     timestamp_t start_timestamp = timestamp();
-    print_timestamp("mnist start", start_timestamp);
+    print_timestamp("main", start_timestamp);
 
     // Read the datasets from the files
     train_dataset = mnist_get_dataset(train_images_file, train_labels_file);
@@ -69,8 +69,9 @@ int main(int argc, char *argv[])
     // Calculate how many batches (so we know when to wrap around)
     batches = train_dataset->size / BATCH_SIZE;
 
-    timeduration_t accumulated_time = 0;
     timestamp_t start_time = timestamp();
+    print_timestamp("start", start_time);
+
     for (i = 0; i < STEPS; i++) {
         // Initialise a new batch
         mnist_batch(train_dataset, &batch, 100, i % batches);
@@ -86,8 +87,9 @@ int main(int argc, char *argv[])
         }
     }
 
-    accumulated_time += time_since(start_time);
-    print_elapsed_time("mnist", accumulated_time);
+    timestamp_t end_time = timestamp();
+    print_timestamp("end", end_time);
+    print_elapsed_time("accumulated", end_time - start_time);
 
     // Cleanup
     mnist_free_dataset(train_dataset);

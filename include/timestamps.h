@@ -10,7 +10,7 @@
 static int mode = MILLIS;
 static int initialised = 0;
 static FILE *fd = NULL; 
-static char *BENCHMARK = "";
+static char *BENCHMARK;
 
 typedef unsigned long long timestamp_t;
 typedef long timeduration_t; 
@@ -27,7 +27,7 @@ void init_timestamps() {
 
         BENCHMARK = getenv("WABENCHMARK");
         if (BENCHMARK == NULL) {
-            BENCHMARK = "unknown";
+            BENCHMARK = (char *)"unknown";
             
         } 
 

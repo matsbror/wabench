@@ -288,7 +288,7 @@ int main (int argc, char *argv[])
   int i;
   
   timestamp_t start_timestamp = timestamp();
-  print_timestamp("gnuchess start", start_timestamp);
+  print_timestamp("main", start_timestamp);
 
   /* Initialize random number generator */
   time(&now);
@@ -329,21 +329,22 @@ int main (int argc, char *argv[])
   bookmode = BOOKPREFER;
   bookfirstlast = 3;
 
-  timeduration_t accumulated_time = 0;
+  timestamp_t start_time = timestamp();
+  print_timestamp("start", start_time);
 
    while (!(flags & QUIT))
    {
       InputCmd (); 
-      timestamp_t start_time = timestamp();
       if ((flags & THINK) && !(flags & MANUAL) && !(flags & ENDED)) {
         
       if (!(flags & XBOARD)) printf("Thinking...\n");
       Iterate ();
       }
-      accumulated_time += time_since(start_time);
    }
 
-   print_elapsed_time("gnuchess", accumulated_time);
+  timestamp_t end_time = timestamp();
+  print_timestamp("end", end_time);
+  print_elapsed_time("accumulated", end_time - start_time);
 
    /*  Some cleaning up  */
    free (HashTab[0]);
