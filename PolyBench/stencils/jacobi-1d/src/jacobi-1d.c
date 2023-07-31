@@ -93,22 +93,28 @@ int main(int argc, char** argv)
   POLYBENCH_1D_ARRAY_DECL(B, DATA_TYPE, N, n);
   
   timestamp_t start_timestamp = timestamp();
-  print_timestamp("jacobi-1d start", start_timestamp);
+  print_timestamp("main", start_timestamp);
 
   /* Initialize array(s). */
   init_array (n, POLYBENCH_ARRAY(A), POLYBENCH_ARRAY(B));
-  timestamp_t start_time =timestamp();
+  
   /* Start timer. */
   polybench_start_instruments;
+
+  timestamp_t start_time = timestamp();
+  print_timestamp("start", start_time);
 
   /* Run kernel. */
   kernel_jacobi_1d(tsteps, n, POLYBENCH_ARRAY(A), POLYBENCH_ARRAY(B));
 
+  timestamp_t end_time = timestamp();
+  print_timestamp("end", end_time);
+  print_elapsed_time("accumulated", end_time);
+
   /* Stop and print timer. */
   polybench_stop_instruments;
   polybench_print_instruments;
-  timestamp_t elapsed = time_since(start_time);
-  print_elapsed_time("jacobi-1d", elapsed);
+  
   /* Prevent dead-code elimination. All live-out data must be printed
      by the function call in argument. */
   polybench_prevent_dce(print_array(n, POLYBENCH_ARRAY(A)));

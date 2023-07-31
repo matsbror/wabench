@@ -165,7 +165,7 @@ int main(int argc, char** argv)
   /* Variable declaration/allocation. */
   DATA_TYPE alpha;
   timestamp_t start_timestamp = timestamp();
-  print_timestamp("deriche start", start_timestamp);
+  print_timestamp("main", start_timestamp);
   POLYBENCH_2D_ARRAY_DECL(imgIn, DATA_TYPE, W, H, w, h);
   POLYBENCH_2D_ARRAY_DECL(imgOut, DATA_TYPE, W, H, w, h);
   POLYBENCH_2D_ARRAY_DECL(y1, DATA_TYPE, W, H, w, h);
@@ -174,18 +174,24 @@ int main(int argc, char** argv)
 
   /* Initialize array(s). */
   init_array (w, h, &alpha, POLYBENCH_ARRAY(imgIn), POLYBENCH_ARRAY(imgOut));
-  timestamp_t start_time = timestamp();
+  
   /* Start timer. */
   polybench_start_instruments;
 
+  timestamp_t start_time = timestamp();
+  print_timestamp("start", start_time);
+
   /* Run kernel. */
   kernel_deriche (w, h, alpha, POLYBENCH_ARRAY(imgIn), POLYBENCH_ARRAY(imgOut), POLYBENCH_ARRAY(y1), POLYBENCH_ARRAY(y2));
-
+  
+  timestamp_t end_time = timestamp();
+  print_timestamp("end", end_time);
+  print_elapsed_time("accumulated", end_time);  
+  
   /* Stop and print timer. */
   polybench_stop_instruments;
   polybench_print_instruments;
-  timeduration_t elapsed = time_since(start_time);
-  print_elapsed_time("deriche", elapsed);
+  
   /* Prevent dead-code elimination. All live-out data must be printed
      by the function call in argument. */
   polybench_prevent_dce(print_array(w, h, POLYBENCH_ARRAY(imgOut)));

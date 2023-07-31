@@ -89,7 +89,7 @@ int main(int argc, char** argv)
   /* Retrieve problem size. */
   int n = N;
   timestamp_t start_timestamp = timestamp();
-  print_timestamp("trisolv start", start_timestamp);
+  print_timestamp("main", start_timestamp);
   /* Variable declaration/allocation. */
   POLYBENCH_2D_ARRAY_DECL(L, DATA_TYPE, N, N, n, n);
   POLYBENCH_1D_ARRAY_DECL(x, DATA_TYPE, N, n);
@@ -101,11 +101,17 @@ int main(int argc, char** argv)
 
   /* Start timer. */
   polybench_start_instruments;
+
   timestamp_t start_time = timestamp();
+  print_timestamp("start", start_time);
+
   /* Run kernel. */
   kernel_trisolv (n, POLYBENCH_ARRAY(L), POLYBENCH_ARRAY(x), POLYBENCH_ARRAY(b));
-  timeduration_t elapsed = time_since(start_time);
-  print_elapsed_time("trisolv", elapsed);
+
+  timestamp_t end_time = timestamp();
+  print_timestamp("end", end_time);
+  print_elapsed_time("accumulated", end_time);
+  
   /* Stop and print timer. */
   polybench_stop_instruments;
   polybench_print_instruments;

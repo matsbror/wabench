@@ -120,7 +120,7 @@ int main(int argc, char** argv)
   int nl = NL;
   int nm = NM;
   timestamp_t start_timestamp = timestamp();
-  print_timestamp("3mm start", start_timestamp);
+  print_timestamp("main", start_timestamp);
   /* Variable declaration/allocation. */
   POLYBENCH_2D_ARRAY_DECL(E, DATA_TYPE, NI, NJ, ni, nj);
   POLYBENCH_2D_ARRAY_DECL(A, DATA_TYPE, NI, NK, ni, nk);
@@ -140,6 +140,7 @@ int main(int argc, char** argv)
   /* Start timer. */
   polybench_start_instruments;
   timestamp_t start_time = timestamp();
+  print_timestamp("start", start_time);
   /* Run kernel. */
   kernel_3mm (ni, nj, nk, nl, nm,
 	      POLYBENCH_ARRAY(E),
@@ -149,8 +150,9 @@ int main(int argc, char** argv)
 	      POLYBENCH_ARRAY(C),
 	      POLYBENCH_ARRAY(D),
 	      POLYBENCH_ARRAY(G));
-  timeduration_t elapsed = time_since(start_time);
-  print_elapsed_time("3mm", elapsed);
+  timestamp_t end_time = timestamp();
+  print_timestamp("end", end_time);
+  print_elapsed_time("accumulated", end_time);
   /* Stop and print timer. */
   polybench_stop_instruments;
   polybench_print_instruments;
