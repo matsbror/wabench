@@ -36,7 +36,7 @@ void init_timestamps() {
     }
 }
 
-// returns a timestamp in ms since epoch or clock cycles
+// returns a timestamp in micros since epoch or clock cycles
 timestamp_t timestamp() {
     struct timespec ts;
 
@@ -45,9 +45,9 @@ timestamp_t timestamp() {
         exit(-1);
     }
 
-    timestamp_t millis_s = ts.tv_sec * 1000;
-    timestamp_t millis_ns = ts.tv_nsec / 1000000;
-    return millis_s + millis_ns; 
+    timestamp_t micro_s = ts.tv_sec * 1000000;
+    timestamp_t micro_ns = ts.tv_nsec / 1000;
+    return micro_s + micro_ns; 
 }
 
 // returns the time since the last time stamp
