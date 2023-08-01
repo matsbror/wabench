@@ -26,15 +26,14 @@
 int main(int argc, char** argv)
 {
     char buffer[26];
-    timestamp_t millisec = timestamp();
-    print_timestamp("main", millisec);
-    print_timestamp("start", millisec);
+    timestamp_t start_time = timestamp();
+    print_timestamp("main", start_time);
+    print_timestamp("start", start_time);
 
-    timeduration_t elapsed = time_since(millisec);
-    timestamp_t millisec2 = timestamp();
+    timestamp_t end_time = timestamp();
 
-    print_timestamp("end", millisec2);
-    print_elapsed_time("end", elapsed);
+    print_timestamp("end", end_time);
+    print_elapsed_time("accumulated", end_time - start_time);
 
     return 0;
 }

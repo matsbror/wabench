@@ -118,7 +118,7 @@ int main(int argc, char** argv)
   kernel_trmm (m, n, alpha, POLYBENCH_ARRAY(A), POLYBENCH_ARRAY(B));
   timestamp_t end_time = timestamp();
   print_timestamp("end", end_time);
-  print_elapsed_time("accumulated", end_time);
+  print_elapsed_time("accumulated", end_time - start_time);
   
   /* Stop and print timer. */
   polybench_stop_instruments;
