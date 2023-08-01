@@ -40,7 +40,7 @@ runaot() {
 # arg3 native or runtime
 # arg4 -f FILE or -n
 runtest() {
-    rm $2
+    rm -f $2
     cmd="$1 >> $2 2>&1"
     if [ "$4" = "-n" ] # dry run
     then
