@@ -11,6 +11,7 @@ static int mode = MILLIS;
 static int initialised = 0;
 static FILE *fd = NULL; 
 static char *BENCHMARK;
+static char *RUNTIME;
 
 typedef unsigned long long timestamp_t;
 typedef long timeduration_t; 
@@ -28,7 +29,11 @@ void init_timestamps() {
         BENCHMARK = getenv("WABENCHMARK");
         if (BENCHMARK == NULL) {
             BENCHMARK = (char *)"unknown";
-            
+        } 
+
+        RUNTIME = getenv("WARUNTIME");
+        if (RUNTIME == NULL) {
+            RUNTIME = (char *)"unknown";
         } 
 
         mode = MILLIS;
@@ -56,18 +61,18 @@ timeduration_t time_since(timestamp_t ts1){
     return ts2-ts1;
 }
 
-void print_timestamp(const char * tag, timestamp_t ts){
+void print_timestamp(const char *runtime, const char * tag, timestamp_t ts){
     if (!initialised) {
         init_timestamps();
     }
-    fprintf(fd, "WABENCH, %s, %s, timestamp, %llu\n", BENCHMARK, tag, ts);
+    fprintf(fd, "WABENCH, %s, %s, %s, timestamp, %llu\n", runtime, BENCHMARK, tag, ts);
 }
 
-void print_elapsed_time(const char * tag, timeduration_t time){
+void print_elapsed_time(const char *runtime, char * tag, timeduration_t time){
     if (!initialised) {
         init_timestamps();
     }
-    fprintf(fd, "WABENCH, %s, %s, elapsed time, %ld\n", BENCHMARK, tag, time);
+    fprintf(fd, "WABENCH,  %s, %s, %s, elapsed time, %ld\n", runtime, BENCHMARK, tag, time);
 }
 
 #endif
