@@ -137,24 +137,24 @@ else
 fi
 fi
 
-#wasmer
-if [ "$RunAOT" = true ]
-then
-runaot "$Wasmer compile $Wasm -o $WasmAOT" $1
-runtest "$Wasmer run $WasmerDir $WasmAOT $WasmerNativeArg" "output_wasmer" "wasmer" $1
-else
-if [ "$Fileoutput" = true ]
-then
-    export WABENCH_FILE=$OutFile
-    runtest "$Wasmer run  --env WABENCHMARK=$WABENCHMARK --env WABENCH_FILE=$OutFile --dir=. $Wasm -- $NativeArg" "output_wasmer" "wasmer" $1
-    unset WABENCH_FILE
-else
-    export WABENCH_FILE=output_wasmer
-    runtest "$Wasmer run --env WABENCHMARK=$WABENCHMARK --dir=. $Wasm -- $NativeArg" "output_wasmer" "wasmer" $1
-    unset WABENCH_FILE
-fi
+# #wasmer
+# if [ "$RunAOT" = true ]
+# then
+# runaot "$Wasmer compile $Wasm -o $WasmAOT" $1
+# runtest "$Wasmer run $WasmerDir $WasmAOT $WasmerNativeArg" "output_wasmer" "wasmer" $1
+# else
+# if [ "$Fileoutput" = true ]
+# then
+#     export WABENCH_FILE=$OutFile
+#     runtest "$Wasmer run  --env WABENCHMARK=$WABENCHMARK --env WABENCH_FILE=$OutFile --dir=. $Wasm -- $NativeArg" "output_wasmer" "wasmer" $1
+#     unset WABENCH_FILE
+# else
+#     export WABENCH_FILE=output_wasmer
+#     runtest "$Wasmer run --env WABENCHMARK=$WABENCHMARK --dir=. $Wasm -- $NativeArg" "output_wasmer" "wasmer" $1
+#     unset WABENCH_FILE
+# fi
 
-fi
+# fi
 
 # runtest "$Wasmer --singlepass $WasmerDir $Wasm $WasmerNativeArg" "output_wasmer" "wasmer (sp)" $1
 
@@ -181,25 +181,25 @@ else
 fi
 fi
 
-#wasmedge
-if [ "$RunAOT" = true ]
-then
-#runaot "wamrc -o $WasmAOT $Wasm"  $1
-#runtest "$WAMR --stack-size=32768 $WAMRDir $WasmAOT $WAMRNativeArg" "output_wasmer" "wamr" $1
-echo "wasmedge:"
-else
-if [ "$Fileoutput" = true ]
-then
-    export WABENCH_FILE=$OutFile
-    runtest "$WasmEdge --env WABENCHMARK=$WABENCHMARK --env WABENCH_FILE=$OutFile --dir=. $Wasm $NativeArg" "output_wasmedge" "wasmedge" $1
-    unset WABENCH_FILE
-else
-    export WABENCH_FILE=output_wasmedge
-    runtest "$WasmEdge --env WABENCHMARK=$WABENCHMARK --dir=. $Wasm $NativeArg" "output_wasmedge" "wasmedge" $1
-    unset WABENCH_FILE
-fi
+# #wasmedge
+# if [ "$RunAOT" = true ]
+# then
+# #runaot "wamrc -o $WasmAOT $Wasm"  $1
+# #runtest "$WAMR --stack-size=32768 $WAMRDir $WasmAOT $WAMRNativeArg" "output_wasmer" "wamr" $1
+# echo "wasmedge:"
+# else
+# if [ "$Fileoutput" = true ]
+# then
+#     export WABENCH_FILE=$OutFile
+#     runtest "$WasmEdge --env WABENCHMARK=$WABENCHMARK --env WABENCH_FILE=$OutFile --dir=. $Wasm $NativeArg" "output_wasmedge" "wasmedge" $1
+#     unset WABENCH_FILE
+# else
+#     export WABENCH_FILE=output_wasmedge
+#     runtest "$WasmEdge --env WABENCHMARK=$WABENCHMARK --dir=. $Wasm $NativeArg" "output_wasmedge" "wasmedge" $1
+#     unset WABENCH_FILE
+# fi
 
-fi
+# fi
 
 
 if [ "$1" == "-n" ] # No need to compare results for a dry run
