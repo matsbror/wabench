@@ -61,18 +61,18 @@ timeduration_t time_since(timestamp_t ts1){
     return ts2-ts1;
 }
 
-void print_timestamp(const char *runtime, const char * tag, timestamp_t ts){
+void print_timestamp(const char * tag, timestamp_t ts){
     if (!initialised) {
         init_timestamps();
     }
-    fprintf(fd, "WABENCH, %s, %s, %s, timestamp, %llu\n", runtime, BENCHMARK, tag, ts);
+    fprintf(fd, "WABENCH, %s, %s, %s, timestamp, %llu\n", RUNTIME, BENCHMARK, tag, ts);
 }
 
-void print_elapsed_time(const char *runtime, char * tag, timeduration_t time){
+void print_elapsed_time(char * tag, timeduration_t time){
     if (!initialised) {
         init_timestamps();
     }
-    fprintf(fd, "WABENCH,  %s, %s, %s, elapsed time, %ld\n", runtime, BENCHMARK, tag, time);
+    fprintf(fd, "WABENCH, %s, %s, %s, elapsed time, %ld\n", RUNTIME, BENCHMARK, tag, time);
 }
 
 #endif
