@@ -81,7 +81,7 @@ runtest() {
             echo "WABENCH, $3, $WABENCHMARK, calling, timestamp, $(($(date +%s%N)/1000))" >> $WABENCH_FILE
             if [ "$3" == "native" ] 
             then
-                echo "WABENCH, native, $WABENCHMARK,  start, timestamp, $(($(date +%s%N)/1000))" >> $WABENCH_FILE
+                echo "WABENCH, native, $WABENCHMARK, starting, timestamp, $(($(date +%s%N)/1000))" >> $WABENCH_FILE
             fi
 
             sh -c "$cmd"
