@@ -130,12 +130,12 @@ if [ "$Fileoutput" = true ]
 then
     export WABENCH_FILE=$OutFile
     export WARUNTIME="wasmtime"
-    runtest "$Wasmtime run --env WARUNTIME=$WARUNTIME --env WABENCHMARK=$WABENCHMARK --env WABENCH_FILE=$OutFile --dir=. $Wasm $NativeArg" "output_wasmtime" "wasmtime" $1
+    runtest "$Wasmtime run --env WARUNTIME=$WARUNTIME --env HOSTTYPE=$HOSTTYPE --env WABENCHMARK=$WABENCHMARK --env WABENCH_FILE=$OutFile --dir=. $Wasm $NativeArg" "output_wasmtime" "wasmtime" $1
     unset WABENCH_FILE
 else
     export WABENCH_FILE=output_wasmtime
     export WARUNTIME="wasmtime"
-    runtest "$Wasmtime run --env WARUNTIME=$WARUNTIME --env WABENCHMARK=$WABENCHMARK --dir=. $Wasm $NativeArg" "output_wasmtime" "wasmtime" $1
+    runtest "$Wasmtime run --env WARUNTIME=$WARUNTIME --env HOSTTYPE=$HOSTTYPE --env WABENCHMARK=$WABENCHMARK --dir=. $Wasm $NativeArg" "output_wasmtime" "wasmtime" $1
     unset WABENCH_FILE
 fi
 fi
@@ -177,12 +177,12 @@ if [ "$Fileoutput" = true ]
 then
     export WABENCH_FILE=$OutFile
     export WARUNTIME="iwasm"
-    runtest "$WAMR --stack-size=32768 --env='WARUNTIME=$WARUNTIME' --env='WABENCHMARK=$WABENCHMARK' --env='WABENCH_FILE=$OutFile' --dir=. $Wasm $NativeArg" "output_wamr" "iwasm" $1
+    runtest "$WAMR --stack-size=32768 --env='WARUNTIME=$WARUNTIME' --env='HOSTTYPE=$HOSTTYPE' --env='WABENCHMARK=$WABENCHMARK' --env='WABENCH_FILE=$OutFile' --dir=. $Wasm $NativeArg" "output_wamr" "iwasm" $1
     unset WABENCH_FILE
 else
     export WABENCH_FILE=output_wamr
     export WARUNTIME="iwasm"
-    runtest "$WAMR --stack-size=32768 --env='WARUNTIME=$WARUNTIME' --env='WABENCHMARK=$WABENCHMARK' --dir=. $Wasm $NativeArg" "output_wamr" "iwasm" $1
+    runtest "$WAMR --stack-size=32768 --env='WARUNTIME=$WARUNTIME' --env='HOSTTYPE=$HOSTTYPE' --env='WABENCHMARK=$WABENCHMARK' --dir=. $Wasm $NativeArg" "output_wamr" "iwasm" $1
     unset WABENCH_FILE
 fi
 fi

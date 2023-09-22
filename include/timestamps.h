@@ -12,6 +12,7 @@ static int initialised = 0;
 static FILE *fd = NULL; 
 static char *BENCHMARK;
 static char *RUNTIME;
+static char *HOSTTYPE;
 
 typedef unsigned long long timestamp_t;
 typedef long timeduration_t; 
@@ -34,6 +35,11 @@ void init_timestamps() {
         RUNTIME = getenv("WARUNTIME");
         if (RUNTIME == NULL) {
             RUNTIME = (char *)"unknown";
+        } 
+
+        HOSTTYPE = getenv("HOSTTYPE");
+        if (HOSTTYPE == NULL) {
+            HOSTTYPE = (char *)"unknown";
         } 
 
         mode = MILLIS;
@@ -65,14 +71,14 @@ void print_timestamp(const char * tag, timestamp_t ts){
     if (!initialised) {
         init_timestamps();
     }
-    fprintf(fd, "WABENCH, %s, %s, %s, timestamp, %llu\n", RUNTIME, BENCHMARK, tag, ts);
+    fprintf(fd, "%s, %s, %s, %s, timestamp, %llu\n", HOSTTYPE, RUNTIME, BENCHMARK, tag, ts);
 }
 
-void print_elapsed_time(char * tag, timeduration_t time){
+void print_elapsed_time(const char * tag, timeduration_t time){
     if (!initialised) {
         init_timestamps();
     }
-    fprintf(fd, "WABENCH, %s, %s, %s, elapsed time, %ld\n", RUNTIME, BENCHMARK, tag, time);
+    fprintf(fd, "%s, %s, %s, %s, elapsed time, %ld\n", HOSTTYPE, RUNTIME, BENCHMARK, tag, time);
 }
 
 #endif
