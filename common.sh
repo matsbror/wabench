@@ -78,10 +78,10 @@ runtest() {
         do
             # echo "do $cmd"
 
-            echo "WABENCH, $3, $WABENCHMARK, calling, timestamp, $(($(date +%s%N)/1000))" >> $WABENCH_FILE
+            echo "$HOSTTYPE, $3, $WABENCHMARK, calling, timestamp, $(($(date +%s%N)/1000))" >> $WABENCH_FILE
             if [ "$3" == "native" ] 
             then
-                echo "WABENCH, native, $WABENCHMARK, starting, timestamp, $(($(date +%s%N)/1000))" >> $WABENCH_FILE
+                echo "$HOSTTYPE, native, $WABENCHMARK, starting, timestamp, $(($(date +%s%N)/1000))" >> $WABENCH_FILE
             fi
 
             sh -c "$cmd"
