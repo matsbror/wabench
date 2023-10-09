@@ -178,7 +178,7 @@ int main()
 		accumulated_time += Quick(i);
 	timestamp_t end_time = timestamp();
 	print_timestamp("end", end_time);
-	print_elapsed_time("Quicksort", accumulated_time);
+	print_elapsed_time("accumulated", accumulated_time);
 	return 0;
 }
 

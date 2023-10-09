@@ -98,7 +98,7 @@ while(!feof(fp))
 
 timestamp_t end_time = timestamp();
 print_timestamp("end", end_time);  
-print_elapsed_time("bf",  end_time - start_time);
+print_elapsed_time("accumulated",  end_time - start_time);
 
 fclose(fp);
 fclose(fp2);

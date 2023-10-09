@@ -15,7 +15,7 @@ static char *RUNTIME;
 static char *HOSTTYPE;
 
 typedef unsigned long long timestamp_t;
-typedef long timeduration_t; 
+typedef unsigned long long timeduration_t; 
 
 void init_timestamps() {
     if (!initialised) {
@@ -78,7 +78,7 @@ void print_elapsed_time(const char * tag, timeduration_t time){
     if (!initialised) {
         init_timestamps();
     }
-    fprintf(fd, "%s, %s, %s, %s, elapsed time, %ld\n", HOSTTYPE, RUNTIME, BENCHMARK, tag, time);
+    fprintf(fd, "%s, %s, %s, %s, elapsed time, %llu\n", HOSTTYPE, RUNTIME, BENCHMARK, tag, time);
 }
 
 #endif

@@ -580,7 +580,7 @@ main (int argc, char **argv)
 
   timestamp_t end_time = timestamp();
   print_timestamp("end", end_time);
-  print_elapsed_time("djpeg",  end_time - start_time);
+  print_elapsed_time("accumulated",  end_time - start_time);
   
 #ifdef PROGRESS_REPORT
   /* Hack: count final pass as done in case finish_output does an extra pass.

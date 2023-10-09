@@ -55,7 +55,7 @@ int main(int argc, char *argv[])
     
     timestamp_t end_time = timestamp();
     print_timestamp("end", end_time);
-    print_elapsed_time("snappy", end_time - start_time);
+    print_elapsed_time("accumulated", end_time - start_time);
     
     printf("Input data size: %d\n", MAXBUFSIZE);
     printf("Compressed data size: %zu\n", compsize);

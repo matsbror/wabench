@@ -462,6 +462,6 @@ int main(int argc, char *argv[]) {
   //speed21();
   timestamp_t end_time = timestamp();
   print_timestamp("end", end_time);
-  print_elapsed_time("whitedb", end_time - start_time);
+  print_elapsed_time("accumulated", end_time - start_time);
   return 0;
 }
