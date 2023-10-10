@@ -13,23 +13,23 @@ CommonScript="$BenchRoot/common.sh"
 BenchSize=5
 BenchSuite=()
 # Structure:  Benchmark directory                             Native           NativeArg         Iter  WasmDir
-BenchSuite+=("calibrate"                                    "./calibrate"      ""                "100"    "") # 0.03
-BenchSuite+=("JetStream2/gcc-loops"                         "./gcc-loops"      ""                "3"    "") # 11
-BenchSuite+=("JetStream2/hashset"                           "./hashset"        ""                "15"    "") # 0.7
-BenchSuite+=("JetStream2/quicksort"                         "./quicksort"      ""                "15"    "") # 0.4
-BenchSuite+=("JetStream2/tsf"                               "./tsf"            "10000"           "3"    ".") # 14
-BenchSuite+=("MiBench/automotive/basicmath"                 "./basicmath"      ""                "15"    "") # 0.6
-BenchSuite+=("MiBench/automotive/bitcount"                  "./bitcount"       "1125000"         "15"    "") # 0.15
-BenchSuite+=("MiBench/consumer/jpeg/cjpeg"                  "./cjpeg"      \                                # 0.12
+BenchSuite+=("calibrate"                                    "./calibrate"      ""                "100"    "") 
+BenchSuite+=("JetStream2/gcc-loops"                         "./gcc-loops"      ""                "3"    "") 
+BenchSuite+=("JetStream2/hashset"                           "./hashset"        ""                "15"    "") 
+BenchSuite+=("JetStream2/quicksort"                         "./quicksort"      ""                "15"    "") 
+BenchSuite+=("JetStream2/tsf"                               "./tsf"            "10000"           "3"    ".") 
+BenchSuite+=("MiBench/automotive/basicmath"                 "./basicmath"      ""                "15"    "") 
+BenchSuite+=("MiBench/automotive/bitcount"                  "./bitcount"       "1125000"         "15"    ""
+BenchSuite+=("MiBench/consumer/jpeg/cjpeg"                  "./cjpeg"      \                                
              "-dct int -progressive -opt -outfile output_large_encode.jpeg input_large.ppm" "15" ".")        
-BenchSuite+=("MiBench/consumer/jpeg/djpeg"                  "./djpeg"      \                                # 0.08
+BenchSuite+=("MiBench/consumer/jpeg/djpeg"                  "./djpeg"      \                                
              "-dct int -ppm -outfile output_large_decode.ppm input_large.jpg" "15" ".")
-BenchSuite+=("MiBench/office/stringsearch"                  "./stringsearch"   ""          "30"  "")       # 0.04
-BenchSuite+=("MiBench/security/blowfish"                    "./blowfish"   \                                # 0.15
+BenchSuite+=("MiBench/office/stringsearch"                  "./stringsearch"   ""          "30"  "")       
+BenchSuite+=("MiBench/security/blowfish"                    "./blowfish"   \                               
              "e input_large.asc output_large.enc 1234567890abcdeffedcba0987654321" "10"  ".")               
 #BenchSuite+=("MiBench/security/blowfish"                    "./blowfish"   \        
 #             "d input_large.enc output_large.asc 1234567890abcdeffedcba0987654321" "10"  ".")
-BenchSuite+=("MiBench/security/rijndael"                    "./rijndael"   \                                # 0.11      
+BenchSuite+=("MiBench/security/rijndael"                    "./rijndael"   \                               
              "input_large.asc output_large.enc e 1234567890abcdeffedcba09876543211234567890abcdeffedcba0987654321" "15"  ".")   
 # BenchSuite+=("MiBench/security/rijndael"                    "./rijndael"   \        
 #              "input_large.enc output_large.dec d 1234567890abcdeffedcba09876543211234567890abcdeffedcba0987654321" "10"  ".")
