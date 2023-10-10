@@ -19,7 +19,7 @@ BenchSuite+=("JetStream2/hashset"                           "./hashset"        "
 BenchSuite+=("JetStream2/quicksort"                         "./quicksort"      ""                "15"    "") 
 BenchSuite+=("JetStream2/tsf"                               "./tsf"            "10000"           "3"    ".") 
 BenchSuite+=("MiBench/automotive/basicmath"                 "./basicmath"      ""                "15"    "") 
-BenchSuite+=("MiBench/automotive/bitcount"                  "./bitcount"       "1125000"         "15"    ""
+BenchSuite+=("MiBench/automotive/bitcount"                  "./bitcount"       "1125000"         "15"    "")
 BenchSuite+=("MiBench/consumer/jpeg/cjpeg"                  "./cjpeg"      \                                
              "-dct int -progressive -opt -outfile output_large_encode.jpeg input_large.ppm" "15" ".")        
 BenchSuite+=("MiBench/consumer/jpeg/djpeg"                  "./djpeg"      \                                
