@@ -14,25 +14,19 @@ BenchSize=5
 BenchSuite=()
 # Structure:  Benchmark directory                             Native           NativeArg         Iter  WasmDir
 BenchSuite+=("calibrate"                                    "./calibrate"      ""                "100"    "") 
-BenchSuite+=("JetStream2/gcc-loops"                         "./gcc-loops"      ""                "3"    "") 
-BenchSuite+=("JetStream2/hashset"                           "./hashset"        ""                "15"    "") 
-BenchSuite+=("JetStream2/quicksort"                         "./quicksort"      ""                "15"    "") 
-BenchSuite+=("JetStream2/tsf"                               "./tsf"            "10000"           "3"    ".") 
-BenchSuite+=("MiBench/automotive/basicmath"                 "./basicmath"      ""                "15"    "") 
-BenchSuite+=("MiBench/automotive/bitcount"                  "./bitcount"       "1125000"         "15"    "")
-BenchSuite+=("MiBench/consumer/jpeg/cjpeg"                  "./cjpeg"      \                                
-             "-dct int -progressive -opt -outfile output_large_encode.jpeg input_large.ppm" "15" ".")        
-BenchSuite+=("MiBench/consumer/jpeg/djpeg"                  "./djpeg"      \                                
-             "-dct int -ppm -outfile output_large_decode.ppm input_large.jpg" "15" ".")
+BenchSuite+=("JetStream2/gcc-loops"                         "./gcc-loops"      ""                "3"      "") 
+BenchSuite+=("JetStream2/hashset"                           "./hashset"        ""                "15"     "") 
+BenchSuite+=("JetStream2/quicksort"                         "./quicksort"      ""                "15"     "") 
+BenchSuite+=("JetStream2/tsf"                               "./tsf"            "10000"           "3"     ".") 
+BenchSuite+=("MiBench/automotive/basicmath"                 "./basicmath"      ""                "15"     "") 
+BenchSuite+=("MiBench/automotive/bitcount"                  "./bitcount"       "1125000"         "15"     "")
+BenchSuite+=("MiBench/consumer/jpeg/cjpeg"                  "./cjpeg"          "-dct int -progressive -opt -outfile output_large_encode.jpeg input_large.ppm" "15" ".")  
+BenchSuite+=("MiBench/consumer/jpeg/djpeg"                  "./djpeg"          "-dct int -ppm -outfile output_large_decode.ppm input_large.jpg" "15" ".")
 BenchSuite+=("MiBench/office/stringsearch"                  "./stringsearch"   ""          "30"  "")       
-BenchSuite+=("MiBench/security/blowfish"                    "./blowfish"   \                               
-             "e input_large.asc output_large.enc 1234567890abcdeffedcba0987654321" "10"  ".")               
-#BenchSuite+=("MiBench/security/blowfish"                    "./blowfish"   \        
-#             "d input_large.enc output_large.asc 1234567890abcdeffedcba0987654321" "10"  ".")
-BenchSuite+=("MiBench/security/rijndael"                    "./rijndael"   \                               
-             "input_large.asc output_large.enc e 1234567890abcdeffedcba09876543211234567890abcdeffedcba0987654321" "15"  ".")   
-# BenchSuite+=("MiBench/security/rijndael"                    "./rijndael"   \        
-#              "input_large.enc output_large.dec d 1234567890abcdeffedcba09876543211234567890abcdeffedcba0987654321" "10"  ".")
+BenchSuite+=("MiBench/security/blowfish"                    "./blowfish"       "e input_large.asc output_large.enc 1234567890abcdeffedcba0987654321" "10"  ".")               
+#BenchSuite+=("MiBench/security/blowfish"                    "./blowfish"       "d input_large.enc output_large.asc 1234567890abcdeffedcba0987654321" "10"  ".")
+BenchSuite+=("MiBench/security/rijndael"                    "./rijndael"       "input_large.asc output_large.enc e 1234567890abcdeffedcba09876543211234567890abcdeffedcba0987654321" "15"  ".")   
+# BenchSuite+=("MiBench/security/rijndael"                    "./rijndael"      "input_large.enc output_large.dec d 1234567890abcdeffedcba09876543211234567890abcdeffedcba0987654321" "10"  ".")
 BenchSuite+=("MiBench/security/sha"                         "./sha"            "input_large.asc" "15"   ".") # 0.07
 BenchSuite+=("MiBench/telecomm/adpcm/rawcaudio"             "./rawcaudio"      "< large.pcm"     "15"   ".") # 0.27
 BenchSuite+=("MiBench/telecomm/adpcm/rawdaudio"             "./rawdaudio"      "< large.adpcm"   "15"   ".") # 0.23
@@ -82,12 +76,6 @@ do
     nth=$( echo "scale=0; $idx / $BenchSize" | bc -l)
     nth=$((nth+1))
 
-    # For debugging
-    #if [ "$nth" -ne 4 ]
-    #then
-    #    continue
-    #fi
-
     echo "[${nth}/${NumBench}] ${BenchSuite[idx]}"
 
     # Enter benchmark directory
@@ -108,12 +96,11 @@ do
             echo "Building binaries..."
             make > /dev/null 2>&1
         fi
-    fi
-
-    if [ ! -f "$Native.wasm" ]
-    then
-        echo "Cannot build WebAssembly binary..."
-        continue
+        if [ ! -f "$Native.wasm" ]
+        then
+            echo "Cannot build WebAssembly binary..."
+            continue
+        fi
     fi
 
     # Run benchmark
