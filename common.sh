@@ -105,7 +105,7 @@ runtest() {
 }
 
 
-#echo "Iteration(s): $Iter"
+echo "Iteration(s): $Iter"
 
 if [ "$Fileoutput" = true ]
 then
@@ -118,27 +118,43 @@ else
     unset WABENCH_FILE
 fi
 
-
 #wasmtime
-if [ "$RunAOT" = true ]
-then
-runaot "$Wasmtime compile $Wasm -o $WasmAOT" $1
-export WARUNTIME="wasmtime"
-runtest "$Wasmtime run --allow-precompiled $WasmtimeDir $WasmAOT $WasmtimeNativeArg" "output_wasmtime" "wasmtime" $1
-else
-if [ "$Fileoutput" = true ]
-then
-    export WABENCH_FILE=$OutFile
-    export WARUNTIME="wasmtime"
-    runtest "$Wasmtime run --env WARUNTIME=$WARUNTIME --env HOSTTYPE=$HOSTTYPE --env WABENCHMARK=$WABENCHMARK --env WABENCH_FILE=$OutFile --dir=. $Wasm $NativeArg" "output_wasmtime" "wasmtime" $1
-    unset WABENCH_FILE
-else
-    export WABENCH_FILE=output_wasmtime
-    export WARUNTIME="wasmtime"
-    runtest "$Wasmtime run --env WARUNTIME=$WARUNTIME --env HOSTTYPE=$HOSTTYPE --env WABENCHMARK=$WABENCHMARK --dir=. $Wasm $NativeArg" "output_wasmtime" "wasmtime" $1
-    unset WABENCH_FILE
-fi
-fi
+# if [ "$RunAOT" = true ]
+# then
+# export WARUNTIME="wasmtime"
+
+# runaot "$Wasmtime compile $Wasm -o $WasmAOT" $1
+
+# #runtest "$Wasmtime run --allow-precompiled $WasmtimeDir $WasmAOT $WasmtimeNativeArg" "output_wasmtime" "wasmtime" $1
+
+# if [ "$Fileoutput" = true ]
+# then
+#     export WABENCH_FILE=$OutFile
+#     export WARUNTIME="wasmtime"
+#     runtest "$Wasmtime run --allow-precompiled --env WARUNTIME=$WARUNTIME --env HOSTTYPE=$HOSTTYPE --env WABENCHMARK=$WABENCHMARK --env WABENCH_FILE=$OutFile --dir=. $WasmAOT $NativeArg" "output_wasmtime" "wasmtime" $1
+#     unset WABENCH_FILE
+# else
+#     export WABENCH_FILE=output_wasmtime
+#     export WARUNTIME="wasmtime"
+#     runtest "$Wasmtime run --allow-precompiled --env WARUNTIME=$WARUNTIME --env HOSTTYPE=$HOSTTYPE --env WABENCHMARK=$WABENCHMARK --dir=. $WasmAOT $NativeArg" "output_wasmtime" "wasmtime" $1
+#     unset WABENCH_FILE
+# fi
+
+
+# else
+# if [ "$Fileoutput" = true ]
+# then
+#     export WABENCH_FILE=$OutFile
+#     export WARUNTIME="wasmtime"
+#     runtest "$Wasmtime run --env WARUNTIME=$WARUNTIME --env HOSTTYPE=$HOSTTYPE --env WABENCHMARK=$WABENCHMARK --env WABENCH_FILE=$OutFile --dir=. $Wasm $NativeArg" "output_wasmtime" "wasmtime" $1
+#     unset WABENCH_FILE
+# else
+#     export WABENCH_FILE=output_wasmtime
+#     export WARUNTIME="wasmtime"
+#     runtest "$Wasmtime run --env WARUNTIME=$WARUNTIME --env HOSTTYPE=$HOSTTYPE --env WABENCHMARK=$WABENCHMARK --dir=. $Wasm $NativeArg" "output_wasmtime" "wasmtime" $1
+#     unset WABENCH_FILE
+# fi
+# fi
 
 # #wasmer
 # if [ "$RunAOT" = true ]
@@ -166,26 +182,53 @@ fi
 # runtest "$Wasmer --llvm $WasmerDir $Wasm $WasmerNativeArg" "output_wasmer" "wasmer (ll)" $1
 
 #iwasm / wamr
+
 if [ "$RunAOT" = true ]
 then
+export WARUNTIME="wasmtime"
 runaot "wamrc -o $WasmAOT $Wasm"  $1
-export WARUNTIME="iwasm"
-runtest "$WAMR --stack-size=32768 $WAMRDir $WasmAOT $WAMRNativeArg" "output_wasmer" "iwasm" $1
-else
-# 32KB stack size for WAMR
+
+#runtest "$WAMR --stack-size=32768 $WAMRDir $WasmAOT $WAMRNativeArg" "output_wasmer" "iwasm" $1
+
+else 
 if [ "$Fileoutput" = true ]
 then
     export WABENCH_FILE=$OutFile
-    export WARUNTIME="iwasm"
-    runtest "$WAMR --stack-size=32768 --env='WARUNTIME=$WARUNTIME' --env='HOSTTYPE=$HOSTTYPE' --env='WABENCHMARK=$WABENCHMARK' --env='WABENCH_FILE=$OutFile' --dir=. $Wasm $NativeArg" "output_wamr" "iwasm" $1
+    export WARUNTIME="iwasm-fast-interp"
+    runtest "$WAMR --interp --stack-size=32768 --env='WARUNTIME=$WARUNTIME' --env='HOSTTYPE=$HOSTTYPE' --env='WABENCHMARK=$WABENCHMARK' --env='WABENCH_FILE=$OutFile' --dir=. $Wasm $NativeArg" "output_wamr" $WARUNTIME $1
+    unset WABENCH_FILE
+    export WABENCH_FILE=$OutFile
+    export WARUNTIME="iwasm-llvm-jit"
+    runtest "$WAMR --llvm-jit --stack-size=32768 --env='WARUNTIME=$WARUNTIME' --env='HOSTTYPE=$HOSTTYPE' --env='WABENCHMARK=$WABENCHMARK' --env='WABENCH_FILE=$OutFile' --dir=. $Wasm $NativeArg" "output_wamr" $WARUNTIME $1
+    unset WABENCH_FILE
+    export WABENCH_FILE=$OutFile
+    export WARUNTIME="iwasm-fast-jit"
+    runtest "$WAMR --fast-jit --stack-size=32768 --env='WARUNTIME=$WARUNTIME' --env='HOSTTYPE=$HOSTTYPE' --env='WABENCHMARK=$WABENCHMARK' --env='WABENCH_FILE=$OutFile' --dir=. $Wasm $NativeArg" "output_wamr" $WARUNTIME $1
+    unset WABENCH_FILE
+    export WABENCH_FILE=$OutFile
+    export WARUNTIME="iwasm-multi-tier"
+    runtest "$WAMR --multi-tier-jit --stack-size=32768 --env='WARUNTIME=$WARUNTIME' --env='HOSTTYPE=$HOSTTYPE' --env='WABENCHMARK=$WABENCHMARK' --env='WABENCH_FILE=$OutFile' --dir=. $Wasm $NativeArg" "output_wamr" $WARUNTIME $1
     unset WABENCH_FILE
 else
     export WABENCH_FILE=output_wamr
-    export WARUNTIME="iwasm"
-    runtest "$WAMR --stack-size=32768 --env='WARUNTIME=$WARUNTIME' --env='HOSTTYPE=$HOSTTYPE' --env='WABENCHMARK=$WABENCHMARK' --dir=. $Wasm $NativeArg" "output_wamr" "iwasm" $1
+    export WARUNTIME="iwasm-fast-interp"
+    runtest "$WAMR --interp --stack-size=32768 --env='WARUNTIME=$WARUNTIME' --env='HOSTTYPE=$HOSTTYPE' --env='WABENCHMARK=$WABENCHMARK' --dir=. $Wasm $NativeArg" "output_wamr" $WARUNTIME $1
+    unset WABENCH_FILE
+    export WABENCH_FILE=output_wamr
+    export WARUNTIME="iwasm-llvm-jit"
+    runtest "$WAMR --llvm-jit --stack-size=32768 --env='WARUNTIME=$WARUNTIME' --env='HOSTTYPE=$HOSTTYPE' --env='WABENCHMARK=$WABENCHMARK' --dir=. $Wasm $NativeArg" "output_wamr" $WARUNTIME $1
+    unset WABENCH_FILE
+    export WABENCH_FILE=output_wamr
+    export WARUNTIME="iwasm-fast-jit"
+    runtest "$WAMR --fast-jit --stack-size=32768 --env='WARUNTIME=$WARUNTIME' --env='HOSTTYPE=$HOSTTYPE' --env='WABENCHMARK=$WABENCHMARK' --dir=. $Wasm $NativeArg" "output_wamr" $WARUNTIME $1
+    unset WABENCH_FILE
+    export WABENCH_FILE=output_wamr-multi-tier
+    export WARUNTIME="iwasm-multi-tier"
+    runtest "$WAMR --multi-tier-jit --stack-size=32768 --env='WARUNTIME=$WARUNTIME' --env='HOSTTYPE=$HOSTTYPE' --env='WABENCHMARK=$WABENCHMARK' --dir=. $Wasm $NativeArg" "output_wamr" $WARUNTIME $1
     unset WABENCH_FILE
 fi
 fi
+
 
 # #wasmedge
 # if [ "$RunAOT" = true ]
