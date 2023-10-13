@@ -107,9 +107,14 @@ runtest() {
 
 echo "Iteration(s): $Iter"
 
+######################################################################
+### Native
+######################################################################
+
 if [ "$Fileoutput" = true ]
 then
     export WABENCH_FILE=$OutFile
+    export WARUNTIME="native"
     runtest "$Native $NativeArg" "output_native" "native" $1
     unset WABENCH_FILE
 else
@@ -118,7 +123,10 @@ else
     unset WABENCH_FILE
 fi
 
-#wasmtime
+######################################################################
+### wasmtime
+######################################################################
+
 # if [ "$RunAOT" = true ]
 # then
 # export WARUNTIME="wasmtime"
@@ -156,7 +164,10 @@ fi
 # fi
 # fi
 
+######################################################################
 # #wasmer
+######################################################################
+
 # if [ "$RunAOT" = true ]
 # then
 # runaot "$Wasmer compile $Wasm -o $WasmAOT" $1
@@ -181,7 +192,9 @@ fi
 
 # runtest "$Wasmer --llvm $WasmerDir $Wasm $WasmerNativeArg" "output_wasmer" "wasmer (ll)" $1
 
+######################################################################
 #iwasm / wamr
+######################################################################
 
 if [ "$RunAOT" = true ]
 then
@@ -193,10 +206,10 @@ runaot "wamrc -o $WasmAOT $Wasm"  $1
 else 
 if [ "$Fileoutput" = true ]
 then
-    export WABENCH_FILE=$OutFile
-    export WARUNTIME="iwasm-fast-interp"
-    runtest "$WAMR --interp --stack-size=32768 --env='WARUNTIME=$WARUNTIME' --env='HOSTTYPE=$HOSTTYPE' --env='WABENCHMARK=$WABENCHMARK' --env='WABENCH_FILE=$OutFile' --dir=. $Wasm $NativeArg" "output_wamr" $WARUNTIME $1
-    unset WABENCH_FILE
+    # export WABENCH_FILE=$OutFile
+    # export WARUNTIME="iwasm-fast-interp"
+    # runtest "$WAMR --interp --stack-size=32768 --env='WARUNTIME=$WARUNTIME' --env='HOSTTYPE=$HOSTTYPE' --env='WABENCHMARK=$WABENCHMARK' --env='WABENCH_FILE=$OutFile' --dir=. $Wasm $NativeArg" "output_wamr" $WARUNTIME $1
+    # unset WABENCH_FILE
     export WABENCH_FILE=$OutFile
     export WARUNTIME="iwasm-llvm-jit"
     runtest "$WAMR --llvm-jit --stack-size=32768 --env='WARUNTIME=$WARUNTIME' --env='HOSTTYPE=$HOSTTYPE' --env='WABENCHMARK=$WABENCHMARK' --env='WABENCH_FILE=$OutFile' --dir=. $Wasm $NativeArg" "output_wamr" $WARUNTIME $1
@@ -210,10 +223,10 @@ then
     runtest "$WAMR --multi-tier-jit --stack-size=32768 --env='WARUNTIME=$WARUNTIME' --env='HOSTTYPE=$HOSTTYPE' --env='WABENCHMARK=$WABENCHMARK' --env='WABENCH_FILE=$OutFile' --dir=. $Wasm $NativeArg" "output_wamr" $WARUNTIME $1
     unset WABENCH_FILE
 else
-    export WABENCH_FILE=output_wamr
-    export WARUNTIME="iwasm-fast-interp"
-    runtest "$WAMR --interp --stack-size=32768 --env='WARUNTIME=$WARUNTIME' --env='HOSTTYPE=$HOSTTYPE' --env='WABENCHMARK=$WABENCHMARK' --dir=. $Wasm $NativeArg" "output_wamr" $WARUNTIME $1
-    unset WABENCH_FILE
+    # export WABENCH_FILE=output_wamr
+    # export WARUNTIME="iwasm-fast-interp"
+    # runtest "$WAMR --interp --stack-size=32768 --env='WARUNTIME=$WARUNTIME' --env='HOSTTYPE=$HOSTTYPE' --env='WABENCHMARK=$WABENCHMARK' --dir=. $Wasm $NativeArg" "output_wamr" $WARUNTIME $1
+    # unset WABENCH_FILE
     export WABENCH_FILE=output_wamr
     export WARUNTIME="iwasm-llvm-jit"
     runtest "$WAMR --llvm-jit --stack-size=32768 --env='WARUNTIME=$WARUNTIME' --env='HOSTTYPE=$HOSTTYPE' --env='WABENCHMARK=$WABENCHMARK' --dir=. $Wasm $NativeArg" "output_wamr" $WARUNTIME $1
@@ -230,7 +243,10 @@ fi
 fi
 
 
+######################################################################
 # #wasmedge
+######################################################################
+
 # if [ "$RunAOT" = true ]
 # then
 # #runaot "wamrc -o $WasmAOT $Wasm"  $1
