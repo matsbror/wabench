@@ -127,29 +127,30 @@ fi
 ### wasmtime
 ######################################################################
 
-# if [ "$RunAOT" = true ]
-# then
-# export WARUNTIME="wasmtime"
+if [ "$RunAOT" = true ]
+then
+    export WARUNTIME="wasmtime"
+    runaot "$Wasmtime compile $Wasm -o $WasmAOT" $1
 
-# runaot "$Wasmtime compile $Wasm -o $WasmAOT" $1
+    #runtest "$Wasmtime run --allow-precompiled $WasmtimeDir $WasmAOT $WasmtimeNativeArg" "output_wasmtime" "wasmtime" $1
 
-# #runtest "$Wasmtime run --allow-precompiled $WasmtimeDir $WasmAOT $WasmtimeNativeArg" "output_wasmtime" "wasmtime" $1
+else 
+if [ "$Fileoutput" = true ]
+then
+    export WABENCH_FILE=$OutFile
+    export WARUNTIME="wasmtime"
+    runtest "$Wasmtime run --allow-precompiled --env 'WARUNTIME=$WARUNTIME' --env 'HOSTTYPE=$HOSTTYPE' --env 'WABENCHMARK=$WABENCHMARK' --env 'WABENCH_FILE=$OutFile' --dir=. $Wasm $NativeArg" "output_wasmtime" "wasmtime" $1
+    unset WABENCH_FILE
+else
+    export WABENCH_FILE=output_wasmtime
+    export WARUNTIME="wasmtime"
+    runtest "$Wasmtime run --allow-precompiled --env 'WARUNTIME=$WARUNTIME' --env 'HOSTTYPE=$HOSTTYPE' --env 'WABENCHMARK=$WABENCHMARK' --dir=. $Wasm $NativeArg" "output_wasmtime" "wasmtime" $1
+    unset WABENCH_FILE
+fi
+fi
 
-# if [ "$Fileoutput" = true ]
-# then
-#     export WABENCH_FILE=$OutFile
-#     export WARUNTIME="wasmtime"
-#     runtest "$Wasmtime run --allow-precompiled --env WARUNTIME=$WARUNTIME --env HOSTTYPE=$HOSTTYPE --env WABENCHMARK=$WABENCHMARK --env WABENCH_FILE=$OutFile --dir=. $WasmAOT $NativeArg" "output_wasmtime" "wasmtime" $1
-#     unset WABENCH_FILE
-# else
-#     export WABENCH_FILE=output_wasmtime
-#     export WARUNTIME="wasmtime"
-#     runtest "$Wasmtime run --allow-precompiled --env WARUNTIME=$WARUNTIME --env HOSTTYPE=$HOSTTYPE --env WABENCHMARK=$WABENCHMARK --dir=. $WasmAOT $NativeArg" "output_wasmtime" "wasmtime" $1
-#     unset WABENCH_FILE
-# fi
 
-
-# else
+#else
 # if [ "$Fileoutput" = true ]
 # then
 #     export WABENCH_FILE=$OutFile
@@ -206,38 +207,15 @@ runaot "wamrc -o $WasmAOT $Wasm"  $1
 else 
 if [ "$Fileoutput" = true ]
 then
-    # export WABENCH_FILE=$OutFile
-    # export WARUNTIME="iwasm-fast-interp"
-    # runtest "$WAMR --interp --stack-size=32768 --env='WARUNTIME=$WARUNTIME' --env='HOSTTYPE=$HOSTTYPE' --env='WABENCHMARK=$WABENCHMARK' --env='WABENCH_FILE=$OutFile' --dir=. $Wasm $NativeArg" "output_wamr" $WARUNTIME $1
-    # unset WABENCH_FILE
     export WABENCH_FILE=$OutFile
     export WARUNTIME="iwasm-llvm-jit"
     runtest "$WAMR --llvm-jit --stack-size=32768 --env='WARUNTIME=$WARUNTIME' --env='HOSTTYPE=$HOSTTYPE' --env='WABENCHMARK=$WABENCHMARK' --env='WABENCH_FILE=$OutFile' --dir=. $Wasm $NativeArg" "output_wamr" $WARUNTIME $1
     unset WABENCH_FILE
-    export WABENCH_FILE=$OutFile
-    export WARUNTIME="iwasm-fast-jit"
-    runtest "$WAMR --fast-jit --stack-size=32768 --env='WARUNTIME=$WARUNTIME' --env='HOSTTYPE=$HOSTTYPE' --env='WABENCHMARK=$WABENCHMARK' --env='WABENCH_FILE=$OutFile' --dir=. $Wasm $NativeArg" "output_wamr" $WARUNTIME $1
-    unset WABENCH_FILE
-    export WABENCH_FILE=$OutFile
-    export WARUNTIME="iwasm-multi-tier"
-    runtest "$WAMR --multi-tier-jit --stack-size=32768 --env='WARUNTIME=$WARUNTIME' --env='HOSTTYPE=$HOSTTYPE' --env='WABENCHMARK=$WABENCHMARK' --env='WABENCH_FILE=$OutFile' --dir=. $Wasm $NativeArg" "output_wamr" $WARUNTIME $1
-    unset WABENCH_FILE
+
 else
-    # export WABENCH_FILE=output_wamr
-    # export WARUNTIME="iwasm-fast-interp"
-    # runtest "$WAMR --interp --stack-size=32768 --env='WARUNTIME=$WARUNTIME' --env='HOSTTYPE=$HOSTTYPE' --env='WABENCHMARK=$WABENCHMARK' --dir=. $Wasm $NativeArg" "output_wamr" $WARUNTIME $1
-    # unset WABENCH_FILE
     export WABENCH_FILE=output_wamr
     export WARUNTIME="iwasm-llvm-jit"
     runtest "$WAMR --llvm-jit --stack-size=32768 --env='WARUNTIME=$WARUNTIME' --env='HOSTTYPE=$HOSTTYPE' --env='WABENCHMARK=$WABENCHMARK' --dir=. $Wasm $NativeArg" "output_wamr" $WARUNTIME $1
-    unset WABENCH_FILE
-    export WABENCH_FILE=output_wamr
-    export WARUNTIME="iwasm-fast-jit"
-    runtest "$WAMR --fast-jit --stack-size=32768 --env='WARUNTIME=$WARUNTIME' --env='HOSTTYPE=$HOSTTYPE' --env='WABENCHMARK=$WABENCHMARK' --dir=. $Wasm $NativeArg" "output_wamr" $WARUNTIME $1
-    unset WABENCH_FILE
-    export WABENCH_FILE=output_wamr-multi-tier
-    export WARUNTIME="iwasm-multi-tier"
-    runtest "$WAMR --multi-tier-jit --stack-size=32768 --env='WARUNTIME=$WARUNTIME' --env='HOSTTYPE=$HOSTTYPE' --env='WABENCHMARK=$WABENCHMARK' --dir=. $Wasm $NativeArg" "output_wamr" $WARUNTIME $1
     unset WABENCH_FILE
 fi
 fi
