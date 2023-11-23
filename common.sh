@@ -200,7 +200,12 @@ fi
 if [ "$RunAOT" = true ]
 then
     export WARUNTIME="iwasm-aot"
-    runaot "wamrc -o $WasmAOT $Wasm"  $1
+    if [ "$HOSTTYPE" = "Linux-aarch64" ]
+        runaot "wamrc --target==aarch64v8 -o $WasmAOT $Wasm"  $1
+    else
+        runaot "wamrc -o $WasmAOT $Wasm"  $1
+    fi
+
 
     if [ "$Fileoutput" = true ]
     then
@@ -210,7 +215,7 @@ then
 
     else
         export WABENCH_FILE=output_wamr
-        runtest "$WAMR --llvm-jit --stack-size=32768 --env='WARUNTIME=$WARUNTIME' --env='HOSTTYPE=$HOSTTYPE' --env='WABENCHMARK=$WABENCHMARK' --dir=. $WasmAOT $NativeArg" "output_wamr" $WARUNTIME $1
+        runtest "$WAMR  --stack-size=32768 --env='WARUNTIME=$WARUNTIME' --env='HOSTTYPE=$HOSTTYPE' --env='WABENCHMARK=$WABENCHMARK' --dir=. $WasmAOT $NativeArg" "output_wamr" $WARUNTIME $1
         unset WABENCH_FILE
     fi
     
