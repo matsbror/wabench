@@ -202,7 +202,7 @@ then
     export WARUNTIME="iwasm-aot"
     if [ "$HOSTTYPE" = "Linux-aarch64" ]
     then
-        runaot "wamrc --target==aarch64v8 -o $WasmAOT $Wasm"  $1
+        runaot "wamrc --target=aarch64v8 -o $WasmAOT $Wasm"  $1
     else
         runaot "wamrc -o $WasmAOT $Wasm"  $1
     fi
