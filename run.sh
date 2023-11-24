@@ -22,7 +22,6 @@ BenchSuite+=("MB"     "MiBench/automotive/basicmath"                 "./basicmat
 BenchSuite+=("MB"     "MiBench/automotive/bitcount"                  "./bitcount"       "1125000"         "15"     "")
 BenchSuite+=("MB"     "MiBench/consumer/jpeg/cjpeg"                  "./cjpeg"          "-dct int -progressive -opt -outfile output_large_encode.jpeg input_large.ppm" "15" ".")  
 BenchSuite+=("MB"     "MiBench/consumer/jpeg/djpeg"                  "./djpeg"          "-dct int -ppm -outfile output_large_decode.ppm input_large.jpg" "15" ".")
-BenchSuite+=("MB"     "MiBench/office/stringsearch"                  "./stringsearch"   ""          "30"  "")       
 BenchSuite+=("MB"     "MiBench/security/blowfish"                    "./blowfish"       "e input_large.asc output_large.enc 1234567890abcdeffedcba0987654321" "10"  ".")               
 #BenchSuite+=("MB"     "MiBench/security/blowfish"                    "./blowfish"       "d input_large.enc output_large.asc 1234567890abcdeffedcba0987654321" "10"  ".")
 BenchSuite+=("MB"     "MiBench/security/rijndael"                    "./rijndael"       "input_large.asc output_large.enc e 1234567890abcdeffedcba09876543211234567890abcdeffedcba0987654321" "15"  ".")   
@@ -82,7 +81,7 @@ do
     cd ${BenchSuite[idx+1]}
 
     # Setup environment
-    Prefix==${BenchSuite[idx]}
+    Prefix=${BenchSuite[idx]}
     Native=${BenchSuite[idx+2]}
     NativeArg=${BenchSuite[idx+3]}
     Iter=$( echo ${BenchSuite[idx+4]} | bc -l )
