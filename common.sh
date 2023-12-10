@@ -172,9 +172,12 @@ fi
 
 if [ "$RunAOT" = true ]
 then
+    export WARUNTIME="wasmer-aot"
 runaot "$Wasmer compile $Wasm -o $WasmAOT" $1
 runtest "$Wasmer run $WasmerDir $WasmAOT $WasmerNativeArg" "output_wasmer" "wasmer" $1
 else
+    export WARUNTIME="wasmer"
+
 if [ "$Fileoutput" = true ]
 then
     export WABENCH_FILE=$OutFile
