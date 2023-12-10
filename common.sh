@@ -12,9 +12,11 @@ Wasm=$Native.wasm
 WasmAOT=$Native.cwasm
 
 Wasmtime="wasmtime"
-#Wasmer="wasmer"
-#WasmEdge="wasmedge"
+Wasmer="wasmer"
+WasmEdge="wasmedge"
 WAMR="iwasm" 
+wasm3=wasm3
+
 
 export WABENCHMARK=`echo "$Prefix-${Native//.\/}"`
 echoerr() { echo -e "$@" 1>&2; }
@@ -76,7 +78,7 @@ runtest() {
 
         for (( i=1; i<=$Iter; i++ ))
         do
-            # echo "do $cmd"
+            echo "do $cmd"
 
             echo "$HOSTTYPE, $3, $WABENCHMARK, calling, timestamp, $(($(date +%s%N)/1000))" >> $WABENCH_FILE
 
@@ -130,7 +132,7 @@ fi
 
 if [ "$RunAOT" = true ]
 then
-    export WARUNTIME="wasmtime-aot"
+     export WARUNTIME="wasmtime-aot"
     runaot "$Wasmtime compile $Wasm -o $WasmAOT" $1
 
 
@@ -144,7 +146,6 @@ then
         runtest "$Wasmtime run --allow-precompiled --env 'WARUNTIME=$WARUNTIME' --env 'HOSTTYPE=$HOSTTYPE' --env 'WABENCHMARK=$WABENCHMARK' --dir=. $WasmAOT $NativeArg" "output_wasmtime" "wasmtime" $1
         unset WABENCH_FILE
     fi
-
 
 else
 
@@ -169,29 +170,24 @@ fi
 # #wasmer
 ######################################################################
 
-# if [ "$RunAOT" = true ]
-# then
-# runaot "$Wasmer compile $Wasm -o $WasmAOT" $1
-# runtest "$Wasmer run $WasmerDir $WasmAOT $WasmerNativeArg" "output_wasmer" "wasmer" $1
-# else
-# if [ "$Fileoutput" = true ]
-# then
-#     export WABENCH_FILE=$OutFile
-#     runtest "$Wasmer run  --env WABENCHMARK=$WABENCHMARK --env WABENCH_FILE=$OutFile --dir=. $Wasm -- $NativeArg" "output_wasmer" "wasmer" $1
-#     unset WABENCH_FILE
-# else
-#     export WABENCH_FILE=output_wasmer
-#     runtest "$Wasmer run --env WABENCHMARK=$WABENCHMARK --dir=. $Wasm -- $NativeArg" "output_wasmer" "wasmer" $1
-#     unset WABENCH_FILE
-# fi
+if [ "$RunAOT" = true ]
+then
+runaot "$Wasmer compile $Wasm -o $WasmAOT" $1
+runtest "$Wasmer run $WasmerDir $WasmAOT $WasmerNativeArg" "output_wasmer" "wasmer" $1
+else
+if [ "$Fileoutput" = true ]
+then
+    export WABENCH_FILE=$OutFile
+    runtest "$Wasmer run  --env WARUNTIME=$WARUNTIME --env HOSTTYPE=$HOSTTYPE --env WABENCHMARK=$WABENCHMARK --env WABENCH_FILE=$OutFile --dir=. $Wasm -- $NativeArg" "output_wasmer" "wasmer" $1
+    unset WABENCH_FILE
+else
+    export WABENCH_FILE=output_wasmer
+    runtest "$Wasmer run --env WARUNTIME=$WARUNTIME --env HOSTTYPE=$HOSTTYPE --env WABENCHMARK=$WABENCHMARK  --dir=. $Wasm -- $NativeArg" "output_wasmer" "wasmer" $1
+    unset WABENCH_FILE
+fi
 
-# fi
+fi
 
-# runtest "$Wasmer --singlepass $WasmerDir $Wasm $WasmerNativeArg" "output_wasmer" "wasmer (sp)" $1
-
-# runtest "$Wasmer --cranelift $WasmerDir $Wasm $WasmerNativeArg" "output_wasmer" "wasmer (cl)" $1
-
-# runtest "$Wasmer --llvm $WasmerDir $Wasm $WasmerNativeArg" "output_wasmer" "wasmer (ll)" $1
 
 ######################################################################
 #iwasm / wamr
@@ -257,6 +253,7 @@ fi
 # #wasmedge
 ######################################################################
 
+
 # if [ "$RunAOT" = true ]
 # then
 # #runaot "wamrc -o $WasmAOT $Wasm"  $1
@@ -274,7 +271,7 @@ fi
 #     unset WABENCH_FILE
 # fi
 
-# fi
+# fi # RunAOT
 
 
 if [ "$1" == "-n" ] # No need to compare results for a dry run

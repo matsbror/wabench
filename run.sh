@@ -1,6 +1,6 @@
 #!/bin/bash
 
-RunAOT=true
+RunAOT=false
 
 MeasureMem=false
 
@@ -23,9 +23,7 @@ BenchSuite+=("MB"     "MiBench/automotive/bitcount"                  "./bitcount
 BenchSuite+=("MB"     "MiBench/consumer/jpeg/cjpeg"                  "./cjpeg"          "-dct int -progressive -opt -outfile output_large_encode.jpeg input_large.ppm" "15" ".")  
 BenchSuite+=("MB"     "MiBench/consumer/jpeg/djpeg"                  "./djpeg"          "-dct int -ppm -outfile output_large_decode.ppm input_large.jpg" "15" ".")
 BenchSuite+=("MB"     "MiBench/security/blowfish"                    "./blowfish"       "e input_large.asc output_large.enc 1234567890abcdeffedcba0987654321" "10"  ".")               
-#BenchSuite+=("MB"     "MiBench/security/blowfish"                    "./blowfish"       "d input_large.enc output_large.asc 1234567890abcdeffedcba0987654321" "10"  ".")
 BenchSuite+=("MB"     "MiBench/security/rijndael"                    "./rijndael"       "input_large.asc output_large.enc e 1234567890abcdeffedcba09876543211234567890abcdeffedcba0987654321" "15"  ".")   
-# BenchSuite+=("MB"     "MiBench/security/rijndael"                    "./rijndael"      "input_large.enc output_large.dec d 1234567890abcdeffedcba09876543211234567890abcdeffedcba0987654321" "10"  ".")
 BenchSuite+=("MB"     "MiBench/security/sha"                         "./sha"            "input_large.asc" "15"   ".") # 0.07
 BenchSuite+=("MB"     "MiBench/telecomm/adpcm/rawcaudio"             "./rawcaudio"      "< large.pcm"     "15"   ".") # 0.27
 BenchSuite+=("MB"     "MiBench/telecomm/adpcm/rawdaudio"             "./rawdaudio"      "< large.adpcm"   "15"   ".") # 0.23
