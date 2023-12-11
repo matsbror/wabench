@@ -78,7 +78,7 @@ runtest() {
 
         for (( i=1; i<=$Iter; i++ ))
         do
-            echo "do $cmd"
+            # echo "do $cmd"
 
             echo "$HOSTTYPE, $3, $WABENCHMARK, calling, timestamp, $(($(date +%s%N)/1000))" >> $WABENCH_FILE
 
@@ -170,26 +170,26 @@ fi
 # #wasmer
 ######################################################################
 
-if [ "$RunAOT" = true ]
-then
-    export WARUNTIME="wasmer-aot"
-runaot "$Wasmer compile $Wasm -o $WasmAOT" $1
-runtest "$Wasmer run $WasmerDir $WasmAOT $WasmerNativeArg" "output_wasmer" "wasmer" $1
-else
-    export WARUNTIME="wasmer"
+# export WARUNTIME="wasmer"
+# if [ "$RunAOT" = true ]
+# then
+#     export WARUNTIME="wasmer-aot"
 
-if [ "$Fileoutput" = true ]
-then
-    export WABENCH_FILE=$OutFile
-    runtest "$Wasmer run  --env WARUNTIME=$WARUNTIME --env HOSTTYPE=$HOSTTYPE --env WABENCHMARK=$WABENCHMARK --env WABENCH_FILE=$OutFile --dir=. $Wasm -- $NativeArg" "output_wasmer" "wasmer" $1
-    unset WABENCH_FILE
-else
-    export WABENCH_FILE=output_wasmer
-    runtest "$Wasmer run --env WARUNTIME=$WARUNTIME --env HOSTTYPE=$HOSTTYPE --env WABENCHMARK=$WABENCHMARK  --dir=. $Wasm -- $NativeArg" "output_wasmer" "wasmer" $1
-    unset WABENCH_FILE
-fi
+#     runaot "$Wasmer compile $Wasm -o $WasmAOT" $1
+#     runtest "$Wasmer run $WasmerDir $WasmAOT $WasmerNativeArg" "output_wasmer" "wasmer" $1
+# else
+# if [ "$Fileoutput" = true ]
+# then
+#     export WABENCH_FILE=$OutFile
+#     runtest "$Wasmer run  --env WARUNTIME=$WARUNTIME --env HOSTTYPE=$HOSTTYPE --env WABENCHMARK=$WABENCHMARK --env WABENCH_FILE=$OutFile --dir=. $Wasm -- $NativeArg" "output_wasmer" "wasmer" $1
+#     unset WABENCH_FILE
+# else
+#     export WABENCH_FILE=output_wasmer
+#     runtest "$Wasmer run --env WARUNTIME=$WARUNTIME --env HOSTTYPE=$HOSTTYPE --env WABENCHMARK=$WABENCHMARK  --dir=. $Wasm -- $NativeArg" "output_wasmer" "wasmer" $1
+#     unset WABENCH_FILE
+# fi
 
-fi
+# fi
 
 
 ######################################################################
