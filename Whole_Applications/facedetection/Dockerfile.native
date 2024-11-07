@@ -1,11 +1,12 @@
 # Build Stage
-FROM silkeh/clang AS builder
+FROM ubuntu AS builder
 WORKDIR /usr/src/myapp
 
 COPY src/ src/
 
 RUN ls --recursive src/
 
+RUN apt-get update && apt-get install -y clang
 
 RUN clang++ -fno-exceptions -O3 -I./src  -c src/detect-image.cpp -o detect-image.o
 RUN clang++ -fno-exceptions -O3 -I./src  -c src/facedetectcnn.cpp -o facedetectcnn.o
