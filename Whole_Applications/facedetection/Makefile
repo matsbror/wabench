@@ -5,7 +5,7 @@ SRCSUFFIX = cpp
 
 CFLAGS = -fno-exceptions
 CINCLUDE = -I./src -I../../include
-OPT = -O2
+OPT = -O3
 LDFLAGS =
 
 include ../../Makefile.in

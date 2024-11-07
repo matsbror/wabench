@@ -13,9 +13,9 @@ endif
 
 CC=${CLANG}
 
-OPT=-O2
+OPT=-O3
 
-WASMCC=/opt/wasi-sdk/bin/${CLANG} --target=wasm32-wasi --sysroot=${WASI_SYSROOT}
+WASMCC=${CLANG} --target=wasm32-wasi --sysroot=${WASI_SYSROOT}
 
 all: ${Native} ${WASM}
 
@@ -27,6 +27,7 @@ ${Native}: ${OBJ}
 
 ${WASM}: ${SRC}
 	${WASMCC} ${CFLAGS} ${OPT} ${CINCLUDE} ${WASM_LDFLAGS} $^ -o $@
+	wasm-opt -O3 --strip-debug $@ -o $@
 
 clean:
 	@echo "Cleaning up..."
